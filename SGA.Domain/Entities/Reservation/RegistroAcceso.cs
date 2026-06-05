@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace SGA.Domain.Entities.Reservation
 {
-    internal class RegistroAcceso : AuditEntity
+    public class RegistroAcceso : AuditEntity
     {
         public int Id { get; set; }
         public int UsuarioId { get; set; }

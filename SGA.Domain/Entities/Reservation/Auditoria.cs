@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace SGA.Domain.Entities.Reservation
 {
-    internal class Auditoria : AuditEntity
+    public class Auditoria : AuditEntity
     {
         public int Id { get; set; }
         public string Actor { get; set; }

@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace SGA.Domain.Entities.Configuration
 {
-    internal class Horario : AuditEntity
+    public class Horario : AuditEntity
     {
         public int Id { get; set; }
         public string DiasOperacion { get; set; }

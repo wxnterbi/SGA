@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace SGA.Domain.Entities.Configuration
 {
-    internal class Usuario : AuditEntity
+    public class Usuario : AuditEntity
     {
         public int Id { get; set; }
         public string IdentificadorInstitucional { get; set; }

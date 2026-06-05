@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace SGA.Domain.Entities.Configuration
 {
-    internal class Parada : AuditEntity
+    public class Parada : AuditEntity
     {
         public int Id { get; set; }
         public int Orden { get; set; }

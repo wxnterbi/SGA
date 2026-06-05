@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace SGA.Domain.Base
 {
-    internal class AuditEntity
+    public class AuditEntity
     {
         public DateTime FechaCreacion { get; set; }
         public DateTime? FechaModificacion { get; set; }

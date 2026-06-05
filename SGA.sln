@@ -37,6 +37,11 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SGA.Api", "SGA.Api\SGA.Api.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SGA.Web", "SGA.Web\SGA.Web.csproj", "{11FA2761-AB6D-43E8-BB07-127125A8E794}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Database", "Database", "{284D8F0C-8D00-4203-883D-C1E1954D7A28}"
+	ProjectSection(SolutionItems) = preProject
+		SGA.sql = SGA.sql
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU

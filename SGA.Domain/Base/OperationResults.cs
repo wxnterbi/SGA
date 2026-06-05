@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace SGA.Domain.Base
 {
-    internal class OperationResults
+    public class OperationResults
     {
         public bool Success { get; set; }
         public string Message { get; set; }

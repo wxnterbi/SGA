@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace SGA.Domain.Entities.Reservation
 {
-    internal class TarjetaRecargable : AuditEntity
+    public class TarjetaRecargable : AuditEntity
     {
         public int Id { get; set; }
         public int UsuarioId { get; set; }

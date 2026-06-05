@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace SGA.Domain.Entities.Reservation
 {
-    internal class Viaje : AuditEntity
+    public class Viaje : AuditEntity
     {
         public int Id { get; set; }
         public int RutaId { get; set; }
