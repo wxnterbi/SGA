@@ -1,12 +1,6 @@
-﻿using Azure;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using SGA.Domain.Entities.Configuration;
 using SGA.Domain.Entities.Reservation;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace SGA.Persistence.Context
 {

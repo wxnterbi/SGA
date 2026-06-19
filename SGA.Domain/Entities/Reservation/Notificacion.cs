@@ -1,9 +1,4 @@
 ﻿using SGA.Domain.Base;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace SGA.Domain.Entities.Reservation
 {
@@ -12,6 +7,7 @@ namespace SGA.Domain.Entities.Reservation
         public int Id { get; set; }
         public int UsuarioId { get; set; }
         public string TipoEvento { get; set; }
+        public string Mensaje { get; set; }
         public DateTime FechaHora { get; set; }
     }
 }
