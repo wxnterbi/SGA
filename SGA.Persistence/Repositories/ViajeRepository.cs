@@ -1,13 +1,15 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using SGA.Persistence.Context;
 using SGA.Persistence.Interfaces;
+using SGA.Domain.Entities.Reservation;
 
 namespace SGA.Persistence.Repositories
 {
     public class ViajeRepository : IViajeRepository
     {
-        private readonly SgaDbContext _context;
+        private readonly SGABD _context;
 
-        public ViajeRepository(SgaDbContext context)
+        public ViajeRepository(SGABD context)
         {
             _context = context;
         }

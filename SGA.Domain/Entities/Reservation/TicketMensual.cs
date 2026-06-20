@@ -1,4 +1,5 @@
 ﻿using SGA.Domain.Base;
+using SGA.Domain.Enums.Reservation;
 
 namespace SGA.Domain.Entities.Reservation
 {
@@ -9,6 +10,6 @@ namespace SGA.Domain.Entities.Reservation
         public int PagoId { get; set; }
         public DateTime FechaInicio { get; set; }
         public DateTime FechaFin { get; set; }
-        public string Estado { get; set; }
+        public EstadoTicket Estado { get; set; }
     }
 }

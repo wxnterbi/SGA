@@ -8,6 +8,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\SGA.Domain\SGA.Domain.csproj" />
+    <ProjectReference Include="..\SGA.Infrastructure\SGA.Infrastructure.csproj" />
     <ProjectReference Include="..\SGA.Model\SGA.Model.csproj" />
   </ItemGroup>
 

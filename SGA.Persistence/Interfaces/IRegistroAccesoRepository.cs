@@ -1,4 +1,6 @@
-﻿namespace SGA.Persistence.Interfaces
+﻿using SGA.Domain.Entities.Reservation;
+
+namespace SGA.Persistence.Interfaces
 {
     public interface IRegistroAccesoRepository
     {

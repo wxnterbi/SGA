@@ -45,6 +45,51 @@ namespace SGA.Persistence.Context
             modelBuilder.Entity<Notificacion>().ToTable("Notificacion");
             modelBuilder.Entity<Auditoria>().ToTable("Auditoria");
 
+            modelBuilder.Entity<Usuario>()
+    .Property(x => x.Estado)
+    .HasConversion<string>();
+
+            modelBuilder.Entity<Usuario>()
+                .Property(x => x.TipoUsuario)
+                .HasConversion<string>();
+
+            modelBuilder.Entity<Autobus>()
+                .Property(x => x.EstadoOperativo)
+                .HasConversion<string>();
+
+            modelBuilder.Entity<Conductor>()
+                .Property(x => x.EstadoLaboral)
+                .HasConversion<string>();
+
+            modelBuilder.Entity<Viaje>()
+                .Property(x => x.Estado)
+                .HasConversion<string>();
+
+            modelBuilder.Entity<TicketMensual>()
+                .Property(x => x.Estado)
+                .HasConversion<string>();
+
+            modelBuilder.Entity<TarjetaRecargable>()
+                .Property(x => x.Estado)
+                .HasConversion<string>();
+
+            modelBuilder.Entity<Incidencia>()
+                .Property(x => x.Tipo)
+                .HasConversion<string>();
+
+            modelBuilder.Entity<Notificacion>()
+                .Property(x => x.TipoEvento)
+                .HasConversion<string>();
+
+            // Evitar advertencias de decimales
+            modelBuilder.Entity<Pago>()
+                .Property(x => x.Monto)
+                .HasPrecision(18, 2);
+
+            modelBuilder.Entity<TarjetaRecargable>()
+                .Property(x => x.Saldo)
+                .HasPrecision(18, 2);
+
             base.OnModelCreating(modelBuilder);
         }
     }

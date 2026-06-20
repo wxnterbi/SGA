@@ -1,4 +1,5 @@
 ﻿using SGA.Domain.Base;
+using SGA.Domain.Enums.Configuration;
 
 namespace SGA.Domain.Entities.Configuration
 {
@@ -7,6 +8,6 @@ namespace SGA.Domain.Entities.Configuration
         public int Id { get; set; }
         public string Placa { get; set; }
         public int CapacidadMaxima { get; set; }
-        public string EstadoOperativo { get; set; }
+        public EstadoAutobus EstadoOperativo { get; set; }
     }
 }

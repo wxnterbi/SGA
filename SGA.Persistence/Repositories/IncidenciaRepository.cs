@@ -1,12 +1,14 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using SGA.Persistence.Context;
 using SGA.Persistence.Interfaces;
+using SGA.Domain.Entities.Reservation;
 
 namespace SGA.Persistence.Repository
 {
     public class IncidenciaRepository : IIncidenciaRepository
     {
-        private readonly SgaDbContext _context;
-        public IncidenciaRepository(SgaDbContext context) { _context = context; }
+        private readonly SGABD _context;
+        public IncidenciaRepository(SGABD context) { _context = context; }
 
         public async Task<Incidencia> GetByIdAsync(int id) => await _context.Incidencias.FindAsync(id);
         public async Task<IEnumerable<Incidencia>> GetByViajeIdAsync(int viajeId) =>

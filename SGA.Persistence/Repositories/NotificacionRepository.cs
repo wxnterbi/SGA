@@ -1,12 +1,14 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using SGA.Domain.Entities.Reservation;
+using SGA.Persistence.Context;
 using SGA.Persistence.Interfaces;
 
 namespace SGA.Persistence.Repository
 {
     public class NotificacionRepository : INotificacionRepository
     {
-        private readonly SgaDbContext _context;
-        public NotificacionRepository(SgaDbContext context) { _context = context; }
+        private readonly SGABD _context;
+        public NotificacionRepository(SGABD context) { _context = context; }
 
         public async Task<Notificacion> GetByIdAsync(int id) => await _context.Notificaciones.FindAsync(id);
         public async Task AddAsync(Notificacion notificacion)

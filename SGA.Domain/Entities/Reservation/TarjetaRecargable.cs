@@ -1,4 +1,5 @@
 ﻿using SGA.Domain.Base;
+using SGA.Domain.Enums.Reservation;
 
 namespace SGA.Domain.Entities.Reservation
 {
@@ -7,6 +8,6 @@ namespace SGA.Domain.Entities.Reservation
         public int Id { get; set; }
         public int UsuarioId { get; set; }
         public decimal Saldo { get; set; }
-        public string Estado { get; set; }
+        public EstadoTarjeta Estado { get; set; }
     }
 }

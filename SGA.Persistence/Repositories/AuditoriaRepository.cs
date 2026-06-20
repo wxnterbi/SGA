@@ -1,12 +1,14 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using SGA.Persistence.Interfaces;
+using SGA.Domain.Entities.Reservation;
+using SGA.Persistence.Context;
 
 namespace SGA.Persistence.Repository
 {
     public class AuditoriaRepository : IAuditoriaRepository
     {
-        private readonly SgaDbContext _context;
-        public AuditoriaRepository(SgaDbContext context) { _context = context; }
+        private readonly SGABD _context;
+        public AuditoriaRepository(SGABD context) { _context = context; }
 
         public async Task AddAsync(Auditoria auditoria)
         {

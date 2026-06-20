@@ -1,12 +1,14 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using SGA.Persistence.Context;
 using SGA.Persistence.Interfaces;
+using SGA.Domain.Entities.Reservation;
 
 namespace SGA.Persistence.Repository
 {
     public class TicketMensualRepository : ITicketMensualRepository
     {
-        private readonly SgaDbContext _context;
-        public TicketMensualRepository(SgaDbContext context) { _context = context; }
+        private readonly SGABD _context;
+        public TicketMensualRepository(SGABD context) { _context = context; }
 
         public async Task<TicketMensual> GetByIdAsync(int id) => await _context.TicketsMensuales.FindAsync(id);
         public async Task<IEnumerable<TicketMensual>> GetByUsuarioIdAsync(int usuarioId) =>

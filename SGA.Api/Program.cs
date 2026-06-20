@@ -2,7 +2,7 @@ using Microsoft.EntityFrameworkCore;
 using SGA.Persistence.Context;
 using SGA.Persistence.Interfaces;
 using SGA.Persistence.Repositories;
-using SGA.Persistence.Implementations;
+using SGA.Persistence.Repository;
 using SGA.Application.BusinessRules;
 using SGA.Infrastructure.Logging;
 using SGA.Infrastructure.Notifications;
