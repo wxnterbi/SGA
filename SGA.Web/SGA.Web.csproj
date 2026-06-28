@@ -14,4 +14,10 @@
     <ProjectReference Include="..\SGA.Application\SGA.Application.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="ClientApp\src\assets\" />
+    <Folder Include="ClientApp\src\components\" />
+    <Folder Include="Controllers\" />
+  </ItemGroup>
+
 </Project>
