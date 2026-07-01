@@ -1,0 +1,52 @@
+﻿using Microsoft.Extensions.DependencyInjection;
+using SGA.Application.BusinessRules;
+using SGA.Application.Interfaces;
+using SGA.Application.Services;
+using SGA.Infrastructure.Logging;
+using SGA.Infrastructure.Notifications;
+using SGA.Persistence.Interfaces;
+using SGA.Persistence.Repositories;
+using SGA.Persistence.Repository;
+
+namespace SGA.IOC
+{
+    public static class DependencyInjection
+    {
+        public static IServiceCollection AddDependencyInjection(this IServiceCollection services)
+        {
+            // Repositorios
+            services.AddScoped<IUsuarioRepository, UsuarioRepository>();
+            services.AddScoped<IAutobusRepository, AutobusRepository>();
+            services.AddScoped<IConductorRepository, ConductorRepository>();
+            services.AddScoped<IRutaRepository, RutaRepository>();
+            services.AddScoped<IParadaRepository, ParadaRepository>();
+            services.AddScoped<IHorarioRepository, HorarioRepository>();
+            services.AddScoped<IAuditoriaRepository, AuditoriaRepository>();
+            services.AddScoped<IIncidenciaRepository, IncidenciaRepository>();
+            services.AddScoped<INotificacionRepository, NotificacionRepository>();
+            services.AddScoped<IPagoRepository, PagoRepository>();
+            services.AddScoped<IRegistroAccesoRepository, RegistroAccesoRepository>();
+            services.AddScoped<ITarjetaRecargableRepository, TarjetaRecargableRepository>();
+            services.AddScoped<ITicketMensualRepository, TicketMensualRepository>();
+            services.AddScoped<IViajeRepository, ViajeRepository>();
+
+            // Services
+            services.AddScoped<IUsuarioService, UsuarioService>();
+            services.AddScoped<IRutaService, RutaService>();
+            services.AddScoped<IHorarioService, HorarioService>();
+            services.AddScoped<IPagoService, PagoService>();
+
+            // Business Rules
+            services.AddScoped<UsuarioRules>();
+            services.AddScoped<ViajeRules>();
+            services.AddScoped<PagoRules>();
+            services.AddScoped<AccesoRules>();
+
+            // Infrastructure
+            services.AddScoped<INotificationService, EmailNotificationService>();
+            services.AddSingleton<ErrorLogger>();
+
+            return services;
+        }
+    }
+}

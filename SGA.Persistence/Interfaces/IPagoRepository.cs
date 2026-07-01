@@ -7,5 +7,7 @@ namespace SGA.Persistence.Interfaces
         Task<Pago> GetByIdAsync(int id);
         Task<IEnumerable<Pago>> GetAllAsync();
         Task AddAsync(Pago pago);
+        Task UpdateAsync(Pago pago);
+        Task DeleteAsync(int id);
     }
 }

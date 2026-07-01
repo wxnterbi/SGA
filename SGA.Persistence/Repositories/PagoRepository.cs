@@ -19,5 +19,20 @@ namespace SGA.Persistence.Repository
             await _context.Pagos.AddAsync(pago);
             await _context.SaveChangesAsync();
         }
+        public async Task UpdateAsync(Pago pago)
+        {
+            _context.Pagos.Update(pago);
+            await _context.SaveChangesAsync();
+        }
+        public async Task DeleteAsync(int id)
+        {
+            var pago = await _context.Pagos.FindAsync(id);
+
+            if (pago != null)
+            {
+                _context.Pagos.Remove(pago);
+                await _context.SaveChangesAsync();
+            }
+        }
     }
 }
