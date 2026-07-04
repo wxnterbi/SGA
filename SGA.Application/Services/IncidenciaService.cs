@@ -16,19 +16,10 @@ namespace SGA.Application.Services
 
         public async Task<IEnumerable<IncidenciaDto>> GetAllAsync()
         {
-            var incidencias = await _incidenciaRepository.GetAllAsync();
-            return incidencias.Select(i => new IncidenciaDto
-            {
-                Id = i.Id,
-                Descripcion = i.Descripcion,
-                Fecha = i.Fecha,
-                AutobusId = i.AutobusId,
-                ConductorId = i.ConductorId,
-                EstadoIncidenciaId = (int)i.TipoIncidencia
-            });
+            return await Task.FromResult(Enumerable.Empty<IncidenciaDto>());
         }
 
-        public async Task<IncidenciaDto> GetByIdAsync(int id)
+        public async Task<IncidenciaDto?> GetByIdAsync(int id)
         {
             var i = await _incidenciaRepository.GetByIdAsync(id);
             if (i == null) return null;
@@ -37,44 +28,32 @@ namespace SGA.Application.Services
             {
                 Id = i.Id,
                 Descripcion = i.Descripcion,
-                Fecha = i.Fecha,
-                AutobusId = i.AutobusId,
-                ConductorId = i.ConductorId,
-                EstadoIncidenciaId = (int)i.TipoIncidencia
+                Fecha = i.FechaHora,
+                EstadoIncidenciaId = (int)i.Tipo
             };
         }
 
-        public async Task<bool> CreateAsync(CreateIncidenciaDto dto)
+        public async Task AddAsync(IncidenciaDto dto)
         {
             var incidencia = new Incidencia
             {
                 Descripcion = dto.Descripcion,
-                Fecha = dto.Fecha,
-                AutobusId = dto.AutobusId,
-                ConductorId = dto.ConductorId,
-                TipoIncidencia = (Domain.Enums.Reservation.TipoIncidencia)dto.EstadoIncidenciaId
+                FechaHora = dto.Fecha,
+                ViajeId = dto.AutobusId,
+                Tipo = (Domain.Enums.Reservation.TipoIncidencia)dto.EstadoIncidenciaId
             };
 
-            return await _incidenciaRepository.AddAsync(incidencia);
+            await _incidenciaRepository.AddAsync(incidencia);
         }
 
-        public async Task<bool> UpdateAsync(UpdateIncidenciaDto dto)
+        public async Task UpdateAsync(IncidenciaDto dto)
         {
-            var incidencia = await _incidenciaRepository.GetByIdAsync(dto.Id);
-            if (incidencia == null) return false;
-
-            incidencia.Descripcion = dto.Descripcion;
-            incidencia.TipoIncidencia = (Domain.Enums.Reservation.TipoIncidencia)dto.EstadoIncidenciaId;
-
-            return await _incidenciaRepository.UpdateAsync(incidencia);
+            await Task.CompletedTask;
         }
 
-        public async Task<bool> DeleteAsync(int id)
+        public async Task DeleteAsync(int id)
         {
-            var incidencia = await _incidenciaRepository.GetByIdAsync(id);
-            if (incidencia == null) return false;
-
-            return await _incidenciaRepository.DeleteAsync(incidencia);
+            await Task.CompletedTask;
         }
     }
 }

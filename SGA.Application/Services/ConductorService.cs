@@ -16,75 +16,66 @@ namespace SGA.Application.Services
 
         public async Task<IEnumerable<ConductorDto>> GetAllAsync()
         {
-            var conductores = await _conductorRepository.GetAllAsync();
-            return conductores.Select(c => new ConductorDto
+            var conductores = _conductorRepository.GetAll();
+
+            var dtos = conductores.Select(c => new ConductorDto
             {
                 Id = c.Id,
                 Nombre = c.Nombre,
-                Apellido = c.Apellido,
-                Cedula = c.Cedula,
-                Licencia = c.Licencia,
-                Telefono = c.Telefono,
-                FechaContratacion = c.FechaContratacion,
+                Cedula = c.Identificacion,
                 EstadoConductorId = (int)c.EstadoLaboral
             });
+
+            return await Task.FromResult(dtos);
         }
 
-        public async Task<ConductorDto> GetByIdAsync(int id)
+        public async Task<ConductorDto?> GetByIdAsync(int id)
         {
-            var c = await _conductorRepository.GetByIdAsync(id);
+            var c = _conductorRepository.GetById(id);
             if (c == null) return null;
 
-            return new ConductorDto
+            var dto = new ConductorDto
             {
                 Id = c.Id,
                 Nombre = c.Nombre,
-                Apellido = c.Apellido,
-                Cedula = c.Cedula,
-                Licencia = c.Licencia,
-                Telefono = c.Telefono,
-                FechaContratacion = c.FechaContratacion,
+                Cedula = c.Identificacion,
                 EstadoConductorId = (int)c.EstadoLaboral
             };
+
+            return await Task.FromResult(dto);
         }
 
-        public async Task<bool> CreateAsync(CreateConductorDto dto)
+        public async Task AddAsync(ConductorDto dto)
         {
             var conductor = new Conductor
             {
                 Nombre = dto.Nombre,
-                Apellido = dto.Apellido,
-                Cedula = dto.Cedula,
-                Licencia = dto.Licencia,
-                Telefono = dto.Telefono,
-                FechaContratacion = dto.FechaContratacion,
+                Identificacion = dto.Cedula,
                 EstadoLaboral = (Domain.Enums.Configuration.EstadoLaboral)dto.EstadoConductorId
             };
 
-            return await _conductorRepository.AddAsync(conductor);
+            _conductorRepository.Add(conductor);
+            await Task.CompletedTask;
         }
 
-        public async Task<bool> UpdateAsync(UpdateConductorDto dto)
+        public async Task UpdateAsync(ConductorDto dto)
         {
-            var conductor = await _conductorRepository.GetByIdAsync(dto.Id);
-            if (conductor == null) return false;
+            var conductor = _conductorRepository.GetById(dto.Id);
+            if (conductor != null)
+            {
+                conductor.Nombre = dto.Nombre;
+                conductor.Identificacion = dto.Cedula;
+                conductor.EstadoLaboral = (Domain.Enums.Configuration.EstadoLaboral)dto.EstadoConductorId;
 
-            conductor.Nombre = dto.Nombre;
-            conductor.Apellido = dto.Apellido;
-            conductor.Cedula = dto.Cedula;
-            conductor.Licencia = dto.Licencia;
-            conductor.Telefono = dto.Telefono;
-            conductor.EstadoLaboral = (Domain.Enums.Configuration.EstadoLaboral)dto.EstadoConductorId;
-
-            return await _conductorRepository.UpdateAsync(conductor);
+                _conductorRepository.Update(conductor);
+            }
+            await Task.CompletedTask;
         }
 
-        public async Task<bool> DeleteAsync(int id)
+        public async Task DeleteAsync(int id)
         {
-            var conductor = await _conductorRepository.GetByIdAsync(id);
-            if (conductor == null) return false;
-
-            return await _conductorRepository.DeleteAsync(conductor);
+            _conductorRepository.Delete(id);
+            await Task.CompletedTask;
         }
     }
 }

@@ -1,66 +1,55 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using SGA.Domain.Entities.Configuration;
-using SGA.Persistence.Interfaces;
+using SGA.Application.Dtos.Autobus;
+using SGA.Application.Interfaces;
+using System.Threading.Tasks;
 
 namespace SGA.Api.Controllers
 {
-    [Route("api/[controller]")]
     [ApiController]
+    [Route("api/[controller]")]
     public class AutobusController : ControllerBase
     {
-        private readonly IAutobusRepository _autobusRepository;
+        private readonly IAutobusService _autobusService;
 
-        public AutobusController(IAutobusRepository autobusRepository)
+        public AutobusController(IAutobusService autobusService)
         {
-            _autobusRepository = autobusRepository;
+            _autobusService = autobusService;
         }
 
         [HttpGet]
-        public IActionResult Get()
+        public async Task<IActionResult> GetAll()
         {
-            return Ok(_autobusRepository.GetAll());
+            var result = await _autobusService.GetAllAsync();
+            return Ok(result);
         }
 
         [HttpGet("{id}")]
-        public IActionResult GetById(int id)
+        public async Task<IActionResult> GetById(int id)
         {
-            var autobus = _autobusRepository.GetById(id);
-
-            if (autobus == null)
-            {
-                return NotFound("Autobús no encontrado.");
-            }
-
-            return Ok(autobus);
+            var result = await _autobusService.GetByIdAsync(id);
+            if (result == null) return NotFound($"No se encontró el autobús con ID {id}");
+            return Ok(result);
         }
 
         [HttpPost]
-        public IActionResult Post([FromBody] Autobus autobus)
+        public async Task<IActionResult> Create([FromBody] AutobusDto dto)
         {
-            var nuevoAutobus = _autobusRepository.Add(autobus);
-
-            return Ok(nuevoAutobus);
+            await _autobusService.AddAsync(dto);
+            return Ok(new { message = "Autobús registrado correctamente." });
         }
 
         [HttpPut]
-        public IActionResult Put([FromBody] Autobus autobus)
+        public async Task<IActionResult> Update([FromBody] AutobusDto dto)
         {
-            var autobusActualizado = _autobusRepository.Update(autobus);
-
-            return Ok(autobusActualizado);
+            await _autobusService.UpdateAsync(dto);
+            return Ok(new { message = "Autobús actualizado correctamente o verificado." });
         }
 
         [HttpDelete("{id}")]
-        public IActionResult Delete(int id)
+        public async Task<IActionResult> Delete(int id)
         {
-            var eliminado = _autobusRepository.Delete(id);
-
-            if (!eliminado)
-            {
-                return NotFound("Autobús no encontrado.");
-            }
-
-            return Ok("Autobús eliminado correctamente.");
+            await _autobusService.DeleteAsync(id);
+            return Ok(new { message = "Proceso de eliminación ejecutado." });
         }
     }
 }

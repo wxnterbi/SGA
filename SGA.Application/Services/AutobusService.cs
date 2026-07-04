@@ -16,67 +16,66 @@ namespace SGA.Application.Services
 
         public async Task<IEnumerable<AutobusDto>> GetAllAsync()
         {
-            var autobuses = await _autobusRepository.GetAllAsync();
-            return autobuses.Select(a => new AutobusDto
+            var autobuses = _autobusRepository.GetAll();
+
+            var dtos = autobuses.Select(a => new AutobusDto
             {
                 Id = a.Id,
                 Placa = a.Placa,
-                Modelo = a.Modelo,
-                Capacidad = a.Capacidad,
-                EstadoAutobusId = (int)a.EstadoAutobus
+                Capacidad = a.CapacidadMaxima,
+                EstadoAutobusId = (int)a.EstadoOperativo
             });
+
+            return await Task.FromResult(dtos);
         }
 
-        public async Task<AutobusDto> GetByIdAsync(int id)
+        public async Task<AutobusDto?> GetByIdAsync(int id)
         {
-            var a = await _autobusRepository.GetByIdAsync(id);
+            var a = _autobusRepository.GetById(id);
             if (a == null) return null;
 
-            return new AutobusDto
+            var dto = new AutobusDto
             {
                 Id = a.Id,
                 Placa = a.Placa,
-                Modelo = a.Modelo,
-                Capacidad = a.Capacidad,
-                EstadoAutobusId = (int)a.EstadoAutobus
+                Capacidad = a.CapacidadMaxima,
+                EstadoAutobusId = (int)a.EstadoOperativo
             };
+
+            return await Task.FromResult(dto);
         }
 
-        public async Task<bool> CreateAsync(CreateAutobusDto dto)
+        public async Task AddAsync(AutobusDto dto)
         {
-            if (string.IsNullOrWhiteSpace(dto.Placa))
-                throw new ArgumentException("La placa es obligatoria.");
-
             var autobus = new Autobus
             {
                 Placa = dto.Placa,
-                Modelo = dto.Modelo,
-                Capacidad = dto.Capacidad,
-                EstadoAutobus = (Domain.Enums.Configuration.EstadoAutobus)dto.EstadoAutobusId
+                CapacidadMaxima = dto.Capacidad,
+                EstadoOperativo = (Domain.Enums.Configuration.EstadoAutobus)dto.EstadoAutobusId
             };
 
-            return await _autobusRepository.AddAsync(autobus);
+            _autobusRepository.Add(autobus);
+            await Task.CompletedTask;
         }
 
-        public async Task<bool> UpdateAsync(UpdateAutobusDto dto)
+        public async Task UpdateAsync(AutobusDto dto)
         {
-            var autobus = await _autobusRepository.GetByIdAsync(dto.Id);
-            if (autobus == null) return false;
+            var autobus = _autobusRepository.GetById(dto.Id);
+            if (autobus != null)
+            {
+                autobus.Placa = dto.Placa;
+                autobus.CapacidadMaxima = dto.Capacidad;
+                autobus.EstadoOperativo = (Domain.Enums.Configuration.EstadoAutobus)dto.EstadoAutobusId;
 
-            autobus.Placa = dto.Placa;
-            autobus.Modelo = dto.Modelo;
-            autobus.Capacidad = dto.Capacidad;
-            autobus.EstadoAutobus = (Domain.Enums.Configuration.EstadoAutobus)dto.EstadoAutobusId;
-
-            return await _autobusRepository.UpdateAsync(autobus);
+                _autobusRepository.Update(autobus);
+            }
+            await Task.CompletedTask;
         }
 
-        public async Task<bool> DeleteAsync(int id)
+        public async Task DeleteAsync(int id)
         {
-            var autobus = await _autobusRepository.GetByIdAsync(id);
-            if (autobus == null) return false;
-
-            return await _autobusRepository.DeleteAsync(autobus);
+            _autobusRepository.Delete(id);
+            await Task.CompletedTask;
         }
     }
 }

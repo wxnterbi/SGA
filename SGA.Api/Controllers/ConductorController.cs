@@ -1,53 +1,55 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using SGA.Domain.Entities.Configuration;
-using SGA.Persistence.Interfaces;
+using SGA.Application.Dtos.Conductor;
+using SGA.Application.Interfaces;
+using System.Threading.Tasks;
 
 namespace SGA.Api.Controllers
 {
-    [Route("api/[controller]")]
     [ApiController]
+    [Route("api/[controller]")]
     public class ConductorController : ControllerBase
     {
-        private readonly IConductorRepository _conductorRepository;
+        private readonly IConductorService _conductorService;
 
-        public ConductorController(IConductorRepository conductorRepository)
+        public ConductorController(IConductorService conductorService)
         {
-            _conductorRepository = conductorRepository;
+            _conductorService = conductorService;
         }
 
         [HttpGet]
-        public IActionResult Get()
+        public async Task<IActionResult> GetAll()
         {
-            return Ok(_conductorRepository.GetAll());
+            var result = await _conductorService.GetAllAsync();
+            return Ok(result);
         }
 
         [HttpGet("{id}")]
-        public IActionResult GetById(int id)
+        public async Task<IActionResult> GetById(int id)
         {
-            var conductor = _conductorRepository.GetById(id);
-
-            if (conductor == null)
-                return NotFound();
-
-            return Ok(conductor);
+            var result = await _conductorService.GetByIdAsync(id);
+            if (result == null) return NotFound($"No se encontró el conductor con ID {id}");
+            return Ok(result);
         }
 
         [HttpPost]
-        public IActionResult Post(Conductor conductor)
+        public async Task<IActionResult> Create([FromBody] ConductorDto dto)
         {
-            return Ok(_conductorRepository.Add(conductor));
+            await _conductorService.AddAsync(dto);
+            return Ok(new { message = "Conductor registrado correctamente." });
         }
 
         [HttpPut]
-        public IActionResult Put(Conductor conductor)
+        public async Task<IActionResult> Update([FromBody] ConductorDto dto)
         {
-            return Ok(_conductorRepository.Update(conductor));
+            await _conductorService.UpdateAsync(dto);
+            return Ok(new { message = "Conductor actualizado correctamente." });
         }
 
         [HttpDelete("{id}")]
-        public IActionResult Delete(int id)
+        public async Task<IActionResult> Delete(int id)
         {
-            return Ok(_conductorRepository.Delete(id));
+            await _conductorService.DeleteAsync(id);
+            return Ok(new { message = "Proceso de eliminación ejecutado." });
         }
     }
 }
