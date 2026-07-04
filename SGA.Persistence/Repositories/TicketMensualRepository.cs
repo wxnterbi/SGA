@@ -11,6 +11,10 @@ namespace SGA.Persistence.Repository
         public TicketMensualRepository(SGABD context) { _context = context; }
 
         public async Task<TicketMensual> GetByIdAsync(int id) => await _context.TicketsMensuales.FindAsync(id);
+        public async Task<IEnumerable<TicketMensual>> GetAllAsync()
+        {
+            return await _context.TicketsMensuales.ToListAsync();
+        }
         public async Task<IEnumerable<TicketMensual>> GetByUsuarioIdAsync(int usuarioId) =>
             await _context.TicketsMensuales.Where(t => t.UsuarioId == usuarioId).ToListAsync();
         public async Task AddAsync(TicketMensual ticket)
@@ -22,6 +26,17 @@ namespace SGA.Persistence.Repository
         {
             _context.TicketsMensuales.Update(ticket);
             await _context.SaveChangesAsync();
+        }
+
+        public async Task DeleteAsync(int id)
+        {
+            var ticket = await _context.TicketsMensuales.FindAsync(id);
+
+            if (ticket != null)
+            {
+                _context.TicketsMensuales.Remove(ticket);
+                await _context.SaveChangesAsync();
+            }
         }
     }
 }

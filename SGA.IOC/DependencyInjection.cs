@@ -38,6 +38,10 @@ namespace SGA.IOC
             services.AddScoped<IAutobusService, AutobusService>();
             services.AddScoped<IConductorService, ConductorService>();
             services.AddScoped<IIncidenciaService, IncidenciaService>();
+            services.AddScoped<ITicketMensualService, TicketMensualService>();
+            services.AddScoped<ITarjetaRecargableService, TarjetaRecargableService>();
+            services.AddScoped<IRegistroAccesoService, RegistroAccesoService>();
+            services.AddScoped<INotificacionService, NotificacionService>();
 
             // Business Rules
             services.AddScoped<UsuarioRules>();
