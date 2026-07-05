@@ -42,6 +42,8 @@ namespace SGA.IOC
             services.AddScoped<ITarjetaRecargableService, TarjetaRecargableService>();
             services.AddScoped<IRegistroAccesoService, RegistroAccesoService>();
             services.AddScoped<INotificacionService, NotificacionService>();
+            services.AddScoped<IViajeService, ViajeService>();
+            services.AddScoped<IAuditoriaService, AuditoriaService>();
 
             // Business Rules
             services.AddScoped<UsuarioRules>();
