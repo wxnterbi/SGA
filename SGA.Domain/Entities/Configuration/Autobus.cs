@@ -9,5 +9,7 @@ namespace SGA.Domain.Entities.Configuration
         public string Placa { get; set; }
         public int CapacidadMaxima { get; set; }
         public EstadoAutobus EstadoOperativo { get; set; }
+        public string Marca { get; set; }
+        public string Modelo { get; set; }
     }
 }

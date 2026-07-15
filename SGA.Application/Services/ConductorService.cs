@@ -23,6 +23,8 @@ namespace SGA.Application.Services
                 Id = c.Id,
                 Nombre = c.Nombre,
                 Cedula = c.Identificacion,
+                Licencia = c.Licencia,  
+                Telefono = c.Telefono,
                 EstadoConductorId = (int)c.EstadoLaboral
             });
 
@@ -39,6 +41,8 @@ namespace SGA.Application.Services
                 Id = c.Id,
                 Nombre = c.Nombre,
                 Cedula = c.Identificacion,
+                Licencia = c.Licencia,    
+                Telefono = c.Telefono,
                 EstadoConductorId = (int)c.EstadoLaboral
             };
 
@@ -51,6 +55,8 @@ namespace SGA.Application.Services
             {
                 Nombre = dto.Nombre,
                 Identificacion = dto.Cedula,
+                Licencia = dto.Licencia,   
+                Telefono = dto.Telefono,
                 EstadoLaboral = (Domain.Enums.Configuration.EstadoLaboral)dto.EstadoConductorId
             };
 
@@ -65,6 +71,8 @@ namespace SGA.Application.Services
             {
                 conductor.Nombre = dto.Nombre;
                 conductor.Identificacion = dto.Cedula;
+                conductor.Licencia = dto.Licencia;  
+                conductor.Telefono = dto.Telefono;
                 conductor.EstadoLaboral = (Domain.Enums.Configuration.EstadoLaboral)dto.EstadoConductorId;
 
                 _conductorRepository.Update(conductor);

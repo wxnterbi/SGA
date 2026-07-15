@@ -27,9 +27,11 @@ namespace SGA.Application.Services
             return new IncidenciaDto
             {
                 Id = i.Id,
+                ViajeId = i.ViajeId,
+                ConductorId = i.ConductorId,
+                Tipo = (int)i.Tipo,
                 Descripcion = i.Descripcion,
-                Fecha = i.FechaHora,
-                EstadoIncidenciaId = (int)i.Tipo
+                FechaHora = i.FechaHora
             };
         }
 
@@ -37,10 +39,11 @@ namespace SGA.Application.Services
         {
             var incidencia = new Incidencia
             {
+                ViajeId = dto.ViajeId,
+                ConductorId = dto.ConductorId,
+                Tipo = (Domain.Enums.Reservation.TipoIncidencia)dto.Tipo,
                 Descripcion = dto.Descripcion,
-                FechaHora = dto.Fecha,
-                ViajeId = dto.AutobusId,
-                Tipo = (Domain.Enums.Reservation.TipoIncidencia)dto.EstadoIncidenciaId
+                FechaHora = dto.FechaHora
             };
 
             await _incidenciaRepository.AddAsync(incidencia);

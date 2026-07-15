@@ -8,6 +8,8 @@ namespace SGA.Domain.Entities.Configuration
         public int Id { get; set; }
         public string Nombre { get; set; }
         public string Identificacion { get; set; }
+        public string Licencia { get; set; }
+        public string Telefono { get; set; }
         public EstadoLaboral EstadoLaboral { get; set; }
     }
 }

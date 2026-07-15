@@ -1,7 +1,8 @@
-﻿using SGA.Application.Interfaces;
-using SGA.Application.Dtos.Autobus;
-using SGA.Persistence.Interfaces;
+﻿using SGA.Application.Dtos.Autobus;
+using SGA.Application.Interfaces;
 using SGA.Domain.Entities.Configuration;
+using SGA.Domain.Enums.Configuration;
+using SGA.Persistence.Interfaces;
 
 namespace SGA.Application.Services
 {
@@ -22,8 +23,11 @@ namespace SGA.Application.Services
             {
                 Id = a.Id,
                 Placa = a.Placa,
+                Marca = a.Marca,
+                Modelo = a.Modelo,
                 Capacidad = a.CapacidadMaxima,
-                EstadoAutobusId = (int)a.EstadoOperativo
+                EstadoAutobusId = (int)a.EstadoOperativo,
+                EstadoDescripcion = a.EstadoOperativo.ToString()
             });
 
             return await Task.FromResult(dtos);
@@ -38,8 +42,11 @@ namespace SGA.Application.Services
             {
                 Id = a.Id,
                 Placa = a.Placa,
-                Capacidad = a.CapacidadMaxima,
-                EstadoAutobusId = (int)a.EstadoOperativo
+                Marca = a.Marca,                            
+                Modelo = a.Modelo,                           
+                Capacidad = a.CapacidadMaxima,                 
+                EstadoAutobusId = (int)a.EstadoOperativo,      
+                EstadoDescripcion = a.EstadoOperativo.ToString()
             };
 
             return await Task.FromResult(dto);
@@ -50,8 +57,10 @@ namespace SGA.Application.Services
             var autobus = new Autobus
             {
                 Placa = dto.Placa,
-                CapacidadMaxima = dto.Capacidad,
-                EstadoOperativo = (Domain.Enums.Configuration.EstadoAutobus)dto.EstadoAutobusId
+                Marca = dto.Marca,                      
+                Modelo = dto.Modelo,                   
+                CapacidadMaxima = dto.Capacidad,           
+                EstadoOperativo = (EstadoAutobus)dto.EstadoAutobusId
             };
 
             _autobusRepository.Add(autobus);
@@ -64,8 +73,10 @@ namespace SGA.Application.Services
             if (autobus != null)
             {
                 autobus.Placa = dto.Placa;
+                autobus.Marca = dto.Marca;   
+                autobus.Modelo = dto.Modelo; 
                 autobus.CapacidadMaxima = dto.Capacidad;
-                autobus.EstadoOperativo = (Domain.Enums.Configuration.EstadoAutobus)dto.EstadoAutobusId;
+                autobus.EstadoOperativo = (EstadoAutobus)dto.EstadoAutobusId;
 
                 _autobusRepository.Update(autobus);
             }
