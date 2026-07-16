@@ -25,10 +25,13 @@ namespace SGA.Api.Web.Controllers
         [HttpGet("{id}")]
         public async Task<IActionResult> Get(int id)
         {
+            if (id <= 0)
+                return BadRequest("El ID debe ser mayor que cero.");
+
             var pago = await _pagoService.GetByIdAsync(id);
 
             if (pago == null)
-                return NotFound();
+                return NotFound("No se encontró el pago.");
 
             return Ok(pago);
         }
@@ -36,21 +39,36 @@ namespace SGA.Api.Web.Controllers
         [HttpPost]
         public async Task<IActionResult> Post([FromBody] PagoDto dto)
         {
+            if (dto == null)
+                return BadRequest("Debe enviar los datos del pago.");
+
             await _pagoService.AddAsync(dto);
+
             return Ok("Pago registrado correctamente.");
         }
 
         [HttpPut]
         public async Task<IActionResult> Put([FromBody] PagoDto dto)
         {
+            if (dto == null)
+                return BadRequest("Debe enviar los datos del pago.");
+
+            if (dto.Id <= 0)
+                return BadRequest("El ID del pago debe ser mayor que cero.");
+
             await _pagoService.UpdateAsync(dto);
+
             return Ok("Pago actualizado correctamente.");
         }
 
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(int id)
         {
+            if (id <= 0)
+                return BadRequest("El ID del pago debe ser mayor que cero.");
+
             await _pagoService.DeleteAsync(id);
+
             return Ok("Pago eliminado correctamente.");
         }
     }

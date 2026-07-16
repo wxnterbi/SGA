@@ -25,10 +25,13 @@ namespace SGA.Api.Web.Controllers
         [HttpGet("{id}")]
         public async Task<IActionResult> Get(int id)
         {
+            if (id <= 0)
+                return BadRequest("El ID debe ser mayor que cero.");
+
             var tarjeta = await _tarjetaRecargableService.GetByIdAsync(id);
 
             if (tarjeta == null)
-                return NotFound();
+                return NotFound("No se encontró la tarjeta.");
 
             return Ok(tarjeta);
         }
@@ -36,21 +39,36 @@ namespace SGA.Api.Web.Controllers
         [HttpPost]
         public async Task<IActionResult> Post([FromBody] TarjetaRecargableDto dto)
         {
+            if (dto == null)
+                return BadRequest("Debe enviar los datos de la tarjeta.");
+
             await _tarjetaRecargableService.AddAsync(dto);
+
             return Ok("Tarjeta registrada correctamente.");
         }
 
         [HttpPut]
         public async Task<IActionResult> Put([FromBody] TarjetaRecargableDto dto)
         {
+            if (dto == null)
+                return BadRequest("Debe enviar los datos de la tarjeta.");
+
+            if (dto.Id <= 0)
+                return BadRequest("El ID de la tarjeta debe ser mayor que cero.");
+
             await _tarjetaRecargableService.UpdateAsync(dto);
+
             return Ok("Tarjeta actualizada correctamente.");
         }
 
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(int id)
         {
+            if (id <= 0)
+                return BadRequest("El ID debe ser mayor que cero.");
+
             await _tarjetaRecargableService.DeleteAsync(id);
+
             return Ok("Tarjeta eliminada correctamente.");
         }
     }

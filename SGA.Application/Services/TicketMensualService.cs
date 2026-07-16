@@ -3,6 +3,7 @@ using SGA.Application.Interfaces;
 using SGA.Domain.Entities.Reservation;
 using SGA.Domain.Enums.Reservation;
 using SGA.Persistence.Interfaces;
+using SGA.Application.BusinessRules;
 
 namespace SGA.Application.Services
 {
@@ -10,7 +11,8 @@ namespace SGA.Application.Services
     {
         private readonly ITicketMensualRepository _ticketRepository;
 
-        public TicketMensualService(ITicketMensualRepository ticketRepository)
+        public TicketMensualService(
+            ITicketMensualRepository ticketRepository)
         {
             _ticketRepository = ticketRepository;
         }
@@ -50,6 +52,7 @@ namespace SGA.Application.Services
 
         public async Task AddAsync(TicketMensualDto dto)
         {
+
             var ticket = new TicketMensual
             {
                 UsuarioId = dto.UsuarioId,
@@ -64,6 +67,7 @@ namespace SGA.Application.Services
 
         public async Task UpdateAsync(TicketMensualDto dto)
         {
+
             var ticket = await _ticketRepository.GetByIdAsync(dto.Id);
 
             if (ticket == null)

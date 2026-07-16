@@ -2,12 +2,11 @@
 {
     public class AccesoRules
     {
-        public void ValidarCapacidadAutobus(int pasajerosActuales, int capacidadMaxima)
+        public void ValidarAutorizacion(bool autorizacionValida)
         {
-            if (pasajerosActuales >= capacidadMaxima)
-            {
-                throw new Exception("Capacidad máxima del autobús alcanzada.");
-            }
+            if (!autorizacionValida)
+                throw new InvalidOperationException(
+                    "El usuario no posee una autorización válida para utilizar el servicio.");
         }
     }
 }

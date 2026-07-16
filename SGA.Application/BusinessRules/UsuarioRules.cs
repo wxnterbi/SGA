@@ -2,12 +2,11 @@
 {
     public class UsuarioRules
     {
-        public void ValidarAcceso(bool tieneAutorizacionActiva)
+        public void ValidarUsuarioRegistrado(bool existeUsuario)
         {
-            if (!tieneAutorizacionActiva)
-            {
-                throw new Exception("No permitir acceso sin autorización.");
-            }
+            if (!existeUsuario)
+                throw new InvalidOperationException(
+                    "El usuario debe estar registrado para utilizar el sistema.");
         }
     }
 }
