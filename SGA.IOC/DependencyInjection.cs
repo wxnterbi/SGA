@@ -48,6 +48,11 @@ namespace SGA.IOC
             services.AddScoped<ViajeRules>();
             services.AddScoped<PagoRules>();
             services.AddScoped<AccesoRules>();
+            services.AddScoped<NotificacionRules>();
+            services.AddScoped<IncidenciaRules>();
+            services.AddScoped<AuditoriaRules>();
+
+
 
             // Infrastructure
             services.AddScoped<INotificationService, EmailNotificationService>();

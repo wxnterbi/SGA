@@ -2,12 +2,27 @@
 {
     public class ViajeRules
     {
-        public void ValidarCierreViaje(string estadoActual)
+        public void ValidarAsignacionViaje(
+            int rutaId,
+            int horarioId,
+            int autobusId,
+            int conductorId)
         {
-            if (estadoActual != "Iniciado")
-            {
-                throw new Exception("No permitir cerrar un viaje que no inició.");
-            }
+            if (rutaId <= 0)
+                throw new InvalidOperationException(
+                    "El viaje debe estar asociado a una ruta.");
+
+            if (horarioId <= 0)
+                throw new InvalidOperationException(
+                    "El viaje debe estar asociado a un horario.");
+
+            if (autobusId <= 0)
+                throw new InvalidOperationException(
+                    "El viaje debe estar asociado a un autobús.");
+
+            if (conductorId <= 0)
+                throw new InvalidOperationException(
+                    "El viaje debe estar asociado a un conductor.");
         }
     }
 }

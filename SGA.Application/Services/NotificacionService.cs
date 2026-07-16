@@ -3,16 +3,21 @@ using SGA.Application.Interfaces;
 using SGA.Domain.Entities.Reservation;
 using SGA.Domain.Enums.Reservation;
 using SGA.Persistence.Interfaces;
+using SGA.Application.BusinessRules;
 
 namespace SGA.Application.Services
 {
     public class NotificacionService : INotificacionService
     {
         private readonly INotificacionRepository _notificacionRepository;
+        private readonly NotificacionRules _notificacionRules;
 
-        public NotificacionService(INotificacionRepository notificacionRepository)
+        public NotificacionService(
+            INotificacionRepository notificacionRepository,
+            NotificacionRules notificacionRules)
         {
             _notificacionRepository = notificacionRepository;
+            _notificacionRules = notificacionRules;
         }
 
         public async Task<IEnumerable<NotificacionDto>> GetAllAsync()
@@ -48,6 +53,7 @@ namespace SGA.Application.Services
 
         public async Task AddAsync(NotificacionDto dto)
         {
+
             var notificacion = new Notificacion
             {
                 UsuarioId = dto.UsuarioId,
@@ -57,10 +63,13 @@ namespace SGA.Application.Services
             };
 
             await _notificacionRepository.AddAsync(notificacion);
+
+            _notificacionRules.ValidarEnvioNotificacion(notificacion.Id > 0);
         }
 
         public async Task UpdateAsync(NotificacionDto dto)
         {
+
             var notificacion = await _notificacionRepository.GetByIdAsync(dto.Id);
 
             if (notificacion == null)
@@ -72,6 +81,8 @@ namespace SGA.Application.Services
             notificacion.FechaHora = dto.FechaHora;
 
             await _notificacionRepository.UpdateAsync(notificacion);
+
+            _notificacionRules.ValidarEnvioNotificacion(notificacion.Id > 0);
         }
 
         public async Task DeleteAsync(int id)

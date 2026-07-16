@@ -1,3 +1,6 @@
+using FluentValidation;
+using FluentValidation.AspNetCore;
+using SGA.Application.Validations;
 using SGA.IOC;
 using Microsoft.EntityFrameworkCore;
 using SGA.Persistence.Context;
@@ -5,6 +8,10 @@ using SGA.Persistence.Context;
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers();
+
+builder.Services.AddFluentValidationAutoValidation();
+builder.Services.AddValidatorsFromAssemblyContaining<PagoValidator>();
+
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 

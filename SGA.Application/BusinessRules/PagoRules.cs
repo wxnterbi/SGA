@@ -2,20 +2,10 @@
 {
     public class PagoRules
     {
-        public void ValidarSaldo(decimal saldoActual, decimal montoConsumo)
+        public void ValidarPago(bool pagoRealizado)
         {
-            if ((saldoActual - montoConsumo) < 0)
-            {
-                throw new Exception("No permitir saldo negativo.");
-            }
-        }
-
-        public void ValidarEmisionTicket(bool pagoConfirmado)
-        {
-            if (!pagoConfirmado)
-            {
-                throw new Exception("No permitir emitir ticket sin pago.");
-            }
+            if (!pagoRealizado)
+                throw new InvalidOperationException("Debe existir un pago válido para realizar esta operación.");
         }
     }
 }

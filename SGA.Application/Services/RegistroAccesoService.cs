@@ -2,16 +2,21 @@
 using SGA.Application.Interfaces;
 using SGA.Domain.Entities.Reservation;
 using SGA.Persistence.Interfaces;
+using SGA.Application.BusinessRules;
 
 namespace SGA.Application.Services
 {
     public class RegistroAccesoService : IRegistroAccesoService
     {
         private readonly IRegistroAccesoRepository _registroRepository;
+        private readonly AccesoRules _accesoRules;
 
-        public RegistroAccesoService(IRegistroAccesoRepository registroRepository)
+        public RegistroAccesoService(
+            IRegistroAccesoRepository registroRepository,
+            AccesoRules accesoRules)
         {
             _registroRepository = registroRepository;
+            _accesoRules = accesoRules;
         }
 
         public async Task<IEnumerable<RegistroAccesoDto>> GetAllAsync()
@@ -49,6 +54,8 @@ namespace SGA.Application.Services
 
         public async Task AddAsync(RegistroAccesoDto dto)
         {
+            _accesoRules.ValidarAutorizacion(dto.Permitido);
+
             var registro = new RegistroAcceso
             {
                 UsuarioId = dto.UsuarioId,
@@ -63,10 +70,13 @@ namespace SGA.Application.Services
 
         public async Task UpdateAsync(RegistroAccesoDto dto)
         {
+
             var registro = await _registroRepository.GetByIdAsync(dto.Id);
 
             if (registro == null)
                 throw new Exception("Registro de acceso no encontrado.");
+
+            _accesoRules.ValidarAutorizacion(dto.Permitido);
 
             registro.UsuarioId = dto.UsuarioId;
             registro.ViajeId = dto.ViajeId;

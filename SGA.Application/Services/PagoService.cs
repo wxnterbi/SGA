@@ -2,16 +2,24 @@
 using SGA.Application.Interfaces;
 using SGA.Domain.Entities.Reservation;
 using SGA.Persistence.Interfaces;
+using SGA.Application.BusinessRules;
 
 namespace SGA.Application.Services
 {
     public class PagoService : IPagoService
     {
         private readonly IPagoRepository _pagoRepository;
+        private readonly IUsuarioRepository _usuarioRepository;
+        private readonly UsuarioRules _usuarioRules;
 
-        public PagoService(IPagoRepository pagoRepository)
+        public PagoService(
+            IPagoRepository pagoRepository,
+            IUsuarioRepository usuarioRepository,
+            UsuarioRules usuarioRules)
         {
             _pagoRepository = pagoRepository;
+            _usuarioRepository = usuarioRepository;
+            _usuarioRules = usuarioRules;
         }
 
         public async Task<IEnumerable<PagoDto>> GetAllAsync()
@@ -47,6 +55,10 @@ namespace SGA.Application.Services
 
         public async Task AddAsync(PagoDto dto)
         {
+            var usuario = _usuarioRepository.GetById(dto.UsuarioId);
+
+            _usuarioRules.ValidarUsuarioRegistrado(usuario != null);
+
             var pago = new Pago
             {
                 UsuarioId = dto.UsuarioId,
@@ -60,10 +72,15 @@ namespace SGA.Application.Services
 
         public async Task UpdateAsync(PagoDto dto)
         {
+
             var pago = await _pagoRepository.GetByIdAsync(dto.Id);
 
             if (pago == null)
                 throw new Exception("Pago no encontrado.");
+
+            var usuario = _usuarioRepository.GetById(dto.UsuarioId);
+
+            _usuarioRules.ValidarUsuarioRegistrado(usuario != null);
 
             pago.UsuarioId = dto.UsuarioId;
             pago.Monto = dto.Monto;

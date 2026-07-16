@@ -3,6 +3,7 @@ using SGA.Application.Interfaces;
 using SGA.Domain.Entities.Reservation;
 using SGA.Domain.Enums.Reservation;
 using SGA.Persistence.Interfaces;
+using SGA.Application.BusinessRules;
 
 namespace SGA.Application.Services
 {
@@ -10,7 +11,8 @@ namespace SGA.Application.Services
     {
         private readonly ITarjetaRecargableRepository _tarjetaRepository;
 
-        public TarjetaRecargableService(ITarjetaRecargableRepository tarjetaRepository)
+        public TarjetaRecargableService(
+            ITarjetaRecargableRepository tarjetaRepository)
         {
             _tarjetaRepository = tarjetaRepository;
         }
@@ -46,6 +48,7 @@ namespace SGA.Application.Services
 
         public async Task AddAsync(TarjetaRecargableDto dto)
         {
+
             var tarjeta = new TarjetaRecargable
             {
                 UsuarioId = dto.UsuarioId,
@@ -58,6 +61,7 @@ namespace SGA.Application.Services
 
         public async Task UpdateAsync(TarjetaRecargableDto dto)
         {
+
             var tarjeta = await _tarjetaRepository.GetByIdAsync(dto.Id);
 
             if (tarjeta == null)
