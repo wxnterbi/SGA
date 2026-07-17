@@ -1,9 +1,10 @@
-﻿using SGA.Application.Dtos.TarjetaRecargable;
+﻿using SGA.Application.BusinessRules;
+using SGA.Application.Dtos.TarjetaRecargable;
 using SGA.Application.Interfaces;
 using SGA.Domain.Entities.Reservation;
 using SGA.Domain.Enums.Reservation;
 using SGA.Persistence.Interfaces;
-using SGA.Application.BusinessRules;
+using SGA.Persistence.Repository;
 
 namespace SGA.Application.Services
 {
@@ -76,6 +77,11 @@ namespace SGA.Application.Services
 
         public async Task DeleteAsync(int id)
         {
+            var tarjeta = await _tarjetaRepository.GetByIdAsync(id);
+
+            if (tarjeta == null)
+                throw new Exception("No se encontró la tarjeta.");
+
             await _tarjetaRepository.DeleteAsync(id);
         }
     }

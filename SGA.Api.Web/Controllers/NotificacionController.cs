@@ -39,8 +39,6 @@ namespace SGA.Api.Web.Controllers
         [HttpPost]
         public async Task<IActionResult> Post([FromBody] NotificacionDto dto)
         {
-            if (dto == null)
-                return BadRequest("Debe enviar los datos de la notificación.");
 
             await _notificacionService.AddAsync(dto);
 
@@ -50,15 +48,16 @@ namespace SGA.Api.Web.Controllers
         [HttpPut]
         public async Task<IActionResult> Put([FromBody] NotificacionDto dto)
         {
-            if (dto == null)
-                return BadRequest("Debe enviar los datos de la notificación.");
-
-            if (dto.Id <= 0)
-                return BadRequest("El ID de la notificación debe ser mayor que cero.");
-
-            await _notificacionService.UpdateAsync(dto);
+            try
+            {
+                await _notificacionService.UpdateAsync(dto);
 
             return Ok("Notificación actualizada correctamente.");
+            }
+            catch (Exception ex)
+            {
+                return NotFound(ex.Message);
+            }
         }
 
         [HttpDelete("{id}")]
@@ -67,9 +66,15 @@ namespace SGA.Api.Web.Controllers
             if (id <= 0)
                 return BadRequest("El ID debe ser mayor que cero.");
 
-            await _notificacionService.DeleteAsync(id);
-
-            return Ok("Notificación eliminada correctamente.");
+            try
+            {
+                await _notificacionService.DeleteAsync(id);
+                return Ok("Notificación eliminada correctamente.");
+            }
+            catch (Exception ex)
+            {
+                return NotFound(ex.Message);
+            }
         }
     }
 }

@@ -39,9 +39,6 @@ namespace SGA.Api.Web.Controllers
         [HttpPost]
         public async Task<IActionResult> Post([FromBody] TicketMensualDto dto)
         {
-            if (dto == null)
-                return BadRequest("Debe enviar los datos del ticket mensual.");
-
             await _ticketMensualService.AddAsync(dto);
 
             return Ok("Ticket mensual registrado correctamente.");
@@ -50,15 +47,15 @@ namespace SGA.Api.Web.Controllers
         [HttpPut]
         public async Task<IActionResult> Put([FromBody] TicketMensualDto dto)
         {
-            if (dto == null)
-                return BadRequest("Debe enviar los datos del ticket mensual.");
-
-            if (dto.Id <= 0)
-                return BadRequest("El ID del ticket mensual debe ser mayor que cero.");
-
-            await _ticketMensualService.UpdateAsync(dto);
-
-            return Ok("Ticket mensual actualizado correctamente.");
+            try
+            {
+                await _ticketMensualService.UpdateAsync(dto);
+                return Ok("Ticket mensual actualizado correctamente.");
+            }
+            catch (Exception ex)
+            {
+                return NotFound(ex.Message);
+            }
         }
 
         [HttpDelete("{id}")]
@@ -67,9 +64,15 @@ namespace SGA.Api.Web.Controllers
             if (id <= 0)
                 return BadRequest("El ID debe ser mayor que cero.");
 
-            await _ticketMensualService.DeleteAsync(id);
-
-            return Ok("Ticket mensual eliminado correctamente.");
+            try
+            {
+                await _ticketMensualService.DeleteAsync(id);
+                return Ok("Ticket mensual eliminado correctamente.");
+            }
+            catch (Exception ex)
+            {
+                return NotFound(ex.Message);
+            }
         }
     }
 }

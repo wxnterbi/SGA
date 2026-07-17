@@ -87,6 +87,11 @@ namespace SGA.Application.Services
 
         public async Task DeleteAsync(int id)
         {
+            var notificacion = await _notificacionRepository.GetByIdAsync(id);
+
+            if (notificacion == null)
+                throw new Exception("No se encontró la notificación.");
+
             await _notificacionRepository.DeleteAsync(id);
         }
     }

@@ -1,8 +1,9 @@
-﻿using SGA.Application.Dtos.RegistroAcceso;
+﻿using SGA.Application.BusinessRules;
+using SGA.Application.Dtos.RegistroAcceso;
 using SGA.Application.Interfaces;
 using SGA.Domain.Entities.Reservation;
 using SGA.Persistence.Interfaces;
-using SGA.Application.BusinessRules;
+using SGA.Persistence.Repository;
 
 namespace SGA.Application.Services
 {
@@ -89,6 +90,11 @@ namespace SGA.Application.Services
 
         public async Task DeleteAsync(int id)
         {
+            var registro = await _registroRepository.GetByIdAsync(id);
+
+            if (registro == null)
+                throw new Exception("No se encontró el registro de acceso.");
+
             await _registroRepository.DeleteAsync(id);
         }
     }

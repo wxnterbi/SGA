@@ -1,9 +1,10 @@
-﻿using SGA.Application.Dtos.TicketMensual;
+﻿using SGA.Application.BusinessRules;
+using SGA.Application.Dtos.TicketMensual;
 using SGA.Application.Interfaces;
 using SGA.Domain.Entities.Reservation;
 using SGA.Domain.Enums.Reservation;
 using SGA.Persistence.Interfaces;
-using SGA.Application.BusinessRules;
+using SGA.Persistence.Repository;
 
 namespace SGA.Application.Services
 {
@@ -84,6 +85,11 @@ namespace SGA.Application.Services
 
         public async Task DeleteAsync(int id)
         {
+            var ticket = await _ticketRepository.GetByIdAsync(id);
+
+            if (ticket == null)
+                throw new Exception("No se encontró el ticket mensual.");
+
             await _ticketRepository.DeleteAsync(id);
         }
     }

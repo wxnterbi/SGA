@@ -39,8 +39,6 @@ namespace SGA.Api.Web.Controllers
         [HttpPost]
         public async Task<IActionResult> Post([FromBody] RegistroAccesoDto dto)
         {
-            if (dto == null)
-                return BadRequest("Debe enviar los datos del registro de acceso.");
 
             await _registroAccesoService.AddAsync(dto);
 
@@ -50,15 +48,16 @@ namespace SGA.Api.Web.Controllers
         [HttpPut]
         public async Task<IActionResult> Put([FromBody] RegistroAccesoDto dto)
         {
-            if (dto == null)
-                return BadRequest("Debe enviar los datos del registro de acceso.");
+            try
+            {
+                await _registroAccesoService.UpdateAsync(dto);
+                return Ok("Registro de acceso actualizado correctamente.");
 
-            if (dto.Id <= 0)
-                return BadRequest("El ID del registro de acceso debe ser mayor que cero.");
-
-            await _registroAccesoService.UpdateAsync(dto);
-
-            return Ok("Registro de acceso actualizado correctamente.");
+            }
+            catch (Exception ex)
+            {
+                return NotFound(ex.Message);
+            }
         }
 
         [HttpDelete("{id}")]
@@ -67,9 +66,16 @@ namespace SGA.Api.Web.Controllers
             if (id <= 0)
                 return BadRequest("El ID debe ser mayor que cero.");
 
-            await _registroAccesoService.DeleteAsync(id);
+            try
+            {
 
-            return Ok("Registro de acceso eliminado correctamente.");
+                await _registroAccesoService.DeleteAsync(id);
+                return Ok("Registro de acceso eliminado correctamente.");
+            }
+            catch (Exception ex)
+            {
+                return NotFound(ex.Message);
+            }
         }
     }
 }

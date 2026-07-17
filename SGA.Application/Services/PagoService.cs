@@ -91,6 +91,11 @@ namespace SGA.Application.Services
         }
         public async Task DeleteAsync(int id)
         {
+            var pago = await _pagoRepository.GetByIdAsync(id);
+
+            if (pago == null)
+                throw new Exception("Pago no encontrado.");
+
             await _pagoRepository.DeleteAsync(id);
         }
     }
