@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using SGA.Persistence.Interfaces;
+using SGA.Application.Dtos.Usuario;
 using SGA.Domain.Entities.Configuration;
+using SGA.Persistence.Interfaces;
 
 namespace SGA.Api.Controllers
 {
@@ -35,16 +36,33 @@ namespace SGA.Api.Controllers
         }
 
         [HttpPost]
-        public IActionResult Post([FromBody] Usuario usuario)
+        public IActionResult Post([FromBody] UsuarioDto dto)
         {
+            var usuario = new Usuario
+            {
+                IdentificadorInstitucional = dto.IdentificadorInstitucional,
+                Nombre = dto.Nombre,
+                TipoUsuario = dto.TipoUsuario,
+                Estado = dto.Estado
+            };
+
             var nuevoUsuario = _usuarioRepository.Add(usuario);
 
             return Ok(nuevoUsuario);
         }
 
         [HttpPut]
-        public IActionResult Put([FromBody] Usuario usuario)
+        public IActionResult Put([FromBody] UsuarioDto dto)
         {
+            var usuario = new Usuario
+            {
+                Id = dto.Id,
+                IdentificadorInstitucional = dto.IdentificadorInstitucional,
+                Nombre = dto.Nombre,
+                TipoUsuario = dto.TipoUsuario,
+                Estado = dto.Estado
+            };
+
             var usuarioActualizado = _usuarioRepository.Update(usuario);
 
             return Ok(usuarioActualizado);
