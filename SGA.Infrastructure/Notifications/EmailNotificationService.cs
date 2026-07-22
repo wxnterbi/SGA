@@ -7,10 +7,16 @@
             try
             {
                 await Task.Delay(100);
+
+                Console.WriteLine("========== NOTIFICACIÓN ==========");
+                Console.WriteLine($"Destinatario: {destinatario}");
+                Console.WriteLine($"Asunto: {asunto}");
+                Console.WriteLine($"Mensaje: {mensaje}");
+                Console.WriteLine("==================================");
             }
             catch (Exception ex)
             {
-                throw new Exception($"Error al procesar el envío de notificación por correo electrónico: {ex.Message}");
+                throw new Exception($"Error al procesar el envío de notificación: {ex.Message}");
             }
         }
     }

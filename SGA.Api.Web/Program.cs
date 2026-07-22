@@ -34,6 +34,8 @@ builder.Services.AddDependencyInjection();
 
 var app = builder.Build();
 
+app.UseMiddleware<SGA.Api.Web.Middleware.ExceptionMiddleware>();
+
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();

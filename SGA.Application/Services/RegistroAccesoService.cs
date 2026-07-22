@@ -2,6 +2,7 @@
 using SGA.Application.Dtos.RegistroAcceso;
 using SGA.Application.Interfaces;
 using SGA.Domain.Entities.Reservation;
+using SGA.Infrastructure.Notifications;
 using SGA.Persistence.Interfaces;
 using SGA.Persistence.Repository;
 
@@ -11,13 +12,16 @@ namespace SGA.Application.Services
     {
         private readonly IRegistroAccesoRepository _registroRepository;
         private readonly AccesoRules _accesoRules;
+        private readonly INotificationService _notificationService;
 
         public RegistroAccesoService(
             IRegistroAccesoRepository registroRepository,
-            AccesoRules accesoRules)
+            AccesoRules accesoRules,
+            INotificationService notificationService)
         {
             _registroRepository = registroRepository;
             _accesoRules = accesoRules;
+            _notificationService = notificationService;
         }
 
         public async Task<IEnumerable<RegistroAccesoDto>> GetAllAsync()
@@ -67,6 +71,11 @@ namespace SGA.Application.Services
             };
 
             await _registroRepository.AddAsync(registro);
+
+            await _notificationService.SendNotificationAsync(
+                 "estudiante@itla.edu.do",
+                 "Acceso registrado",
+                 "Se registró un acceso al sistema correctamente.");
         }
 
         public async Task UpdateAsync(RegistroAccesoDto dto)

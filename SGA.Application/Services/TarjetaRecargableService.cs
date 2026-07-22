@@ -3,6 +3,7 @@ using SGA.Application.Dtos.TarjetaRecargable;
 using SGA.Application.Interfaces;
 using SGA.Domain.Entities.Reservation;
 using SGA.Domain.Enums.Reservation;
+using SGA.Infrastructure.Notifications;
 using SGA.Persistence.Interfaces;
 using SGA.Persistence.Repository;
 
@@ -11,11 +12,14 @@ namespace SGA.Application.Services
     public class TarjetaRecargableService : ITarjetaRecargableService
     {
         private readonly ITarjetaRecargableRepository _tarjetaRepository;
+        private readonly INotificationService _notificationService;
 
         public TarjetaRecargableService(
-            ITarjetaRecargableRepository tarjetaRepository)
+            ITarjetaRecargableRepository tarjetaRepository,
+            INotificationService notificationService)
         {
             _tarjetaRepository = tarjetaRepository;
+            _notificationService = notificationService;
         }
 
         public async Task<IEnumerable<TarjetaRecargableDto>> GetAllAsync()
@@ -58,6 +62,11 @@ namespace SGA.Application.Services
             };
 
             await _tarjetaRepository.AddAsync(tarjeta);
+
+            await _notificationService.SendNotificationAsync(
+                  "estudiante@itla.edu.do",
+                  "Tarjeta registrada",
+                  "La tarjeta recargable fue registrada correctamente.");
         }
 
         public async Task UpdateAsync(TarjetaRecargableDto dto)

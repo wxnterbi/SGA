@@ -46,8 +46,8 @@ namespace SGA.Persistence.Context
             modelBuilder.Entity<Auditoria>().ToTable("Auditoria");
 
             modelBuilder.Entity<Usuario>()
-    .Property(x => x.Estado)
-    .HasConversion<string>();
+                .Property(x => x.Estado)
+                .HasConversion<string>();
 
             modelBuilder.Entity<Usuario>()
                 .Property(x => x.TipoUsuario)

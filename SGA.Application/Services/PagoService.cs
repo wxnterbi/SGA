@@ -1,8 +1,9 @@
-﻿using SGA.Application.Dtos.Pago;
+﻿using SGA.Application.BusinessRules;
+using SGA.Application.Dtos.Pago;
 using SGA.Application.Interfaces;
 using SGA.Domain.Entities.Reservation;
+using SGA.Infrastructure.Notifications;
 using SGA.Persistence.Interfaces;
-using SGA.Application.BusinessRules;
 
 namespace SGA.Application.Services
 {
@@ -11,15 +12,18 @@ namespace SGA.Application.Services
         private readonly IPagoRepository _pagoRepository;
         private readonly IUsuarioRepository _usuarioRepository;
         private readonly UsuarioRules _usuarioRules;
+        private readonly INotificationService _notificationService;
 
         public PagoService(
             IPagoRepository pagoRepository,
             IUsuarioRepository usuarioRepository,
-            UsuarioRules usuarioRules)
+            UsuarioRules usuarioRules,
+            INotificationService notificationService)
         {
             _pagoRepository = pagoRepository;
             _usuarioRepository = usuarioRepository;
             _usuarioRules = usuarioRules;
+            _notificationService = notificationService;
         }
 
         public async Task<IEnumerable<PagoDto>> GetAllAsync()
@@ -55,6 +59,7 @@ namespace SGA.Application.Services
 
         public async Task AddAsync(PagoDto dto)
         {
+
             var usuario = _usuarioRepository.GetById(dto.UsuarioId);
 
             _usuarioRules.ValidarUsuarioRegistrado(usuario != null);
@@ -68,6 +73,11 @@ namespace SGA.Application.Services
             };
 
             await _pagoRepository.AddAsync(pago);
+
+            await _notificationService.SendNotificationAsync(
+               "estudiante@itla.edu.do",
+               "Pago registrado",
+               "Su pago fue registrado correctamente.");
         }
 
         public async Task UpdateAsync(PagoDto dto)

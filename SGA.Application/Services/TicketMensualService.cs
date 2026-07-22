@@ -3,6 +3,7 @@ using SGA.Application.Dtos.TicketMensual;
 using SGA.Application.Interfaces;
 using SGA.Domain.Entities.Reservation;
 using SGA.Domain.Enums.Reservation;
+using SGA.Infrastructure.Notifications;
 using SGA.Persistence.Interfaces;
 using SGA.Persistence.Repository;
 
@@ -11,11 +12,14 @@ namespace SGA.Application.Services
     public class TicketMensualService : ITicketMensualService
     {
         private readonly ITicketMensualRepository _ticketRepository;
+        private readonly INotificationService _notificationService;
 
         public TicketMensualService(
-            ITicketMensualRepository ticketRepository)
+            ITicketMensualRepository ticketRepository,
+            INotificationService notificationService)
         {
             _ticketRepository = ticketRepository;
+            _notificationService = notificationService;
         }
 
         public async Task<IEnumerable<TicketMensualDto>> GetAllAsync()
@@ -64,6 +68,11 @@ namespace SGA.Application.Services
             };
 
             await _ticketRepository.AddAsync(ticket);
+
+            await _notificationService.SendNotificationAsync(
+                "estudiante@itla.edu.do",
+                "Ticket mensual generado",
+                "Su ticket mensual fue generado correctamente.");
         }
 
         public async Task UpdateAsync(TicketMensualDto dto)

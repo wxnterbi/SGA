@@ -1,9 +1,10 @@
-﻿using SGA.Application.Dtos.Notificacion;
+﻿using SGA.Application.BusinessRules;
+using SGA.Application.Dtos.Notificacion;
 using SGA.Application.Interfaces;
 using SGA.Domain.Entities.Reservation;
 using SGA.Domain.Enums.Reservation;
+using SGA.Infrastructure.Notifications;
 using SGA.Persistence.Interfaces;
-using SGA.Application.BusinessRules;
 
 namespace SGA.Application.Services
 {
@@ -11,13 +12,16 @@ namespace SGA.Application.Services
     {
         private readonly INotificacionRepository _notificacionRepository;
         private readonly NotificacionRules _notificacionRules;
+        private readonly INotificationService _notificationService;
 
         public NotificacionService(
             INotificacionRepository notificacionRepository,
-            NotificacionRules notificacionRules)
+            NotificacionRules notificacionRules,
+            INotificationService notificationService)
         {
             _notificacionRepository = notificacionRepository;
             _notificacionRules = notificacionRules;
+            _notificationService = notificationService;
         }
 
         public async Task<IEnumerable<NotificacionDto>> GetAllAsync()
@@ -63,6 +67,11 @@ namespace SGA.Application.Services
             };
 
             await _notificacionRepository.AddAsync(notificacion);
+
+            await _notificationService.SendNotificationAsync(
+                 "estudiante@itla.edu.do",
+                 "Nueva notificación",
+                 "Se ha registrado una nueva notificación en el sistema.");
 
             _notificacionRules.ValidarEnvioNotificacion(notificacion.Id > 0);
         }
