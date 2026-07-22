@@ -2,6 +2,7 @@
 using SGA.Application.Interfaces;
 using SGA.Domain.Entities.Configuration;
 using SGA.Domain.Enums.Configuration;
+using SGA.Infrastructure.Notifications;
 using SGA.Persistence.Interfaces;
 
 namespace SGA.Application.Services
@@ -9,10 +10,14 @@ namespace SGA.Application.Services
     public class AutobusService : IAutobusService
     {
         private readonly IAutobusRepository _autobusRepository;
+        private readonly INotificationService _notificationService;
 
-        public AutobusService(IAutobusRepository autobusRepository)
+        public AutobusService(
+            IAutobusRepository autobusRepository,
+            INotificationService notificationService)
         {
-            _autobusRepository = autobusRepository ?? throw new ArgumentNullException(nameof(autobusRepository));
+            _autobusRepository = autobusRepository;
+            _notificationService = notificationService;
         }
 
         public async Task<IEnumerable<AutobusDto>> GetAllAsync()
@@ -64,7 +69,11 @@ namespace SGA.Application.Services
             };
 
             _autobusRepository.Add(autobus);
-            await Task.CompletedTask;
+
+            await _notificationService.SendNotificationAsync(
+                "transporte@itla.edu.do",
+                "Autobús registrado",
+                "El autobús fue registrado correctamente.");
         }
 
         public async Task UpdateAsync(AutobusDto dto)

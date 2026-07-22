@@ -1,48 +1,79 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using SGA.Domain.Entities.Configuration;
-using SGA.Persistence.Interfaces;
+using SGA.Application.Dtos.Horario;
+using SGA.Application.Interfaces;
 
 namespace SGA.Api.Controllers
 {
-    [Route("api/[controller]")]
     [ApiController]
+    [Route("api/[controller]")]
     public class HorarioController : ControllerBase
     {
-        private readonly IHorarioRepository _horarioRepository;
+        private readonly IHorarioService _horarioService;
 
-        public HorarioController(IHorarioRepository horarioRepository)
+        public HorarioController(IHorarioService horarioService)
         {
-            _horarioRepository = horarioRepository;
+            _horarioService = horarioService;
         }
+
 
         [HttpGet]
-        public IActionResult Get()
+        public async Task<IActionResult> Get()
         {
-            return Ok(_horarioRepository.GetAll());
+            var horarios = await _horarioService.GetAllAsync();
+
+            return Ok(horarios);
         }
+
 
         [HttpGet("{id}")]
-        public IActionResult GetById(int id)
+        public async Task<IActionResult> Get(int id)
         {
-            return Ok(_horarioRepository.GetById(id));
+            if (id <= 0)
+                return BadRequest("El ID debe ser mayor que cero.");
+
+            var horario = await _horarioService.GetByIdAsync(id);
+
+            if (horario == null)
+                return NotFound("No se encontró el horario.");
+
+            return Ok(horario);
         }
+
 
         [HttpPost]
-        public IActionResult Post(Horario horario)
+        public async Task<IActionResult> Post([FromBody] HorarioDto dto)
         {
-            return Ok(_horarioRepository.Add(horario));
+            await _horarioService.AddAsync(dto);
+
+            return Ok("Horario registrado correctamente.");
         }
+
 
         [HttpPut]
-        public IActionResult Put(Horario horario)
+        public async Task<IActionResult> Put([FromBody] HorarioDto dto)
         {
-            return Ok(_horarioRepository.Update(horario));
+            await _horarioService.UpdateAsync(dto);
+
+            return Ok("Horario actualizado correctamente.");
         }
 
+
         [HttpDelete("{id}")]
-        public IActionResult Delete(int id)
+        public async Task<IActionResult> Delete(int id)
         {
-            return Ok(_horarioRepository.Delete(id));
+            if (id <= 0)
+                return BadRequest("El ID del horario debe ser mayor que cero.");
+
+            try
+            {
+                await _horarioService.DeleteAsync(id);
+
+                return Ok("Horario eliminado correctamente.");
+            }
+            catch (Exception ex)
+            {
+                return NotFound(ex.Message);
+            }
         }
     }
 }

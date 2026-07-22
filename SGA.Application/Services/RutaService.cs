@@ -1,6 +1,7 @@
 ﻿using SGA.Application.Dtos.Ruta;
 using SGA.Application.Interfaces;
 using SGA.Domain.Entities.Configuration;
+using SGA.Infrastructure.Notifications;
 using SGA.Persistence.Interfaces;
 
 namespace SGA.Application.Services
@@ -8,10 +9,14 @@ namespace SGA.Application.Services
     public class RutaService : IRutaService
     {
         private readonly IRutaRepository _rutaRepository;
+        private readonly INotificationService _notificationService;
 
-        public RutaService(IRutaRepository rutaRepository)
+        public RutaService(
+            IRutaRepository rutaRepository,
+            INotificationService notificationService)
         {
             _rutaRepository = rutaRepository;
+            _notificationService = notificationService;
         }
 
         public Task<IEnumerable<RutaDto>> GetAllAsync()
@@ -45,7 +50,7 @@ namespace SGA.Application.Services
             });
         }
 
-        public Task AddAsync(RutaDto dto)
+        public async Task AddAsync(RutaDto dto)
         {
             var ruta = new Ruta
             {
@@ -56,7 +61,10 @@ namespace SGA.Application.Services
 
             _rutaRepository.Add(ruta);
 
-            return Task.CompletedTask;
+            await _notificationService.SendNotificationAsync(
+                "estudiante@itla.edu.do",
+                "Nueva ruta",
+                "Se registró una nueva ruta correctamente.");
         }
 
         public Task UpdateAsync(RutaDto dto)

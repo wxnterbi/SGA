@@ -1,6 +1,8 @@
-﻿using SGA.Application.Dtos.Viaje;
+﻿using SGA.Application.BusinessRules;
+using SGA.Application.Dtos.Viaje;
 using SGA.Application.Interfaces;
 using SGA.Domain.Entities.Reservation;
+using SGA.Infrastructure.Notifications;
 using SGA.Persistence.Interfaces;
 
 namespace SGA.Application.Services
@@ -8,10 +10,17 @@ namespace SGA.Application.Services
     public class ViajeService : IViajeService
     {
         private readonly IViajeRepository _viajeRepository;
+        private readonly ViajeRules _viajeRules;
+        private readonly INotificationService _notificationService;
 
-        public ViajeService(IViajeRepository viajeRepository)
+        public ViajeService(
+            IViajeRepository viajeRepository,
+            ViajeRules _viajeRules,
+            INotificationService notificationService)
         {
             _viajeRepository = viajeRepository;
+            _viajeRules = _viajeRules;
+            _notificationService = notificationService;
         }
 
         public async Task<ViajeDto> GetByIdAsync(int id)
@@ -50,17 +59,27 @@ namespace SGA.Application.Services
 
         public async Task AddAsync(ViajeDto dto)
         {
+            _viajeRules.ValidarAsignacionViaje(
+                dto.RutaId,
+                dto.HorarioId,
+                dto.AutobusId,
+                dto.ConductorId);
+
             var viaje = new Viaje
             {
                 RutaId = dto.RutaId,
                 HorarioId = dto.HorarioId,
                 AutobusId = dto.AutobusId,
                 ConductorId = dto.ConductorId,
-                Estado = dto.Estado,
-                HoraInicioReal = dto.HoraInicioReal,
-                HoraFinReal = dto.HoraFinReal
+                Estado = dto.Estado
             };
-            await _viajeRepository.AddAsync(viaje);
+
+            _viajeRepository.AddAsync(viaje);
+
+            await _notificationService.SendNotificationAsync(
+                "estudiante@itla.edu.do",
+                "Viaje registrado",
+                "Se registró un nuevo viaje correctamente.");
         }
 
         public async Task UpdateAsync(ViajeDto dto)

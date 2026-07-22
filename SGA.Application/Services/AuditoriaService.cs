@@ -1,6 +1,7 @@
 ﻿using SGA.Application.Dtos.Auditoria;
 using SGA.Application.Interfaces;
 using SGA.Domain.Entities.Reservation;
+using SGA.Infrastructure.Notifications;
 using SGA.Persistence.Interfaces;
 
 namespace SGA.Application.Services
@@ -8,10 +9,14 @@ namespace SGA.Application.Services
     public class AuditoriaService : IAuditoriaService
     {
         private readonly IAuditoriaRepository _auditoriaRepository;
+        private readonly INotificationService _notificationService;
 
-        public AuditoriaService(IAuditoriaRepository auditoriaRepository)
+        public AuditoriaService(
+            IAuditoriaRepository auditoriaRepository,
+            INotificationService notificationService)
         {
             _auditoriaRepository = auditoriaRepository;
+            _notificationService = notificationService;
         }
 
         public async Task<AuditoriaDto> GetByIdAsync(int id)
@@ -45,6 +50,7 @@ namespace SGA.Application.Services
 
         public async Task AddAsync(AuditoriaDto dto)
         {
+
             var auditoria = new Auditoria
             {
                 Actor = dto.Actor,
@@ -52,7 +58,12 @@ namespace SGA.Application.Services
                 Descripcion = dto.Descripcion,
                 FechaHora = dto.FechaHora
             };
-            await _auditoriaRepository.AddAsync(auditoria);
+            _auditoriaRepository.AddAsync(auditoria);
+
+            await _notificationService.SendNotificationAsync(
+                "administracion@itla.edu.do",
+                "Auditoría registrada",
+                "Se registró una nueva auditoría en el sistema.");
         }
 
         public Task UpdateAsync(AuditoriaDto dto)

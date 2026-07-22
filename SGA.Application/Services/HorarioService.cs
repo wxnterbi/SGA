@@ -1,6 +1,7 @@
 ﻿using SGA.Application.Dtos.Horario;
 using SGA.Application.Interfaces;
 using SGA.Domain.Entities.Configuration;
+using SGA.Infrastructure.Notifications;
 using SGA.Persistence.Interfaces;
 
 namespace SGA.Application.Services
@@ -8,10 +9,14 @@ namespace SGA.Application.Services
     public class HorarioService : IHorarioService
     {
         private readonly IHorarioRepository _horarioRepository;
+        private readonly INotificationService _notificationService;
 
-        public HorarioService(IHorarioRepository horarioRepository)
+        public HorarioService(
+            IHorarioRepository horarioRepository,
+            INotificationService notificationService)
         {
             _horarioRepository = horarioRepository;
+            _notificationService = notificationService;
         }
 
         public Task<IEnumerable<HorarioDto>> GetAllAsync()
@@ -45,7 +50,7 @@ namespace SGA.Application.Services
             });
         }
 
-        public Task AddAsync(HorarioDto dto)
+        public async Task AddAsync(HorarioDto dto)
         {
             var horario = new Horario
             {
@@ -56,7 +61,10 @@ namespace SGA.Application.Services
 
             _horarioRepository.Add(horario);
 
-            return Task.CompletedTask;
+            await _notificationService.SendNotificationAsync(
+                "estudiante@itla.edu.do",
+                "Horario registrado",
+                "Se registró un nuevo horario correctamente.");
         }
 
         public Task UpdateAsync(HorarioDto dto)

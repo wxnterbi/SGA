@@ -34,6 +34,7 @@ namespace SGA.IOC
             services.AddScoped<IUsuarioService, UsuarioService>();
             services.AddScoped<IRutaService, RutaService>();
             services.AddScoped<IHorarioService, HorarioService>();
+            services.AddScoped<IParadaService, ParadaService>();
             services.AddScoped<IPagoService, PagoService>();
             services.AddScoped<IAutobusService, AutobusService>();
             services.AddScoped<IConductorService, ConductorService>();

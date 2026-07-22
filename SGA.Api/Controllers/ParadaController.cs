@@ -1,48 +1,84 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using SGA.Domain.Entities.Configuration;
-using SGA.Persistence.Interfaces;
+using SGA.Application.Dtos.Parada;
+using SGA.Application.Interfaces;
 
 namespace SGA.Api.Controllers
 {
-    [Route("api/[controller]")]
     [ApiController]
+    [Route("api/[controller]")]
     public class ParadaController : ControllerBase
     {
-        private readonly IParadaRepository _paradaRepository;
+        private readonly IParadaService _paradaService;
 
-        public ParadaController(IParadaRepository paradaRepository)
+
+        public ParadaController(IParadaService paradaService)
         {
-            _paradaRepository = paradaRepository;
+            _paradaService = paradaService;
         }
+
 
         [HttpGet]
-        public IActionResult Get()
+        public async Task<IActionResult> Get()
         {
-            return Ok(_paradaRepository.GetAll());
+            var paradas = await _paradaService.GetAllAsync();
+
+            return Ok(paradas);
         }
+
 
         [HttpGet("{id}")]
-        public IActionResult GetById(int id)
+        public async Task<IActionResult> Get(int id)
         {
-            return Ok(_paradaRepository.GetById(id));
+            if (id <= 0)
+                return BadRequest("El ID debe ser mayor que cero.");
+
+
+            var parada = await _paradaService.GetByIdAsync(id);
+
+
+            if (parada == null)
+                return NotFound("No se encontró la parada.");
+
+
+            return Ok(parada);
         }
+
 
         [HttpPost]
-        public IActionResult Post(Parada parada)
+        public async Task<IActionResult> Post([FromBody] CreateParadaDto dto)
         {
-            return Ok(_paradaRepository.Add(parada));
+            await _paradaService.AddAsync(dto);
+
+            return Ok("Parada registrada correctamente.");
         }
+
 
         [HttpPut]
-        public IActionResult Put(Parada parada)
+        public async Task<IActionResult> Put([FromBody] UpdateParadaDto dto)
         {
-            return Ok(_paradaRepository.Update(parada));
+            await _paradaService.UpdateAsync(dto);
+
+            return Ok("Parada actualizada correctamente.");
         }
 
+
         [HttpDelete("{id}")]
-        public IActionResult Delete(int id)
+        public async Task<IActionResult> Delete(int id)
         {
-            return Ok(_paradaRepository.Delete(id));
+            if (id <= 0)
+                return BadRequest("El ID de la parada debe ser mayor que cero.");
+
+
+            try
+            {
+                await _paradaService.DeleteAsync(id);
+
+                return Ok("Parada eliminada correctamente.");
+            }
+            catch (Exception ex)
+            {
+                return NotFound(ex.Message);
+            }
         }
     }
 }

@@ -1,6 +1,7 @@
 ﻿using SGA.Application.Dtos.Usuario;
 using SGA.Application.Interfaces;
 using SGA.Domain.Entities.Configuration;
+using SGA.Infrastructure.Notifications;
 using SGA.Persistence.Interfaces;
 
 namespace SGA.Application.Services
@@ -8,10 +9,14 @@ namespace SGA.Application.Services
     public class UsuarioService : IUsuarioService
     {
         private readonly IUsuarioRepository _usuarioRepository;
+        private readonly INotificationService _notificationService;
 
-        public UsuarioService(IUsuarioRepository usuarioRepository)
+        public UsuarioService(
+            IUsuarioRepository usuarioRepository,
+            INotificationService notificationService)
         {
             _usuarioRepository = usuarioRepository;
+            _notificationService = notificationService;
         }
 
         public Task<IEnumerable<UsuarioDto>> GetAllAsync()
@@ -47,8 +52,9 @@ namespace SGA.Application.Services
             });
         }
 
-        public Task AddAsync(UsuarioDto dto)
+        public async Task AddAsync(UsuarioDto dto)
         {
+            Console.WriteLine("ENTRANDO A USUARIO SERVICE");
             var usuario = new Usuario
             {
                 IdentificadorInstitucional = dto.IdentificadorInstitucional,
@@ -56,10 +62,13 @@ namespace SGA.Application.Services
                 TipoUsuario = dto.TipoUsuario,
                 Estado = dto.Estado
             };
-
+            Console.WriteLine("ENTRANDO A USUARIO SERVICE");
             _usuarioRepository.Add(usuario);
 
-            return Task.CompletedTask;
+            await _notificationService.SendNotificationAsync(
+                "usuario@itla.edu.do",
+                "Usuario registrado",
+                "El usuario fue registrado correctamente en el sistema.");
         }
 
         public Task UpdateAsync(UsuarioDto dto)

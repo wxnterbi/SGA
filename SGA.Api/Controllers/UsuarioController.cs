@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using SGA.Application.Dtos.Usuario;
 using SGA.Domain.Entities.Configuration;
-using SGA.Persistence.Interfaces;
+using SGA.Application.Interfaces;
 
 namespace SGA.Api.Controllers
 {
@@ -9,23 +9,28 @@ namespace SGA.Api.Controllers
     [ApiController]
     public class UsuarioController : ControllerBase
     {
-        private readonly IUsuarioRepository _usuarioRepository;
+        private readonly IUsuarioService _usuarioService;
 
-        public UsuarioController(IUsuarioRepository usuarioRepository)
+        public UsuarioController(IUsuarioService usuarioService)
         {
-            _usuarioRepository = usuarioRepository;
+            _usuarioService = usuarioService;
         }
 
         [HttpGet]
-        public IActionResult Get()
+        public async Task<IActionResult> Get()
         {
-            return Ok(_usuarioRepository.GetAll());
+            var usuarios = await _usuarioService.GetAllAsync();
+
+            return Ok(usuarios);
         }
 
         [HttpGet("{id}")]
-        public IActionResult GetById(int id)
+        public async Task<IActionResult> GetById(int id)
         {
-            var usuario = _usuarioRepository.GetById(id);
+            if (id <= 0)
+                return BadRequest("El ID debe ser mayor que cero.");
+
+            var usuario = await _usuarioService.GetByIdAsync(id);
 
             if (usuario == null)
             {
@@ -36,47 +41,28 @@ namespace SGA.Api.Controllers
         }
 
         [HttpPost]
-        public IActionResult Post([FromBody] UsuarioDto dto)
+        public async Task<IActionResult> Post([FromBody] UsuarioDto dto)
         {
-            var usuario = new Usuario
-            {
-                IdentificadorInstitucional = dto.IdentificadorInstitucional,
-                Nombre = dto.Nombre,
-                TipoUsuario = dto.TipoUsuario,
-                Estado = dto.Estado
-            };
+            await _usuarioService.AddAsync(dto);
 
-            var nuevoUsuario = _usuarioRepository.Add(usuario);
-
-            return Ok(nuevoUsuario);
+            return Ok("Usuario registrado correctamente.");
         }
 
         [HttpPut]
-        public IActionResult Put([FromBody] UsuarioDto dto)
+        public async Task<IActionResult> Put([FromBody] UsuarioDto dto)
         {
-            var usuario = new Usuario
-            {
-                Id = dto.Id,
-                IdentificadorInstitucional = dto.IdentificadorInstitucional,
-                Nombre = dto.Nombre,
-                TipoUsuario = dto.TipoUsuario,
-                Estado = dto.Estado
-            };
+            await _usuarioService.UpdateAsync(dto);
 
-            var usuarioActualizado = _usuarioRepository.Update(usuario);
-
-            return Ok(usuarioActualizado);
+            return Ok("Usuario actualizado correctamente.");
         }
 
         [HttpDelete("{id}")]
-        public IActionResult Delete(int id)
+        public async Task<IActionResult> Delete(int id)
         {
-            var eliminado = _usuarioRepository.Delete(id);
+            if (id <= 0)
+                return BadRequest("El ID debe ser mayor que cero.");
 
-            if (!eliminado)
-            {
-                return NotFound("Usuario no encontrado.");
-            }
+            await _usuarioService.DeleteAsync(id);
 
             return Ok("Usuario eliminado correctamente.");
         }

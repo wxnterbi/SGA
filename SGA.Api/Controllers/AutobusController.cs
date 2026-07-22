@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using SGA.Application.Dtos.Autobus;
 using SGA.Application.Interfaces;
-using System.Threading.Tasks;
 
 namespace SGA.Api.Controllers
 {
@@ -16,40 +15,65 @@ namespace SGA.Api.Controllers
             _autobusService = autobusService;
         }
 
+
         [HttpGet]
-        public async Task<IActionResult> GetAll()
+        public async Task<IActionResult> Get()
         {
-            var result = await _autobusService.GetAllAsync();
-            return Ok(result);
+            var autobuses = await _autobusService.GetAllAsync();
+
+            return Ok(autobuses);
         }
+
 
         [HttpGet("{id}")]
-        public async Task<IActionResult> GetById(int id)
+        public async Task<IActionResult> Get(int id)
         {
-            var result = await _autobusService.GetByIdAsync(id);
-            if (result == null) return NotFound($"No se encontró el autobús con ID {id}");
-            return Ok(result);
+            if (id <= 0)
+                return BadRequest("El ID debe ser mayor que cero.");
+
+            var autobus = await _autobusService.GetByIdAsync(id);
+
+            if (autobus == null)
+                return NotFound("No se encontró el autobús.");
+
+            return Ok(autobus);
         }
+
 
         [HttpPost]
-        public async Task<IActionResult> Create([FromBody] AutobusDto dto)
+        public async Task<IActionResult> Post([FromBody] AutobusDto dto)
         {
             await _autobusService.AddAsync(dto);
-            return Ok(new { message = "Autobús registrado correctamente." });
+
+            return Ok("Autobús registrado correctamente.");
         }
 
+
         [HttpPut]
-        public async Task<IActionResult> Update([FromBody] AutobusDto dto)
+        public async Task<IActionResult> Put([FromBody] AutobusDto dto)
         {
             await _autobusService.UpdateAsync(dto);
-            return Ok(new { message = "Autobús actualizado correctamente o verificado." });
+
+            return Ok("Autobús actualizado correctamente.");
         }
+
 
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(int id)
         {
-            await _autobusService.DeleteAsync(id);
-            return Ok(new { message = "Proceso de eliminación ejecutado." });
+            if (id <= 0)
+                return BadRequest("El ID del autobús debe ser mayor que cero.");
+
+            try
+            {
+                await _autobusService.DeleteAsync(id);
+
+                return Ok("Autobús eliminado correctamente.");
+            }
+            catch (Exception ex)
+            {
+                return NotFound(ex.Message);
+            }
         }
     }
 }

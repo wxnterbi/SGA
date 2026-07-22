@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using SGA.Application.Dtos.Conductor;
 using SGA.Application.Interfaces;
-using System.Threading.Tasks;
 
 namespace SGA.Api.Controllers
 {
@@ -16,40 +15,65 @@ namespace SGA.Api.Controllers
             _conductorService = conductorService;
         }
 
+
         [HttpGet]
-        public async Task<IActionResult> GetAll()
+        public async Task<IActionResult> Get()
         {
-            var result = await _conductorService.GetAllAsync();
-            return Ok(result);
+            var conductores = await _conductorService.GetAllAsync();
+
+            return Ok(conductores);
         }
+
 
         [HttpGet("{id}")]
-        public async Task<IActionResult> GetById(int id)
+        public async Task<IActionResult> Get(int id)
         {
-            var result = await _conductorService.GetByIdAsync(id);
-            if (result == null) return NotFound($"No se encontró el conductor con ID {id}");
-            return Ok(result);
+            if (id <= 0)
+                return BadRequest("El ID debe ser mayor que cero.");
+
+            var conductor = await _conductorService.GetByIdAsync(id);
+
+            if (conductor == null)
+                return NotFound("No se encontró el conductor.");
+
+            return Ok(conductor);
         }
+
 
         [HttpPost]
-        public async Task<IActionResult> Create([FromBody] ConductorDto dto)
+        public async Task<IActionResult> Post([FromBody] ConductorDto dto)
         {
             await _conductorService.AddAsync(dto);
-            return Ok(new { message = "Conductor registrado correctamente." });
+
+            return Ok("Conductor registrado correctamente.");
         }
 
+
         [HttpPut]
-        public async Task<IActionResult> Update([FromBody] ConductorDto dto)
+        public async Task<IActionResult> Put([FromBody] ConductorDto dto)
         {
             await _conductorService.UpdateAsync(dto);
-            return Ok(new { message = "Conductor actualizado correctamente." });
+
+            return Ok("Conductor actualizado correctamente.");
         }
+
 
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(int id)
         {
-            await _conductorService.DeleteAsync(id);
-            return Ok(new { message = "Proceso de eliminación ejecutado." });
+            if (id <= 0)
+                return BadRequest("El ID del conductor debe ser mayor que cero.");
+
+            try
+            {
+                await _conductorService.DeleteAsync(id);
+
+                return Ok("Conductor eliminado correctamente.");
+            }
+            catch (Exception ex)
+            {
+                return NotFound(ex.Message);
+            }
         }
     }
 }
