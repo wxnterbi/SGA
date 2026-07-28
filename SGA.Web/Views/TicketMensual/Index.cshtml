@@ -1,0 +1,71 @@
+﻿@model IEnumerable<SGA.Application.Dtos.TicketMensual.TicketMensualDto>
+
+@{
+    ViewData["Title"] = "Tickets Mensuales";
+}
+
+<h2>Listado de Tickets Mensuales</h2>
+
+<p>
+    <a href="/TicketMensual/Create" class="btn btn-primary">
+        Nuevo Ticket
+    </a>
+</p>
+
+<table class="table table-bordered table-striped">
+
+    <thead>
+        <tr>
+            <th>Id</th>
+            <th>Usuario</th>
+            <th>Pago</th>
+            <th>Fecha Inicio</th>
+            <th>Fecha Fin</th>
+            <th>Estado</th>
+            <th>Acciones</th>
+        </tr>
+    </thead>
+
+    <tbody>
+
+        @foreach (var item in Model)
+        {
+            <tr>
+
+                <td>@item.Id</td>
+
+                <td>@item.UsuarioId</td>
+
+                <td>@item.PagoId</td>
+
+                <td>@item.FechaInicio.ToShortDateString()</td>
+
+                <td>@item.FechaFin.ToShortDateString()</td>
+
+                <td>@((SGA.Domain.Enums.Reservation.EstadoTicket)item.Estado)</td>
+
+                <td>
+
+                    <a href="/TicketMensual/Details/@item.Id"
+                       class="btn btn-info btn-sm">
+                        Detalles
+                    </a>
+
+                    <a href="/TicketMensual/Edit/@item.Id"
+                       class="btn btn-warning btn-sm">
+                        Editar
+                    </a>
+
+                    <a href="/TicketMensual/Delete/@item.Id"
+                       class="btn btn-danger btn-sm">
+                        Eliminar
+                    </a>
+
+                </td>
+
+            </tr>
+        }
+
+    </tbody>
+
+</table>

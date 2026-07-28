@@ -1,0 +1,51 @@
+﻿@model SGA.Application.Dtos.TicketMensual.TicketMensualDto
+
+<h2>Editar Ticket Mensual</h2>
+
+<form action="/TicketMensual/Edit" method="post">
+
+    <input type="hidden" asp-for="Id" />
+
+    <div class="mb-3">
+        <label>Usuario</label>
+        <input asp-for="UsuarioId" class="form-control" />
+    </div>
+
+    <div class="mb-3">
+        <label>Pago</label>
+        <input asp-for="PagoId" class="form-control" />
+    </div>
+
+    <div class="mb-3">
+        <label>Fecha Inicio</label>
+        <input asp-for="FechaInicio" type="date" class="form-control" />
+    </div>
+
+    <div class="mb-3">
+        <label>Fecha Fin</label>
+        <input asp-for="FechaFin" type="date" class="form-control" />
+    </div>
+
+    <div class="mb-3">
+
+        <label>Estado</label>
+
+        <select asp-for="Estado" class="form-control">
+
+            <option value="1">Activo</option>
+            <option value="2">Vencido</option>
+            <option value="3">Cancelado</option>
+
+        </select>
+
+    </div>
+
+    <button class="btn btn-warning">
+        Guardar Cambios
+    </button>
+
+    <a href="/TicketMensual" class="btn btn-secondary">
+        Volver
+    </a>
+
+</form>

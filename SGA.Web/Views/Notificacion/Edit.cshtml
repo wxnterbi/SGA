@@ -1,0 +1,51 @@
+﻿@model SGA.Application.Dtos.Notificacion.NotificacionDto
+
+<h2>Editar Notificación</h2>
+
+@if (!ViewData.ModelState.IsValid)
+{
+    <div class="alert alert-danger">
+        @foreach (var error in ViewData.ModelState.Values.SelectMany(v => v.Errors))
+        {
+            <div>@error.ErrorMessage</div>
+        }
+    </div>
+}
+
+<form action="/Notificacion/Edit" method="post">
+
+    <input type="hidden" name="Id" value="@Model.Id" />
+
+    <div class="mb-3">
+        <label>Usuario</label>
+        <input type="number" name="UsuarioId" value="@Model.UsuarioId" class="form-control" />
+    </div>
+
+    <div class="mb-3">
+        <label>Tipo de Evento</label>
+        <select name="TipoEvento" class="form-control">
+            <option value="1" @(Model.TipoEvento == 1 ? "selected" : "")>Pago Realizado</option>
+            <option value="2" @(Model.TipoEvento == 2 ? "selected" : "")>Viaje Iniciado</option>
+            <option value="3" @(Model.TipoEvento == 3 ? "selected" : "")>Viaje Finalizado</option>
+            <option value="4" @(Model.TipoEvento == 4 ? "selected" : "")>Acceso Denegado</option>
+            <option value="5" @(Model.TipoEvento == 5 ? "selected" : "")>Incidencia Registrada</option>
+        </select>
+    </div>
+
+    <div class="mb-3">
+        <label>Mensaje</label>
+        <input type="text" name="Mensaje" value="@Model.Mensaje" class="form-control" />
+    </div>
+
+    <div class="mb-3">
+        <label>Fecha y Hora</label>
+        <input type="datetime-local"
+               name="FechaHora"
+               value="@Model.FechaHora.ToString("yyyy-MM-ddTHH:mm")"
+               class="form-control" />
+    </div>
+
+    <button type="submit" class="btn btn-primary">Guardar</button>
+    <a href="/Notificacion/Index" class="btn btn-secondary">Volver</a>
+
+</form>

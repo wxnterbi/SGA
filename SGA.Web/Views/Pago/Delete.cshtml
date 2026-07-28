@@ -1,0 +1,43 @@
+﻿@model SGA.Application.Dtos.Pago.PagoDto
+
+@{
+    ViewData["Title"] = "Eliminar Pago";
+}
+
+<h2>Eliminar Pago</h2>
+
+<div class="alert alert-danger">
+    ¿Está seguro de que desea eliminar este pago?
+</div>
+
+<div class="card">
+    <div class="card-body">
+
+        <p><strong>ID:</strong> @Model.Id</p>
+
+        <p><strong>Usuario:</strong> @Model.UsuarioId</p>
+
+        <p><strong>Monto:</strong> @Model.Monto</p>
+
+        <p><strong>Fecha de Pago:</strong> @Model.FechaPago</p>
+
+        <p><strong>Modalidad:</strong> @Model.Modalidad</p>
+
+    </div>
+</div>
+
+<br />
+
+<form asp-action="Delete" method="post">
+
+    <input asp-for="Id" type="hidden" />
+
+    <button type="submit" class="btn btn-danger">
+        Eliminar
+    </button>
+
+    <a href="/Pago/Index" class="btn btn-secondary">
+        Cancelar
+    </a>
+
+</form>

@@ -1,0 +1,108 @@
+﻿@model SGA.Application.Dtos.TicketMensual.TicketMensualDto
+
+<h2>Nuevo Ticket Mensual</h2>
+
+@if (ViewData.ModelState.ErrorCount > 0)
+{
+    <div class="alert alert-danger">
+        @foreach (var estado in ViewData.ModelState.Values)
+        {
+            foreach (var error in estado.Errors)
+            {
+                <div>@error.ErrorMessage</div>
+            }
+        }
+    </div>
+}
+
+<form action="/TicketMensual/Create" method="post">
+
+    <div class="mb-3">
+        <label>Usuario</label>
+
+        <select name="UsuarioId" class="form-control">
+
+            <option value="">-- Seleccione un usuario --</option>
+
+            @foreach (var usuario in ViewBag.Usuarios)
+            {
+                if (Model != null && Model.UsuarioId.ToString() == usuario.Value)
+                {
+                    <option value="@usuario.Value" selected>
+                        @usuario.Text
+                    </option>
+                }
+                else
+                {
+                    <option value="@usuario.Value">
+                        @usuario.Text
+                    </option>
+                }
+            }
+
+        </select>
+    </div>
+
+    <div class="mb-3">
+        <label>Pago</label>
+
+        <select name="PagoId" class="form-control">
+
+            <option value="">-- Seleccione un pago --</option>
+
+            @foreach (var pago in ViewBag.Pagos)
+            {
+                if (Model != null && Model.PagoId.ToString() == pago.Value)
+                {
+                    <option value="@pago.Value" selected>
+                        Pago #@pago.Value
+                    </option>
+                }
+                else
+                {
+                    <option value="@pago.Value">
+                        Pago #@pago.Value
+                    </option>
+                }
+            }
+
+        </select>
+    </div>
+
+    <div class="mb-3">
+        <label>Fecha Inicio</label>
+        <input type="date"
+               name="FechaInicio"
+               class="form-control"
+               value="@(Model != null ? Model.FechaInicio.ToString("yyyy-MM-dd") : "")" />
+    </div>
+
+    <div class="mb-3">
+        <label>Fecha Fin</label>
+        <input type="date"
+               name="FechaFin"
+               class="form-control"
+               value="@(Model != null ? Model.FechaFin.ToString("yyyy-MM-dd") : "")" />
+    </div>
+
+    <div class="mb-3">
+        <label>Estado</label>
+
+        <select name="Estado" class="form-control">
+
+            <option value="1">Activo</option>
+            <option value="2">Vencido</option>
+            <option value="3">Cancelado</option>
+
+        </select>
+    </div>
+
+    <button type="submit" class="btn btn-success">
+        Guardar
+    </button>
+
+    <a href="/TicketMensual" class="btn btn-secondary">
+        Volver
+    </a>
+
+</form>

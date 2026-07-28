@@ -1,0 +1,23 @@
+﻿@model SGA.Application.Dtos.Notificacion.NotificacionDto
+
+<h2>Eliminar Notificación</h2>
+
+<p>¿Seguro que deseas eliminar esta notificación?</p>
+
+<div>
+    <p><strong>Mensaje:</strong> @Model.Mensaje</p>
+    <p>
+        <strong>Tipo Evento:</strong>
+        @((SGA.Domain.Enums.Reservation.TipoEvento)Model.TipoEvento)
+    </p>
+    <p><strong>Fecha:</strong> @Model.FechaHora</p>
+</div>
+
+<form action="/Notificacion/Delete" method="post">
+
+    <input type="hidden" name="id" value="@Model.Id" />
+
+    <button type="submit" class="btn btn-danger">Eliminar</button>
+    <a href="/Notificacion/Index" class="btn btn-secondary">Cancelar</a>
+
+</form>

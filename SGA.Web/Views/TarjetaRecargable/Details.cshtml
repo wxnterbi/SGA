@@ -1,0 +1,35 @@
+﻿@model SGA.Application.Dtos.TarjetaRecargable.TarjetaRecargableDto
+
+@{
+    ViewData["Title"] = "Detalles";
+}
+
+<h2>Detalles de la Tarjeta</h2>
+
+<table class="table table-bordered">
+
+    <tr>
+        <th>Id</th>
+        <td>@Model.Id</td>
+    </tr>
+
+    <tr>
+        <th>Usuario</th>
+        <td>@Model.UsuarioId</td>
+    </tr>
+
+    <tr>
+        <th>Saldo</th>
+        <td>@Model.Saldo</td>
+    </tr>
+
+    <tr>
+        <th>Estado</th>
+        <td>@((SGA.Domain.Enums.Reservation.EstadoTarjeta)Model.Estado)</td>
+    </tr>
+
+</table>
+
+<a href="/TarjetaRecargable" class="btn btn-secondary">
+    Volver
+</a>

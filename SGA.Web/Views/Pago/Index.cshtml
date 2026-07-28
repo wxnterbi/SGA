@@ -1,0 +1,53 @@
+﻿@model IEnumerable<SGA.Application.Dtos.Pago.PagoDto>
+
+@{
+    ViewData["Title"] = "Pagos";
+}
+
+<h2>Listado de Pagos</h2>
+
+<p>
+    <a href="/Pago/Create" class="btn btn-primary">
+        Nuevo Pago
+    </a>
+</p>
+
+<table class="table table-bordered table-striped">
+    <thead>
+        <tr>
+            <th>Id</th>
+            <th>Usuario</th>
+            <th>Monto</th>
+            <th>Fecha</th>
+            <th>Modalidad</th>
+            <th>Acciones</th>
+        </tr>
+    </thead>
+
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.Id</td>
+                <td>@item.UsuarioId</td>
+                <td>@item.Monto</td>
+                <td>@item.FechaPago</td>
+                <td>@item.Modalidad</td>
+
+                <td>
+                    <a href="/Pago/Details/@item.Id" class="btn btn-info btn-sm">
+                        Detalles
+                    </a>
+
+                    <a href="/Pago/Edit/@item.Id" class="btn btn-warning btn-sm">
+                        Editar
+                    </a>
+
+                    <a href="/Pago/Delete/@item.Id" class="btn btn-danger btn-sm">
+                        Eliminar
+                    </a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
