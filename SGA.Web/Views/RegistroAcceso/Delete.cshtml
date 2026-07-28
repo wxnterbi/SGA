@@ -1,0 +1,52 @@
+﻿@model SGA.Application.Dtos.RegistroAcceso.RegistroAccesoDto
+
+<h2>Eliminar Registro de Acceso</h2>
+
+<div class="alert alert-danger">
+
+    <h4>
+        ¿Está seguro de que desea eliminar este registro?
+    </h4>
+
+</div>
+
+<table class="table table-bordered">
+
+    <tr>
+        <th>Usuario</th>
+        <td>@Model.UsuarioId</td>
+    </tr>
+
+    <tr>
+        <th>Viaje</th>
+        <td>@Model.ViajeId</td>
+    </tr>
+
+    <tr>
+        <th>Permitido</th>
+        <td>@(Model.Permitido ? "Sí" : "No")</td>
+    </tr>
+
+    <tr>
+        <th>Motivo</th>
+        <td>@Model.Motivo</td>
+    </tr>
+
+    <tr>
+        <th>Fecha y Hora</th>
+        <td>@Model.FechaHora</td>
+    </tr>
+
+</table>
+
+<form action="/RegistroAcceso/Delete/@Model.Id" method="post">
+
+    <button type="submit" class="btn btn-danger">
+        Eliminar
+    </button>
+
+    <a href="/RegistroAcceso/Index" class="btn btn-secondary">
+        Cancelar
+    </a>
+
+</form>

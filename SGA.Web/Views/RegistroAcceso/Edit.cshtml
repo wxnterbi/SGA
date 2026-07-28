@@ -1,0 +1,112 @@
+﻿@model SGA.Application.Dtos.RegistroAcceso.RegistroAccesoDto
+
+<h2>Editar Registro de Acceso</h2>
+
+@if (!ViewData.ModelState.IsValid)
+{
+    <div class="alert alert-danger">
+        @foreach (var error in ViewData.ModelState.Values.SelectMany(v => v.Errors))
+        {
+            <div>@error.ErrorMessage</div>
+        }
+    </div>
+}
+
+<form action="/RegistroAcceso/Edit" method="post">
+
+    <input type="hidden" name="Id" value="@Model.Id" />
+
+    <div class="mb-3">
+        <label>Usuario</label>
+
+        <select name="UsuarioId" class="form-control">
+
+            @foreach (var usuario in ViewBag.Usuarios)
+            {
+                if (usuario.Value == Model.UsuarioId.ToString())
+                {
+                    <option value="@usuario.Value" selected>
+                        @usuario.Text
+                    </option>
+                }
+                else
+                {
+                    <option value="@usuario.Value">
+                        @usuario.Text
+                    </option>
+                }
+            }
+
+        </select>
+
+    </div>
+
+    <div class="mb-3">
+        <label>Viaje</label>
+
+        <select name="ViajeId" class="form-control">
+
+            @foreach (var viaje in ViewBag.Viajes)
+            {
+                if (viaje.Value == Model.ViajeId.ToString())
+                {
+                    <option value="@viaje.Value" selected>
+                        @viaje.Text
+                    </option>
+                }
+                else
+                {
+                    <option value="@viaje.Value">
+                        @viaje.Text
+                    </option>
+                }
+            }
+
+        </select>
+
+    </div>
+
+    <div class="mb-3">
+        <label>Permitido</label>
+
+        <select name="Permitido" class="form-control">
+
+            @if (Model.Permitido)
+            {
+                <option value="true" selected>Sí</option>
+                <option value="false">No</option>
+            }
+            else
+            {
+                <option value="true">Sí</option>
+                <option value="false" selected>No</option>
+            }
+
+        </select>
+
+    </div>
+
+    <div class="mb-3">
+        <label>Motivo</label>
+        <input type="text" name="Motivo" value="@Model.Motivo" class="form-control" />
+    </div>
+
+    <div class="mb-3">
+        <label>Fecha y Hora</label>
+
+        <input type="datetime-local"
+               name="FechaHora"
+               value="@Model.FechaHora.ToString("yyyy-MM-ddTHH:mm")"
+               class="form-control" />
+
+    </div>
+
+    <button type="submit" class="btn btn-primary">
+        Guardar Cambios
+    </button>
+
+    <a href="/RegistroAcceso/Index" class="btn btn-secondary">
+        Cancelar
+    </a>
+
+</form>

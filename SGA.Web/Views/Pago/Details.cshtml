@@ -1,0 +1,33 @@
+﻿@model SGA.Application.Dtos.Pago.PagoDto
+
+@{
+    ViewData["Title"] = "Detalles del Pago";
+}
+
+<h2>Detalles del Pago</h2>
+
+<div class="card">
+    <div class="card-body">
+
+        <p><strong>ID:</strong> @Model.Id</p>
+
+        <p><strong>Usuario:</strong> @Model.UsuarioId</p>
+
+        <p><strong>Monto:</strong> @Model.Monto</p>
+
+        <p><strong>Fecha de Pago:</strong> @Model.FechaPago</p>
+
+        <p><strong>Modalidad:</strong> @Model.Modalidad</p>
+
+    </div>
+</div>
+
+<br />
+
+<a href="/Pago/Edit/@Model.Id" class="btn btn-warning">
+    Editar
+</a>
+
+<a href="/Pago/Index" class="btn btn-secondary">
+    Volver
+</a>

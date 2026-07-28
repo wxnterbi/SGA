@@ -1,0 +1,51 @@
+﻿@model IEnumerable<SGA.Application.Dtos.TarjetaRecargable.TarjetaRecargableDto>
+
+@{
+    ViewData["Title"] = "Tarjetas Recargables";
+}
+
+<h2>Listado de Tarjetas Recargables</h2>
+
+<p>
+    <a href="/TarjetaRecargable/Create" class="btn btn-primary">
+        Nueva Tarjeta
+    </a>
+</p>
+
+<table class="table table-bordered table-striped">
+    <thead>
+        <tr>
+            <th>Id</th>
+            <th>Usuario</th>
+            <th>Saldo</th>
+            <th>Estado</th>
+            <th width="250">Acciones</th>
+        </tr>
+    </thead>
+
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.Id</td>
+                <td>@item.UsuarioId</td>
+                <td>@item.Saldo</td>
+                <td>@(((SGA.Domain.Enums.Reservation.EstadoTarjeta)item.Estado).ToString())</td>
+
+                <td>
+                    <a href="/TarjetaRecargable/Details/@item.Id" class="btn btn-info btn-sm">
+                        Detalles
+                    </a>
+
+                    <a href="/TarjetaRecargable/Edit/@item.Id" class="btn btn-warning btn-sm">
+                        Editar
+                    </a>
+
+                    <a href="/TarjetaRecargable/Delete/@item.Id" class="btn btn-danger btn-sm">
+                        Eliminar
+                    </a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

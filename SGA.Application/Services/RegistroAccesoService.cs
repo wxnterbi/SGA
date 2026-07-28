@@ -59,7 +59,7 @@ namespace SGA.Application.Services
 
         public async Task AddAsync(RegistroAccesoDto dto)
         {
-            _accesoRules.ValidarAutorizacion(dto.Permitido);
+            var mensaje = _accesoRules.ValidarAutorizacion(dto.Permitido);
 
             var registro = new RegistroAcceso
             {
@@ -72,10 +72,21 @@ namespace SGA.Application.Services
 
             await _registroRepository.AddAsync(registro);
 
-            await _notificationService.SendNotificationAsync(
+            if (dto.Permitido)
+
+            {
+                await _notificationService.SendNotificationAsync(
                  "estudiante@itla.edu.do",
                  "Acceso registrado",
                  "Se registró un acceso al sistema correctamente.");
+            }
+            else
+            {
+                await _notificationService.SendNotificationAsync(
+                    "estudiante@itla.edu.do",
+                    "Acceso denegado",
+                    "El usuario no posee una autorización válida para utilizar el servicio.");
+            }
         }
 
         public async Task UpdateAsync(RegistroAccesoDto dto)

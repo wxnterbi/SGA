@@ -2,11 +2,14 @@
 {
     public class AccesoRules
     {
-        public void ValidarAutorizacion(bool autorizacionValida)
+        public string? ValidarAutorizacion(bool autorizacionValida)
         {
             if (!autorizacionValida)
-                throw new InvalidOperationException(
-                    "El usuario no posee una autorización válida para utilizar el servicio.");
+            {
+                return "El usuario no posee una autorización válida para utilizar el servicio.";
+            }
+
+            return null;
         }
     }
 }

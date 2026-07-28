@@ -1,0 +1,56 @@
+﻿@model SGA.Application.Dtos.Notificacion.NotificacionDto
+
+<h2>Nueva Notificación</h2>
+
+@if (ViewData.ModelState.ErrorCount > 0)
+{
+    <div class="alert alert-danger">
+
+        @foreach (var estado in ViewData.ModelState.Values)
+        {
+            foreach (var error in estado.Errors)
+            {
+                <div>@error.ErrorMessage</div>
+            }
+        }
+
+    </div>
+}
+
+<form action="/Notificacion/Create" method="post">
+
+    <div class="mb-3">
+        <label>UsuarioId</label>
+        <input type="number" name="UsuarioId" class="form-control" />
+    </div>
+
+    <div class="mb-3">
+        <label>Tipo de Evento</label>
+        <select name="TipoEvento" class="form-control">
+            <option value="1">Pago Realizado</option>
+            <option value="2">Viaje Iniciado</option>
+            <option value="3">Viaje Finalizado</option>
+            <option value="4">Acceso Denegado</option>
+            <option value="5">Incidencia Registrada</option>
+        </select>
+    </div>
+
+    <div class="mb-3">
+        <label>Mensaje</label>
+        <input type="text" name="Mensaje" class="form-control" />
+    </div>
+
+    <div class="mb-3">
+        <label>Fecha</label>
+        <input type="datetime-local" name="FechaHora" class="form-control" />
+    </div>
+
+    <button type="submit" class="btn btn-success">
+        Guardar
+    </button>
+
+    <a href="/Notificacion" class="btn btn-secondary">
+        Volver
+    </a>
+
+</form>

@@ -1,0 +1,48 @@
+﻿@model SGA.Application.Dtos.Notificacion.NotificacionDto
+
+@{
+    ViewData["Title"] = "Detalles de la Notificación";
+}
+
+<h2>Detalles de la Notificación</h2>
+
+<div class="card">
+    <div class="card-body">
+
+        <p>
+            <strong>Id:</strong>
+            @Model.Id
+        </p>
+
+        <p>
+            <strong>Usuario:</strong>
+            @Model.UsuarioId
+        </p>
+
+        <p>
+            <strong>Tipo de Evento:</strong>
+            @((SGA.Domain.Enums.Reservation.TipoEvento)Model.TipoEvento)
+        </p>
+
+        <p>
+            <strong>Mensaje:</strong>
+            @Model.Mensaje
+        </p>
+
+        <p>
+            <strong>Fecha y Hora:</strong>
+            @Model.FechaHora
+        </p>
+
+    </div>
+</div>
+
+<br />
+
+<a href="/Notificacion/Edit/@Model.Id" class="btn btn-warning">
+    Editar
+</a>
+
+<a href="/Notificacion/Index" class="btn btn-secondary">
+    Volver
+</a>

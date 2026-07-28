@@ -1,0 +1,47 @@
+﻿@model SGA.Application.Dtos.TarjetaRecargable.TarjetaRecargableDto
+
+@{
+    ViewData["Title"] = "Eliminar Tarjeta";
+}
+
+<h2>Eliminar Tarjeta</h2>
+
+<div class="alert alert-danger">
+    ¿Está seguro de que desea eliminar esta tarjeta?
+</div>
+
+<table class="table table-bordered">
+
+    <tr>
+        <th>Id</th>
+        <td>@Model.Id</td>
+    </tr>
+
+    <tr>
+        <th>Usuario</th>
+        <td>@Model.UsuarioId</td>
+    </tr>
+
+    <tr>
+        <th>Saldo</th>
+        <td>@Model.Saldo</td>
+    </tr>
+
+    <tr>
+        <th>Estado</th>
+        <td>@(((SGA.Domain.Enums.Reservation.EstadoTarjeta)Model.Estado).ToString())</td>
+    </tr>
+
+</table>
+
+<form action="/TarjetaRecargable/Delete/@Model.Id" method="post">
+
+    <button type="submit" class="btn btn-danger">
+        Eliminar
+    </button>
+
+    <a href="/TarjetaRecargable" class="btn btn-secondary">
+        Cancelar
+    </a>
+
+</form>

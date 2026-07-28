@@ -1,0 +1,73 @@
+﻿@model IEnumerable<SGA.Application.Dtos.RegistroAcceso.RegistroAccesoDto>
+
+@{
+    ViewData["Title"] = "Registro de Accesos";
+}
+
+<h2>Listado de Registros de Acceso</h2>
+
+<p>
+    <a href="/RegistroAcceso/Create" class="btn btn-primary">
+        Nuevo Registro
+    </a>
+</p>
+
+<table class="table table-bordered table-striped">
+
+    <thead>
+        <tr>
+            <th>Id</th>
+            <th>Usuario</th>
+            <th>Viaje</th>
+            <th>Permitido</th>
+            <th>Motivo</th>
+            <th>Fecha y Hora</th>
+            <th>Acciones</th>
+        </tr>
+    </thead>
+
+    <tbody>
+
+        @if (Model != null)
+        {
+            foreach (var item in Model)
+            {
+                <tr>
+
+                    <td>@item.Id</td>
+
+                    <td>@item.UsuarioId</td>
+
+                    <td>@item.ViajeId</td>
+
+                    <td>
+                        @(item.Permitido ? "Sí" : "No")
+                    </td>
+
+                    <td>@item.Motivo</td>
+
+                    <td>@item.FechaHora</td>
+
+                    <td>
+
+                        <a href="/RegistroAcceso/Details/@item.Id" class="btn btn-info btn-sm">
+                            Detalles
+                        </a>
+
+                        <a href="/RegistroAcceso/Edit/@item.Id" class="btn btn-warning btn-sm">
+                            Editar
+                        </a>
+
+                        <a href="/RegistroAcceso/Delete/@item.Id" class="btn btn-danger btn-sm">
+                            Eliminar
+                        </a>
+
+                    </td>
+
+                </tr>
+            }
+        }
+
+    </tbody>
+
+</table>

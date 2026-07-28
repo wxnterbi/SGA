@@ -1,0 +1,64 @@
+﻿@model IEnumerable<SGA.Application.Dtos.Notificacion.NotificacionDto>
+
+@{
+    ViewData["Title"] = "Notificaciones";
+}
+
+<h2>Listado de Notificaciones</h2>
+
+<p>
+    <a href="/Notificacion/Create" class="btn btn-primary">
+        Nueva Notificación
+    </a>
+</p>
+
+<table class="table table-bordered table-striped">
+
+    <thead>
+        <tr>
+            <th>Id</th>
+            <th>Usuario</th>
+            <th>Tipo Evento</th>
+            <th>Mensaje</th>
+            <th>Fecha y Hora</th>
+            <th>Acciones</th>
+        </tr>
+    </thead>
+
+    <tbody>
+
+        @if (Model != null)
+        {
+            foreach (var item in Model)
+            {
+                <tr>
+
+                    <td>@item.Id</td>
+                    <td>@item.UsuarioId</td>
+                    <td>@((SGA.Domain.Enums.Reservation.TipoEvento)item.TipoEvento)</td>
+                    <td>@item.Mensaje</td>
+                    <td>@item.FechaHora</td>
+
+                    <td>
+
+                        <a href="/Notificacion/Details/@item.Id" class="btn btn-info btn-sm">
+                            Detalles
+                        </a>
+
+                        <a href="/Notificacion/Edit/@item.Id" class="btn btn-warning btn-sm">
+                            Editar
+                        </a>
+
+                        <a href="/Notificacion/Delete/@item.Id" class="btn btn-danger btn-sm">
+                            Eliminar
+                        </a>
+
+                    </td>
+
+                </tr>
+            }
+        }
+
+    </tbody>
+
+</table>

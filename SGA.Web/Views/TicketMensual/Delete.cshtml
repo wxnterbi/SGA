@@ -1,0 +1,53 @@
+﻿@model SGA.Application.Dtos.TicketMensual.TicketMensualDto
+
+<h2>Eliminar Ticket</h2>
+
+<div class="alert alert-danger">
+    ¿Está seguro de eliminar este ticket mensual?
+</div>
+
+<table class="table table-bordered">
+
+    <tr>
+        <th>Id</th>
+        <td>@Model.Id</td>
+    </tr>
+
+    <tr>
+        <th>Usuario</th>
+        <td>@Model.UsuarioId</td>
+    </tr>
+
+    <tr>
+        <th>Pago</th>
+        <td>@Model.PagoId</td>
+    </tr>
+
+    <tr>
+        <th>Fecha Inicio</th>
+        <td>@Model.FechaInicio.ToShortDateString()</td>
+    </tr>
+
+    <tr>
+        <th>Fecha Fin</th>
+        <td>@Model.FechaFin.ToShortDateString()</td>
+    </tr>
+
+    <tr>
+        <th>Estado</th>
+        <td>@((SGA.Domain.Enums.Reservation.EstadoTicket)Model.Estado)</td>
+    </tr>
+
+</table>
+
+<form action="/TicketMensual/Delete/@Model.Id" method="post">
+
+    <button class="btn btn-danger">
+        Eliminar
+    </button>
+
+    <a href="/TicketMensual" class="btn btn-secondary">
+        Cancelar
+    </a>
+
+</form>

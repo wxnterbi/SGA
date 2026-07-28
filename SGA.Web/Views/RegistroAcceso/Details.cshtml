@@ -1,0 +1,51 @@
+﻿@model SGA.Application.Dtos.RegistroAcceso.RegistroAccesoDto
+
+<h2>Detalles del Registro de Acceso</h2>
+
+<div class="card">
+
+    <div class="card-body">
+
+        <p>
+            <strong>Id:</strong>
+            @Model.Id
+        </p>
+
+        <p>
+            <strong>Usuario:</strong>
+            @Model.UsuarioId
+        </p>
+
+        <p>
+            <strong>Viaje:</strong>
+            @Model.ViajeId
+        </p>
+
+        <p>
+            <strong>Permitido:</strong>
+            @(Model.Permitido ? "Sí" : "No")
+        </p>
+
+        <p>
+            <strong>Motivo:</strong>
+            @Model.Motivo
+        </p>
+
+        <p>
+            <strong>Fecha y Hora:</strong>
+            @Model.FechaHora
+        </p>
+
+    </div>
+
+</div>
+
+<br />
+
+<a href="/RegistroAcceso/Edit/@Model.Id" class="btn btn-warning">
+    Editar
+</a>
+
+<a href="/RegistroAcceso/Index" class="btn btn-secondary">
+    Volver
+</a>

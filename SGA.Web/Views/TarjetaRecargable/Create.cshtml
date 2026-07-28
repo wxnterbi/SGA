@@ -1,0 +1,44 @@
+﻿@model SGA.Application.Dtos.TarjetaRecargable.TarjetaRecargableDto
+
+<h2>Nueva Tarjeta Recargable</h2>
+
+@if (!ViewData.ModelState.IsValid)
+{
+    <div class="alert alert-danger">
+        @foreach (var error in ViewData.ModelState.Values.SelectMany(v => v.Errors))
+        {
+            <div>@error.ErrorMessage</div>
+        }
+    </div>
+}
+
+<form action="/TarjetaRecargable/Create" method="post">
+
+    <div class="mb-3">
+        <label>Usuario</label>
+        <input type="number" name="UsuarioId" class="form-control" />
+    </div>
+
+    <div class="mb-3">
+        <label>Saldo</label>
+        <input type="number" step="0.01" name="Saldo" class="form-control" />
+    </div>
+
+    <div class="mb-3">
+        <label>Estado</label>
+        <select name="Estado" class="form-control">
+            <option value="1">Activa</option>
+            <option value="2">Bloqueada</option>
+            <option value="3">Vencida</option>
+        </select>
+    </div>
+
+    <button type="submit" class="btn btn-success">
+        Guardar
+    </button>
+
+    <a href="/TarjetaRecargable" class="btn btn-secondary">
+        Volver
+    </a>
+
+</form>
