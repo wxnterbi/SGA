@@ -14,4 +14,12 @@
     <ProjectReference Include="..\SGA.Persistence\SGA.Persistence.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Views\Autobus\" />
+    <Folder Include="Views\Conductor\" />
+    <Folder Include="Views\Ruta\" />
+    <Folder Include="Views\Viaje\" />
+    <Folder Include="Views\Usuario\" />
+  </ItemGroup>
+
 </Project>
