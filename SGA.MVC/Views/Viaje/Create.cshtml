@@ -1,0 +1,69 @@
+﻿@model SGA.Application.Dtos.Viaje.ViajeDto
+
+<h2>Nuevo Viaje</h2>
+
+@if (ViewData.ModelState.ErrorCount > 0)
+{
+    <div class="alert alert-danger">
+        @foreach (var estado in ViewData.ModelState.Values)
+        {
+            foreach (var error in estado.Errors)
+            {
+                <div>@error.ErrorMessage</div>
+            }
+        }
+    </div>
+}
+
+<form action="/Viaje/Create" method="post">
+
+    <div class="mb-3">
+        <label>Ruta</label>
+        <input type="number" name="RutaId" class="form-control" value="@Model?.RutaId" />
+    </div>
+
+    <div class="mb-3">
+        <label>Horario</label>
+        <input type="number" name="HorarioId" class="form-control" value="@Model?.HorarioId" />
+    </div>
+
+    <div class="mb-3">
+        <label>Autobús</label>
+        <input type="number" name="AutobusId" class="form-control" value="@Model?.AutobusId" />
+    </div>
+
+    <div class="mb-3">
+        <label>Conductor</label>
+        <input type="number" name="ConductorId" class="form-control" value="@Model?.ConductorId" />
+    </div>
+
+    <div class="mb-3">
+        <label>Estado</label>
+
+        <select name="Estado" class="form-control">
+            <option value="1">Programado</option>
+            <option value="2">En Curso</option>
+            <option value="3">Finalizado</option>
+            <option value="4">Cancelado</option>
+        </select>
+    </div>
+
+    <div class="mb-3">
+        <label>Hora Inicio Real</label>
+        <input type="datetime-local" name="HoraInicioReal" class="form-control" />
+    </div>
+
+    <div class="mb-3">
+        <label>Hora Fin Real</label>
+        <input type="datetime-local" name="HoraFinReal" class="form-control" />
+    </div>
+
+    <button type="submit" class="btn btn-success">
+        Guardar
+    </button>
+
+    <a href="/Viaje" class="btn btn-secondary">
+        Volver
+    </a>
+
+</form>

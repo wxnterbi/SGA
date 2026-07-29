@@ -1,0 +1,38 @@
+﻿@model SGA.Application.Dtos.Conductor.ConductorDto
+
+<h2>Editar Conductor</h2>
+
+<form action="/Conductor/Edit" method="post">
+
+    <input type="hidden" name="Id" value="@Model.Id" />
+
+    <div class="mb-3">
+        <label>Nombre</label>
+        <input type="text" name="Nombre" class="form-control" value="@Model.Nombre" />
+    </div>
+
+    <div class="mb-3">
+        <label>Cédula</label>
+        <input type="text" name="Cedula" class="form-control" value="@Model.Cedula" />
+    </div>
+
+    <div class="mb-3">
+
+        <label>Estado</label>
+
+        <select name="EstadoConductorId" class="form-control">
+
+            <option value="1">Activo</option>
+            <option value="2">Vacaciones</option>
+            <option value="3">Suspendido</option>
+            <option value="4">Retirado</option>
+
+        </select>
+
+    </div>
+
+    <button class="btn btn-warning">
+        Guardar Cambios
+    </button>
+
+</form>

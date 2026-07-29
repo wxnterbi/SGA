@@ -1,0 +1,53 @@
+﻿@model SGA.Application.Dtos.Conductor.ConductorDto
+
+<h2>Nuevo Conductor</h2>
+
+@if (ViewData.ModelState.ErrorCount > 0)
+{
+    <div class="alert alert-danger">
+        @foreach (var estado in ViewData.ModelState.Values)
+        {
+            foreach (var error in estado.Errors)
+            {
+                <div>@error.ErrorMessage</div>
+            }
+        }
+    </div>
+}
+
+<form action="/Conductor/Create" method="post">
+
+    <div class="mb-3">
+        <label>Nombre</label>
+        <input type="text" name="Nombre" class="form-control" />
+    </div>
+
+    <div class="mb-3">
+        <label>Cédula</label>
+        <input type="text" name="Cedula" class="form-control" />
+    </div>
+
+    <div class="mb-3">
+
+        <label>Estado</label>
+
+        <select name="EstadoConductorId" class="form-control">
+
+            <option value="1">Activo</option>
+            <option value="2">Vacaciones</option>
+            <option value="3">Suspendido</option>
+            <option value="4">Retirado</option>
+
+        </select>
+
+    </div>
+
+    <button class="btn btn-success">
+        Guardar
+    </button>
+
+    <a href="/Conductor" class="btn btn-secondary">
+        Volver
+    </a>
+
+</form>

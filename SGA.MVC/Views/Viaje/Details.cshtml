@@ -1,0 +1,46 @@
+﻿@model SGA.Application.Dtos.Viaje.ViajeDto
+
+<h2>Detalle del Viaje</h2>
+
+<table class="table table-bordered">
+
+    <tr>
+        <th>Ruta</th>
+        <td>@Model.RutaId</td>
+    </tr>
+
+    <tr>
+        <th>Horario</th>
+        <td>@Model.HorarioId</td>
+    </tr>
+
+    <tr>
+        <th>Autobús</th>
+        <td>@Model.AutobusId</td>
+    </tr>
+
+    <tr>
+        <th>Conductor</th>
+        <td>@Model.ConductorId</td>
+    </tr>
+
+    <tr>
+        <th>Estado</th>
+        <td>@Model.Estado</td>
+    </tr>
+
+    <tr>
+        <th>Hora Inicio</th>
+        <td>@Model.HoraInicioReal</td>
+    </tr>
+
+    <tr>
+        <th>Hora Fin</th>
+        <td>@Model.HoraFinReal</td>
+    </tr>
+
+</table>
+
+<a href="/Viaje" class="btn btn-secondary">
+    Volver
+</a>

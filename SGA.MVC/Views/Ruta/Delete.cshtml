@@ -1,0 +1,38 @@
+﻿@model SGA.Application.Dtos.Ruta.RutaDto
+
+<h2>Eliminar Ruta</h2>
+
+<div class="alert alert-danger">
+    ¿Está seguro de eliminar esta ruta?
+</div>
+
+<table class="table table-bordered">
+
+    <tr>
+        <th>Nombre</th>
+        <td>@Model.Nombre</td>
+    </tr>
+
+    <tr>
+        <th>Origen</th>
+        <td>@Model.Origen</td>
+    </tr>
+
+    <tr>
+        <th>Destino</th>
+        <td>@Model.Destino</td>
+    </tr>
+
+</table>
+
+<form action="/Ruta/Delete/@Model.Id" method="post">
+
+    <button type="submit" class="btn btn-danger">
+        Eliminar
+    </button>
+
+    <a href="/Ruta" class="btn btn-secondary">
+        Cancelar
+    </a>
+
+</form>

@@ -1,0 +1,36 @@
+﻿@model SGA.Application.Dtos.Autobus.AutobusDto
+
+<h2>Nuevo Autobús</h2>
+
+<form asp-action="Create" method="post">
+
+    <div class="mb-3">
+        <label>Placa</label>
+        <input asp-for="Placa" class="form-control" />
+        <span asp-validation-for="Placa" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label>Capacidad</label>
+        <input asp-for="Capacidad" class="form-control" />
+        <span asp-validation-for="Capacidad" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label>Estado</label>
+
+        <select asp-for="EstadoAutobusId" class="form-control">
+            <option value="1">Disponible</option>
+            <option value="2">En Ruta</option>
+            <option value="3">Mantenimiento</option>
+            <option value="4">Fuera de Servicio</option>
+        </select>
+    </div>
+
+    <button class="btn btn-success">Guardar</button>
+
+    <a asp-action="Index" class="btn btn-secondary">
+        Volver
+    </a>
+
+</form>

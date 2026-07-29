@@ -1,0 +1,60 @@
+﻿@model IEnumerable<SGA.Application.Dtos.Conductor.ConductorDto>
+
+<h2>Conductores</h2>
+
+<p>
+    <a href="/Conductor/Create" class="btn btn-primary">
+        Nuevo Conductor
+    </a>
+</p>
+
+<table class="table table-bordered">
+
+    <thead>
+
+        <tr>
+            <th>Id</th>
+            <th>Nombre</th>
+            <th>Cédula</th>
+            <th>Estado</th>
+            <th>Acciones</th>
+        </tr>
+
+    </thead>
+
+    <tbody>
+
+        @foreach (var item in Model)
+        {
+            <tr>
+
+                <td>@item.Id</td>
+
+                <td>@item.Nombre</td>
+
+                <td>@item.Cedula</td>
+
+                <td>@item.EstadoConductorId</td>
+
+                <td>
+
+                    <a href="/Conductor/Details/@item.Id" class="btn btn-info">
+                        Ver
+                    </a>
+
+                    <a href="/Conductor/Edit/@item.Id" class="btn btn-warning">
+                        Editar
+                    </a>
+
+                    <a href="/Conductor/Delete/@item.Id" class="btn btn-danger">
+                        Eliminar
+                    </a>
+
+                </td>
+
+            </tr>
+        }
+
+    </tbody>
+
+</table>

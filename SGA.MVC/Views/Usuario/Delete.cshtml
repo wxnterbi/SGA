@@ -1,0 +1,41 @@
+﻿@model SGA.Application.Dtos.Usuario.UsuarioDto
+
+<h2>Eliminar Usuario</h2>
+
+<div class="alert alert-danger">
+    ¿Está seguro de que desea eliminar este usuario?
+</div>
+
+<table class="table table-bordered">
+    <tr>
+        <th>Identificador</th>
+        <td>@Model.IdentificadorInstitucional</td>
+    </tr>
+
+    <tr>
+        <th>Nombre</th>
+        <td>@Model.Nombre</td>
+    </tr>
+
+    <tr>
+        <th>Tipo de Usuario</th>
+        <td>@Model.TipoUsuario</td>
+    </tr>
+
+    <tr>
+        <th>Estado</th>
+        <td>@Model.Estado</td>
+    </tr>
+</table>
+
+<form action="/Usuario/Delete/@Model.Id" method="post">
+
+    <button type="submit" class="btn btn-danger">
+        Eliminar
+    </button>
+
+    <a href="/Usuario" class="btn btn-secondary">
+        Cancelar
+    </a>
+
+</form>

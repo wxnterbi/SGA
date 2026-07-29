@@ -1,0 +1,41 @@
+﻿@model SGA.Application.Dtos.Ruta.RutaDto
+
+<h2>Editar Ruta</h2>
+
+@if (ViewData.ModelState.ErrorCount > 0)
+{
+    <div class="alert alert-danger">
+        @foreach (var estado in ViewData.ModelState.Values)
+        {
+            foreach (var error in estado.Errors)
+            {
+                <div>@error.ErrorMessage</div>
+            }
+        }
+    </div>
+}
+
+<form action="/Ruta/Edit" method="post">
+
+    <input type="hidden" name="Id" value="@Model.Id" />
+
+    <div class="mb-3">
+        <label>Nombre</label>
+        <input type="text" name="Nombre" class="form-control" value="@Model.Nombre" />
+    </div>
+
+    <div class="mb-3">
+        <label>Origen</label>
+        <input type="text" name="Origen" class="form-control" value="@Model.Origen" />
+    </div>
+
+    <div class="mb-3">
+        <label>Destino</label>
+        <input type="text" name="Destino" class="form-control" value="@Model.Destino" />
+    </div>
+
+    <button class="btn btn-success">Actualizar</button>
+
+    <a href="/Ruta" class="btn btn-secondary">Volver</a>
+
+</form>

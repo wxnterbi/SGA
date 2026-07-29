@@ -1,0 +1,49 @@
+﻿@model SGA.Application.Dtos.Usuario.UsuarioDto
+
+<h2>Nuevo Usuario</h2>
+
+<form asp-action="Create" method="post">
+
+    <div class="mb-3">
+        <label>Identificador</label>
+        <input asp-for="IdentificadorInstitucional" class="form-control" />
+        <span asp-validation-for="IdentificadorInstitucional" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label>Nombre</label>
+        <input asp-for="Nombre" class="form-control" />
+        <span asp-validation-for="Nombre" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label>Tipo Usuario</label>
+
+        <select asp-for="TipoUsuario" class="form-control">
+
+            <option value="1">Estudiante</option>
+            <option value="2">Empleado</option>
+
+        </select>
+
+    </div>
+
+    <div class="mb-3">
+        <label>Estado</label>
+
+        <select asp-for="Estado" class="form-control">
+
+            <option value="1">Activo</option>
+            <option value="2">Inactivo</option>
+
+        </select>
+
+    </div>
+
+    <button class="btn btn-success">Guardar</button>
+
+    <a asp-action="Index" class="btn btn-secondary">
+        Volver
+    </a>
+
+</form>

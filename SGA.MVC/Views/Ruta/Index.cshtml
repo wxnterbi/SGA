@@ -1,0 +1,39 @@
+﻿@model IEnumerable<SGA.Application.Dtos.Ruta.RutaDto>
+
+<h2>Rutas</h2>
+
+<p>
+    <a href="/Ruta/Create" class="btn btn-primary">Nueva Ruta</a>
+</p>
+
+<table class="table table-bordered table-striped">
+
+    <thead>
+        <tr>
+            <th>Nombre</th>
+            <th>Origen</th>
+            <th>Destino</th>
+            <th></th>
+        </tr>
+    </thead>
+
+    <tbody>
+
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.Nombre</td>
+                <td>@item.Origen</td>
+                <td>@item.Destino</td>
+
+                <td>
+                    <a href="/Ruta/Details/@item.Id" class="btn btn-info btn-sm">Detalles</a>
+                    <a href="/Ruta/Edit/@item.Id" class="btn btn-warning btn-sm">Editar</a>
+                    <a href="/Ruta/Delete/@item.Id" class="btn btn-danger btn-sm">Eliminar</a>
+                </td>
+            </tr>
+        }
+
+    </tbody>
+
+</table>

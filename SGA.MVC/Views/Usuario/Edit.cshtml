@@ -1,0 +1,100 @@
+﻿@model SGA.Application.Dtos.Usuario.UsuarioDto
+
+<h2>Editar Usuario</h2>
+
+@if (ViewData.ModelState.ErrorCount > 0)
+{
+    <div class="alert alert-danger">
+        @foreach (var estado in ViewData.ModelState.Values)
+        {
+            foreach (var error in estado.Errors)
+            {
+                <div>@error.ErrorMessage</div>
+            }
+        }
+    </div>
+}
+
+<form action="/Usuario/Edit" method="post">
+
+    <input type="hidden"
+           name="Id"
+           value="@Model.Id" />
+
+    <div class="mb-3">
+        <label>Identificador Institucional</label>
+        <input type="text"
+               name="IdentificadorInstitucional"
+               class="form-control"
+               value="@Model.IdentificadorInstitucional" />
+    </div>
+
+    <div class="mb-3">
+        <label>Nombre</label>
+        <input type="text"
+               name="Nombre"
+               class="form-control"
+               value="@Model.Nombre" />
+    </div>
+
+    <div class="mb-3">
+        <label>Tipo de Usuario</label>
+
+        <select name="TipoUsuario" class="form-control">
+
+            @if ((int)Model.TipoUsuario == 1)
+            {
+                <option value="1" selected>Estudiante</option>
+            }
+            else
+            {
+                <option value="1">Estudiante</option>
+            }
+
+            @if ((int)Model.TipoUsuario == 2)
+            {
+                <option value="2" selected>Empleado</option>
+            }
+            else
+            {
+                <option value="2">Empleado</option>
+            }
+
+        </select>
+    </div>
+
+    <div class="mb-3">
+        <label>Estado</label>
+
+        <select name="Estado" class="form-control">
+
+            @if ((int)Model.Estado == 1)
+            {
+                <option value="1" selected>Activo</option>
+            }
+            else
+            {
+                <option value="1">Activo</option>
+            }
+
+            @if ((int)Model.Estado == 2)
+            {
+                <option value="2" selected>Inactivo</option>
+            }
+            else
+            {
+                <option value="2">Inactivo</option>
+            }
+
+        </select>
+    </div>
+
+    <button type="submit" class="btn btn-success">
+        Actualizar
+    </button>
+
+    <a href="/Usuario" class="btn btn-secondary">
+        Volver
+    </a>
+
+</form>

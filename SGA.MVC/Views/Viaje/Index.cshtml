@@ -1,0 +1,63 @@
+﻿@model IEnumerable<SGA.Application.Dtos.Viaje.ViajeDto>
+
+<h2>Viajes</h2>
+
+<p>
+    <a href="/Viaje/Create" class="btn btn-primary">
+        Nuevo Viaje
+    </a>
+</p>
+
+<table class="table table-bordered table-striped">
+
+    <thead>
+
+        <tr>
+            <th>Ruta</th>
+            <th>Horario</th>
+            <th>Autobús</th>
+            <th>Conductor</th>
+            <th>Estado</th>
+            <th></th>
+        </tr>
+
+    </thead>
+
+    <tbody>
+
+        @foreach (var item in Model)
+        {
+            <tr>
+
+                <td>@item.RutaId</td>
+
+                <td>@item.HorarioId</td>
+
+                <td>@item.AutobusId</td>
+
+                <td>@item.ConductorId</td>
+
+                <td>@item.Estado</td>
+
+                <td>
+
+                    <a href="/Viaje/Details/@item.Id" class="btn btn-info btn-sm">
+                        Detalles
+                    </a>
+
+                    <a href="/Viaje/Edit/@item.Id" class="btn btn-warning btn-sm">
+                        Editar
+                    </a>
+
+                    <a href="/Viaje/Delete/@item.Id" class="btn btn-danger btn-sm">
+                        Eliminar
+                    </a>
+
+                </td>
+
+            </tr>
+        }
+
+    </tbody>
+
+</table>

@@ -1,0 +1,21 @@
+﻿@model SGA.Application.Dtos.Conductor.ConductorDto
+
+<h2>Eliminar Conductor</h2>
+
+<p>¿Desea eliminar este conductor?</p>
+
+<p><strong>@Model.Nombre</strong></p>
+
+<form action="/Conductor/Delete" method="post">
+
+    <input type="hidden" name="id" value="@Model.Id" />
+
+    <button class="btn btn-danger">
+        Eliminar
+    </button>
+
+    <a href="/Conductor" class="btn btn-secondary">
+        Cancelar
+    </a>
+
+</form>
