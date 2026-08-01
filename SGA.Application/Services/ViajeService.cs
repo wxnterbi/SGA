@@ -15,11 +15,11 @@ namespace SGA.Application.Services
 
         public ViajeService(
             IViajeRepository viajeRepository,
-            ViajeRules _viajeRules,
+            ViajeRules viajeRules,
             INotificationService notificationService)
         {
             _viajeRepository = viajeRepository;
-            _viajeRules = _viajeRules;
+            _viajeRules = viajeRules;
             _notificationService = notificationService;
         }
 

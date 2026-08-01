@@ -12,8 +12,18 @@
     </div>
 
     <div class="mb-3">
+        <label>Telefono</label>
+        <input type="text" name="Telefono" class="form-control" value="@Model.Telefono" />
+    </div>
+
+    <div class="mb-3">
         <label>Cédula</label>
         <input type="text" name="Cedula" class="form-control" value="@Model.Cedula" />
+    </div>
+
+    <div class="mb-3">
+        <label>Licencia</label>
+        <input type="text" name="Licencia" class="form-control" value="@Model.Licencia" />
     </div>
 
     <div class="mb-3">
@@ -32,7 +42,9 @@
     </div>
 
     <button class="btn btn-warning">
-        Guardar Cambios
+        Actualizar
     </button>
+
+    <a href="/Conductor" class="btn btn-secondary">Volver</a>
 
 </form>

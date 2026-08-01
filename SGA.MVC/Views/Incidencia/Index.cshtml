@@ -1,0 +1,59 @@
+﻿@model IEnumerable<SGA.Application.Dtos.Incidencia.IncidenciaDto>
+
+<h1>Incidencias</h1>
+
+<p>
+    <a asp-action="Create" class="btn btn-primary">
+        Nueva Incidencia
+    </a>
+</p>
+
+<table class="table table-bordered">
+
+    <thead>
+        <tr>
+            <th>Id</th>
+            <th>Viaje</th>
+            <th>Conductor</th>
+            <th>Fecha y Hora</th>
+            <th></th>
+        </tr>
+    </thead>
+
+    <tbody>
+
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.Id</td>
+                <td>@item.ViajeId</td>
+                <td>@item.ConductorId</td>
+                <td>@item.FechaHora</td>
+
+                <td>
+
+                    <a asp-action="Details"
+                       asp-route-id="@item.Id"
+                       class="btn btn-info">
+                        Detalles
+                    </a>
+
+                    <a asp-action="Edit"
+                       asp-route-id="@item.Id"
+                       class="btn btn-warning">
+                        Editar
+                    </a>
+
+                    <a asp-action="Delete"
+                       asp-route-id="@item.Id"
+                       class="btn btn-danger">
+                        Eliminar
+                    </a>
+
+                </td>
+            </tr>
+        }
+
+    </tbody>
+
+</table>

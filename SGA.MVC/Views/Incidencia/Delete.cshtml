@@ -1,0 +1,48 @@
+﻿@model SGA.Application.Dtos.Incidencia.IncidenciaDto
+
+<h2>Eliminar Incidencia</h2>
+
+<div class="alert alert-danger">
+    ¿Está seguro de eliminar esta incidencia?
+</div>
+
+<table class="table table-bordered">
+
+    <tr>
+        <th>Viaje</th>
+        <td>@Model.ViajeId</td>
+    </tr>
+
+    <tr>
+        <th>Conductor</th>
+        <td>@Model.ConductorId</td>
+    </tr>
+
+    <tr>
+        <th>Tipo de Incidencia</th>
+        <td>@Model.Tipo</td>
+    </tr>
+
+    <tr>
+        <th>Descripción</th>
+        <td>@Model.Descripcion</td>
+    </tr>
+
+    <tr>
+        <th>Fecha y Hora</th>
+        <td>@Model.FechaHora</td>
+    </tr>
+
+</table>
+
+<form action="/Incidencia/Delete/@Model.Id" method="post">
+
+    <button type="submit" class="btn btn-danger">
+        Eliminar
+    </button>
+
+    <a href="/Incidencia" class="btn btn-secondary">
+        Cancelar
+    </a>
+
+</form>

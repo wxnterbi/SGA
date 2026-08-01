@@ -1,0 +1,29 @@
+﻿@model SGA.Application.Dtos.Auditoria.AuditoriaDto
+
+<h2>Detalle de Auditoria</h2>
+
+<table class="table table-bordered">
+
+    <tr>
+        <th>Auditor</th>
+        <td>@Model.Actor</td>
+    </tr>
+
+    <tr>
+        <th>Accion</th>
+        <td>@Model.TipoAccion</td>
+    </tr>
+
+    <tr>
+        <th>Descripcion</th>
+        <td>@Model.Descripcion</td>
+    </tr>
+
+    <tr>
+        <th>FechaHora</th>
+        <td>@Model.FechaHora</td>
+    </tr>
+
+</table>
+
+<a href="/Horario" class="btn btn-secondary">Volver</a>

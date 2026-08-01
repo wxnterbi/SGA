@@ -2,33 +2,43 @@
 
 <h2>Editar Autobús</h2>
 
-<form asp-action="Edit" method="post">
+<form action="/Autobus/Edit" method="post">
 
-    <input asp-for="Id" type="hidden" />
+    <input type="hidden" name="Id" value="@Model.Id" />
 
     <div class="mb-3">
         <label>Placa</label>
-        <input asp-for="Placa" class="form-control" />
+        <input type="text" name="Placa" value="@Model.Placa" class="form-control" />
+    </div>
+
+    <div class="mb-3">
+        <label>Marca</label>
+        <input type="text" name="Marca" value="@Model.Marca" class="form-control" />
+    </div>
+
+    <div class="mb-3">
+        <label>Modelo</label>
+        <input type="text" name="Modelo" value="@Model.Modelo" class="form-control" />
     </div>
 
     <div class="mb-3">
         <label>Capacidad</label>
-        <input asp-for="Capacidad" class="form-control" />
+        <input type="number" name="Capacidad" value="@Model.Capacidad" class="form-control" />
     </div>
 
     <div class="mb-3">
         <label>Estado</label>
 
-        <select asp-for="EstadoAutobusId" class="form-control">
-            <option value="1">Disponible</option>
-            <option value="2">En Ruta</option>
-            <option value="3">Mantenimiento</option>
-            <option value="4">Fuera de Servicio</option>
+        <select name="EstadoAutobusId" class="form-control">
+            <option value="1" selected="@(Model.EstadoAutobusId == 1)">Disponible</option>
+            <option value="2" selected="@(Model.EstadoAutobusId == 2)">En Ruta</option>
+            <option value="3" selected="@(Model.EstadoAutobusId == 3)">Mantenimiento</option>
+            <option value="4" selected="@(Model.EstadoAutobusId == 4)">Fuera de Servicio</option>
         </select>
     </div>
 
-    <button class="btn btn-primary">
-        Actualizar
-    </button>
+    <button type="submit" class="btn btn-primary">Actualizar</button>
+
+    <a href="/Autobus" class="btn btn-secondary">Volver</a>
 
 </form>

@@ -1,0 +1,38 @@
+﻿@model SGA.Application.Dtos.Horario.HorarioDto
+
+<h2>Eliminar Horario</h2>
+
+<div class="alert alert-danger">
+    ¿Está seguro de eliminar este horario?
+</div>
+
+<table class="table table-bordered">
+
+    <tr>
+        <th>Dias de operación</th>
+        <td>@Model.DiasOperacion</td>
+    </tr>
+
+    <tr>
+        <th>Hora de salida</th>
+        <td>@Model.HoraSalida</td>
+    </tr>
+
+    <tr>
+        <th>id de la Ruta</th>
+        <td>@Model.RutaId</td>
+    </tr>
+
+</table>
+
+<form action="/Horario/Delete/@Model.Id" method="post">
+
+    <button type="submit" class="btn btn-danger">
+        Eliminar
+    </button>
+
+    <a href="/Horario" class="btn btn-secondary">
+        Cancelar
+    </a>
+
+</form>
