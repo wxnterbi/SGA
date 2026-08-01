@@ -1,0 +1,41 @@
+﻿@model SGA.Web.Models.RegistroAcceso.RegistroAccesoViewModel
+
+@{
+    ViewData["Title"] = "Editar Registro";
+}
+
+<h2>Editar Registro de Acceso</h2>
+
+<form asp-action="Edit">
+
+    <input asp-for="Id" type="hidden" />
+
+    <div class="mb-3">
+        <label asp-for="UsuarioId"></label>
+        <input asp-for="UsuarioId" class="form-control" />
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="ViajeId"></label>
+        <input asp-for="ViajeId" class="form-control" />
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="Permitido"></label>
+        <input asp-for="Permitido" class="form-control" />
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="Motivo"></label>
+        <input asp-for="Motivo" class="form-control" />
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="FechaHora"></label>
+        <input asp-for="FechaHora" type="datetime-local" class="form-control" />
+    </div>
+
+    <button type="submit" class="btn btn-primary">Guardar</button>
+    <a asp-action="Index" class="btn btn-secondary">Cancelar</a>
+
+</form>

@@ -1,0 +1,59 @@
+﻿@model SGA.Web.Models.Pago.PagoViewModel
+
+@{
+    ViewData["Title"] = "Nuevo Pago";
+}
+
+<h2>Nuevo Pago</h2>
+
+<hr />
+
+<div class="row">
+    <div class="col-md-6">
+
+        <form asp-action="Create">
+
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+            <div class="mb-3">
+                <label asp-for="UsuarioId" class="form-label"></label>
+                <input asp-for="UsuarioId" class="form-control" />
+                <span asp-validation-for="UsuarioId" class="text-danger"></span>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="Monto" class="form-label"></label>
+                <input asp-for="Monto" class="form-control" />
+                <span asp-validation-for="Monto" class="text-danger"></span>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="FechaPago" class="form-label"></label>
+                <input asp-for="FechaPago" type="datetime-local" class="form-control" />
+                <span asp-validation-for="FechaPago" class="text-danger"></span>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="Modalidad" class="form-label"></label>
+                <input asp-for="Modalidad" class="form-control" />
+                <span asp-validation-for="Modalidad" class="text-danger"></span>
+            </div>
+
+            <button type="submit" class="btn btn-primary">
+                Guardar
+            </button>
+
+            <a asp-action="Index" class="btn btn-secondary">
+                Volver
+            </a>
+
+        </form>
+
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

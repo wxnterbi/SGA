@@ -1,0 +1,40 @@
+﻿@model SGA.Web.Models.RegistroAcceso.RegistroAccesoViewModel
+
+@{
+    ViewData["Title"] = "Eliminar";
+}
+
+<h2>Eliminar Registro</h2>
+
+<h4>¿Está seguro de eliminar este registro?</h4>
+
+<hr />
+
+<dl class="row">
+
+    <dt class="col-sm-3">Usuario</dt>
+    <dd class="col-sm-9">@Model.UsuarioId</dd>
+
+    <dt class="col-sm-3">Viaje</dt>
+    <dd class="col-sm-9">@Model.ViajeId</dd>
+
+    <dt class="col-sm-3">Permitido</dt>
+    <dd class="col-sm-9">@Model.Permitido</dd>
+
+    <dt class="col-sm-3">Motivo</dt>
+    <dd class="col-sm-9">@Model.Motivo</dd>
+
+    <dt class="col-sm-3">Fecha Hora</dt>
+    <dd class="col-sm-9">@Model.FechaHora</dd>
+
+</dl>
+
+<form asp-action="Delete">
+
+    <input asp-for="Id" type="hidden" />
+
+    <button type="submit" class="btn btn-danger">Eliminar</button>
+
+    <a asp-action="Index" class="btn btn-secondary">Cancelar</a>
+
+</form>

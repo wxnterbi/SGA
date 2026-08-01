@@ -1,0 +1,31 @@
+﻿@model SGA.Web.Models.RegistroAcceso.RegistroAccesoViewModel
+
+@{
+    ViewData["Title"] = "Detalles";
+}
+
+<h2>Detalles del Registro</h2>
+
+<hr />
+
+<dl class="row">
+
+    <dt class="col-sm-3">Usuario</dt>
+    <dd class="col-sm-9">@Model.UsuarioId</dd>
+
+    <dt class="col-sm-3">Viaje</dt>
+    <dd class="col-sm-9">@Model.ViajeId</dd>
+
+    <dt class="col-sm-3">Permitido</dt>
+    <dd class="col-sm-9">@Model.Permitido</dd>
+
+    <dt class="col-sm-3">Motivo</dt>
+    <dd class="col-sm-9">@Model.Motivo</dd>
+
+    <dt class="col-sm-3">Fecha Hora</dt>
+    <dd class="col-sm-9">@Model.FechaHora</dd>
+
+</dl>
+
+<a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-warning">Editar</a>
+<a asp-action="Index" class="btn btn-secondary">Volver</a>

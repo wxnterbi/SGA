@@ -1,0 +1,56 @@
+﻿@model SGA.Web.Models.Pago.PagoViewModel
+
+@{
+    ViewData["Title"] = "Detalles del Pago";
+}
+
+<h2>Detalles del Pago</h2>
+
+<hr />
+
+<dl class="row">
+
+    <dt class="col-sm-3">
+        Usuario
+    </dt>
+
+    <dd class="col-sm-9">
+        @Model.UsuarioId
+    </dd>
+
+    <dt class="col-sm-3">
+        Monto
+    </dt>
+
+    <dd class="col-sm-9">
+        @Model.Monto
+    </dd>
+
+    <dt class="col-sm-3">
+        Fecha de Pago
+    </dt>
+
+    <dd class="col-sm-9">
+        @Model.FechaPago
+    </dd>
+
+    <dt class="col-sm-3">
+        Modalidad
+    </dt>
+
+    <dd class="col-sm-9">
+        @Model.Modalidad
+    </dd>
+
+</dl>
+
+<a asp-action="Edit"
+   asp-route-id="@Model.Id"
+   class="btn btn-warning">
+    Editar
+</a>
+
+<a asp-action="Index"
+   class="btn btn-secondary">
+    Volver
+</a>

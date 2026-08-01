@@ -1,0 +1,37 @@
+﻿@model IEnumerable<SGA.Web.Models.TarjetaRecargable.TarjetaRecargableViewModel>
+
+@{
+    ViewData["Title"] = "Tarjetas Recargables";
+}
+
+<h2>Tarjetas Recargables</h2>
+
+<p>
+    <a asp-action="Create" class="btn btn-primary">Nueva Tarjeta</a>
+</p>
+
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>Usuario</th>
+            <th>Saldo</th>
+            <th>Estado</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.UsuarioId</td>
+                <td>@item.Saldo</td>
+                <td>@item.Estado</td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-warning btn-sm">Editar</a>
+                    <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-info btn-sm">Detalles</a>
+                    <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-danger btn-sm">Eliminar</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

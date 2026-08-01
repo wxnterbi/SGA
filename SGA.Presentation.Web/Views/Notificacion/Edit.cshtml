@@ -1,0 +1,36 @@
+﻿@model SGA.Web.Models.Notificacion.NotificacionViewModel
+
+@{
+    ViewData["Title"] = "Editar Notificación";
+}
+
+<h2>Editar Notificación</h2>
+
+<form asp-action="Edit">
+
+    <input asp-for="Id" type="hidden" />
+
+    <div class="mb-3">
+        <label asp-for="UsuarioId"></label>
+        <input asp-for="UsuarioId" class="form-control" />
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="TipoEvento"></label>
+        <input asp-for="TipoEvento" class="form-control" />
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="Mensaje"></label>
+        <input asp-for="Mensaje" class="form-control" />
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="FechaHora"></label>
+        <input asp-for="FechaHora" type="datetime-local" class="form-control" />
+    </div>
+
+    <button type="submit" class="btn btn-primary">Guardar</button>
+    <a asp-action="Index" class="btn btn-secondary">Cancelar</a>
+
+</form>
