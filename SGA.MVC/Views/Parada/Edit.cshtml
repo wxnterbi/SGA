@@ -1,0 +1,41 @@
+﻿@model SGA.Application.Dtos.Parada.ParadaDto
+
+<h2>Editar Parada</h2>
+
+@if (ViewData.ModelState.ErrorCount > 0)
+{
+    <div class="alert alert-danger">
+        @foreach (var estado in ViewData.ModelState.Values)
+        {
+            foreach (var error in estado.Errors)
+            {
+                <div>@error.ErrorMessage</div>
+            }
+        }
+    </div>
+}
+
+<form action="/Parada/Edit" method="post">
+
+    <input type="hidden" name="Id" value="@Model.Id" />
+
+    <div class="mb-3">
+        <label>Nombre</label>
+        <input type="text" name="Nombre" class="form-control" value="@Model.Nombre" />
+    </div>
+
+    <div class="mb-3">
+        <label>Ubicación</label>
+        <input type="text" name="Ubicacion" class="form-control" value="@Model.Ubicacion" />
+    </div>
+
+    <div class="mb-3">
+        <label>Orden</label>
+        <input type="number" name="Orden" class="form-control" value="@Model.Orden" />
+    </div>
+
+    <button class="btn btn-success">Actualizar</button>
+
+    <a href="/Parada" class="btn btn-secondary">Volver</a>
+
+</form>

@@ -1,0 +1,38 @@
+﻿@model SGA.Application.Dtos.Parada.ParadaDto
+
+<h2>Eliminar Parada</h2>
+
+<div class="alert alert-danger">
+    ¿Está seguro de eliminar esta parada?
+</div>
+
+<table class="table table-bordered">
+
+    <tr>
+        <th>Nombre</th>
+        <td>@Model.Nombre</td>
+    </tr>
+
+    <tr>
+        <th>Ubicación</th>
+        <td>@Model.Ubicacion</td>
+    </tr>
+
+    <tr>
+        <th>Orden</th>
+        <td>@Model.Orden</td>
+    </tr>
+
+</table>
+
+<form action="/Parada/Delete/@Model.Id" method="post">
+
+    <button type="submit" class="btn btn-danger">
+        Eliminar
+    </button>
+
+    <a href="/Parada" class="btn btn-secondary">
+        Cancelar
+    </a>
+
+</form>

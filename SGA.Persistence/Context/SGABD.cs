@@ -89,14 +89,6 @@ namespace SGA.Persistence.Context
             modelBuilder.Entity<TarjetaRecargable>()
                 .Property(x => x.Saldo)
                 .HasPrecision(18, 2);
-            modelBuilder.Entity<Conductor>()
-            .Ignore(c => c.Licencia);
-
-            modelBuilder.Entity<Conductor>()
-                .Ignore(c => c.Telefono);
-
-            modelBuilder.Entity<Autobus>().Ignore(a => a.Marca);
-            modelBuilder.Entity<Autobus>().Ignore(a => a.Modelo);
 
             base.OnModelCreating(modelBuilder);
         }

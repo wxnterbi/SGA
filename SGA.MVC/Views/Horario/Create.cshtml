@@ -1,0 +1,39 @@
+﻿@model SGA.Application.Dtos.Horario.HorarioDto
+
+<h2>Nuevo Horario</h2>
+
+@if (ViewData.ModelState.ErrorCount > 0)
+{
+    <div class="alert alert-danger">
+        @foreach (var estado in ViewData.ModelState.Values)
+        {
+            foreach (var error in estado.Errors)
+            {
+                <div>@error.ErrorMessage</div>
+            }
+        }
+    </div>
+}
+
+<form action="/Horario/Create" method="post">
+
+    <div class="mb-3">
+        <label>Dias de operación</label>
+        <input type="text" name="DiasOperacion" class="form-control" value="@Model?.DiasOperacion" />
+    </div>
+
+    <div class="mb-3">
+        <label>Hora de salida</label>
+        <input type="text" name="HoraSalida" class="form-control" value="@Model?.HoraSalida" />
+    </div>
+
+    <div class="mb-3">
+        <label>id de la Ruta</label>
+        <input type="number" name="RutaId" class="form-control" value="@Model?.RutaId" />
+    </div>
+
+    <button class="btn btn-success">Guardar</button>
+
+    <a href="/Horario" class="btn btn-secondary">Volver</a>
+
+</form>

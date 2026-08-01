@@ -1,0 +1,34 @@
+﻿@model SGA.Application.Dtos.Incidencia.IncidenciaDto
+
+<h2>Detalle de Incidencia</h2>
+
+<table class="table table-bordered">
+
+    <tr>
+        <th>Viaje</th>
+        <td>@Model.ViajeId</td>
+    </tr>
+
+    <tr>
+        <th>Conductor</th>
+        <td>@Model.ConductorId</td>
+    </tr>
+
+    <tr>
+        <th>Tipo de Incidencia</th>
+        <td>@Model.Tipo</td>
+    </tr>
+
+    <tr>
+        <th>Descripción</th>
+        <td>@Model.Descripcion</td>
+    </tr>
+
+    <tr>
+        <th>Fecha y Hora</th>
+        <td>@Model.FechaHora</td>
+    </tr>
+
+</table>
+
+<a href="/Incidencia" class="btn btn-secondary">Volver</a>

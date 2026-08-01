@@ -1,0 +1,24 @@
+﻿@model SGA.Application.Dtos.Horario.HorarioDto
+
+<h2>Detalle de Horario</h2>
+
+<table class="table table-bordered">
+
+    <tr>
+        <th>Dias de operación</th>
+        <td>@Model.DiasOperacion</td>
+    </tr>
+
+    <tr>
+        <th>Hora de salida</th>
+        <td>@Model.HoraSalida</td>
+    </tr>
+
+    <tr>
+        <th>id de la Ruta</th>
+        <td>@Model.RutaId</td>
+    </tr>
+
+</table>
+
+<a href="/Horario" class="btn btn-secondary">Volver</a>

@@ -1,0 +1,56 @@
+﻿@model IEnumerable<SGA.Application.Dtos.Auditoria.AuditoriaDto>
+
+<h1>Auditores</h1>
+
+<p>
+    <a asp-action="Create" class="btn btn-primary">
+        Nuevo Auditor
+    </a>
+</p>
+
+<table class="table table-bordered">
+
+    <thead>
+        <tr>
+            <th>Id</th>
+            <th>Auditor</th>
+            <th>Accion</th>
+        </tr>
+    </thead>
+
+    <tbody>
+
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.Id</td>
+                <td>@item.Actor</td>
+                <td>@item.TipoAccion</td>
+
+                <td>
+
+                    <a asp-action="Details"
+                       asp-route-id="@item.Id"
+                       class="btn btn-info">
+                        Detalles
+                    </a>
+
+                    <a asp-action="Edit"
+                       asp-route-id="@item.Id"
+                       class="btn btn-warning">
+                        Editar
+                    </a>
+
+                    <a asp-action="Delete"
+                       asp-route-id="@item.Id"
+                       class="btn btn-danger">
+                        Eliminar
+                    </a>
+
+                </td>
+            </tr>
+        }
+
+    </tbody>
+
+</table>

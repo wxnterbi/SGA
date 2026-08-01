@@ -1,0 +1,58 @@
+﻿@model IEnumerable<SGA.Application.Dtos.Horario.HorarioDto>
+
+<h1>Horarios</h1>
+
+<p>
+    <a asp-action="Create" class="btn btn-primary">
+        Nuevo Horario
+    </a>
+</p>
+
+<table class="table table-bordered">
+
+    <thead>
+        <tr>
+            <th>Id</th>
+            <th>Dias de Operacion</th>
+            <th>Hora de Salida</th>
+            <th>Ruta</th>
+        </tr>
+    </thead>
+
+    <tbody>
+
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.Id</td>
+                <td>@item.DiasOperacion</td>
+                <td>@item.HoraSalida</td>
+                <td>@item.RutaId</td>
+
+                <td>
+
+                    <a asp-action="Details"
+                       asp-route-id="@item.Id"
+                       class="btn btn-info">
+                        Detalles
+                    </a>
+
+                    <a asp-action="Edit"
+                       asp-route-id="@item.Id"
+                       class="btn btn-warning">
+                        Editar
+                    </a>
+
+                    <a asp-action="Delete"
+                       asp-route-id="@item.Id"
+                       class="btn btn-danger">
+                        Eliminar
+                    </a>
+
+                </td>
+            </tr>
+        }
+
+    </tbody>
+
+</table>

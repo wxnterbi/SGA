@@ -1,0 +1,53 @@
+﻿@model SGA.Application.Dtos.Incidencia.IncidenciaDto
+
+<h2>Nueva Incidencia</h2>
+
+@if (ViewData.ModelState.ErrorCount > 0)
+{
+    <div class="alert alert-danger">
+        @foreach (var estado in ViewData.ModelState.Values)
+        {
+            foreach (var error in estado.Errors)
+            {
+                <div>@error.ErrorMessage</div>
+            }
+        }
+    </div>
+}
+
+<form action="/Incidencia/Create" method="post">
+
+    <div class="mb-3">
+        <label>Viaje</label>
+        <input type="text" name="ViajeId" class="form-control" value="@Model?.ViajeId" />
+    </div>
+
+    <div class="mb-3">
+        <label>Conductor</label>
+        <input type="text" name="ConductorId" class="form-control" value="@Model?.ConductorId" />
+    </div>
+
+    <div class="mb-3">
+        <label>Tipo de Incidencia</label>
+        <select name="Tipo" class="form-control">
+            <option value="1">Retraso</option>
+            <option value="2">Avería</option>
+            <option value="3">Accidente</option>
+        </select>
+    </div>
+
+    <div class="mb-3">
+        <label>Descripción</label>
+        <input type="text" name="Descripcion" class="form-control" value="@Model?.Descripcion" />
+    </div>
+
+    <div class="mb-3">
+        <label>Fecha y Hora</label>
+        <input type="datetime-local" name="FechaHora" class="form-control" value="@Model?.FechaHora.ToString("yyyy-MM-ddTHH:mm")" />
+    </div>
+
+    <button class="btn btn-success">Guardar</button>
+
+    <a href="/Incidencia" class="btn btn-secondary">Volver</a>
+
+</form>
