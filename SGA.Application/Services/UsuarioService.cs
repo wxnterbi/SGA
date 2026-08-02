@@ -55,6 +55,12 @@ namespace SGA.Application.Services
         public async Task AddAsync(UsuarioDto dto)
         {
             Console.WriteLine("ENTRANDO A USUARIO SERVICE");
+
+            var existeMatricula = _usuarioRepository.GetByIdentificador(dto.IdentificadorInstitucional);
+            if (existeMatricula != null)
+            {
+                throw new InvalidOperationException($"La matrícula '{dto.IdentificadorInstitucional}' ya está registrada.");
+            }
             var usuario = new Usuario
             {
                 IdentificadorInstitucional = dto.IdentificadorInstitucional,
@@ -74,6 +80,13 @@ namespace SGA.Application.Services
         public Task UpdateAsync(UsuarioDto dto)
         {
             var usuario = _usuarioRepository.GetById(dto.Id);
+
+            var usuarioConMismaMatricula = _usuarioRepository.GetByIdentificador(dto.IdentificadorInstitucional);
+
+            if (usuarioConMismaMatricula != null && usuarioConMismaMatricula.Id != dto.Id)
+            {
+                throw new InvalidOperationException($"La matrícula '{dto.IdentificadorInstitucional}' ya pertenece a otro usuario.");
+            }
 
             if (usuario == null)
                 throw new Exception("Usuario no encontrado.");

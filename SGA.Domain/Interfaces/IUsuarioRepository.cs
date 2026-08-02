@@ -8,6 +8,8 @@ namespace SGA.Persistence.Interfaces
 
         Usuario GetById(int id);
 
+        Usuario GetByIdentificador(string identificador);
+
         Usuario Add(Usuario usuario);
 
         Usuario Update(Usuario usuario);

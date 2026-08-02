@@ -37,6 +37,11 @@ namespace SGA.Web.Controllers
                 await _usuarioService.AddAsync(dto);
                 return RedirectToAction(nameof(Index));
             }
+            catch (InvalidOperationException ex)
+            {
+                ModelState.AddModelError("IdentificadorInstitucional", ex.Message);
+                return View(dto);
+            }
             catch (Exception ex)
             {
                 ModelState.AddModelError("", ex.Message);
@@ -76,6 +81,11 @@ namespace SGA.Web.Controllers
             {
                 await _usuarioService.UpdateAsync(dto);
                 return RedirectToAction(nameof(Index));
+            }
+            catch (InvalidOperationException ex)
+            {
+                ModelState.AddModelError("IdentificadorInstitucional", ex.Message);
+                return View(dto);
             }
             catch (Exception ex)
             {

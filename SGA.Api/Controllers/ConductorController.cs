@@ -43,19 +43,60 @@ namespace SGA.Api.Controllers
         [HttpPost]
         public async Task<IActionResult> Post([FromBody] ConductorDto dto)
         {
-            await _conductorService.AddAsync(dto);
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
 
-            return Ok("Conductor registrado correctamente.");
+            try
+            {
+                await _conductorService.AddAsync(dto);
+                return Ok("Conductor registrado correctamente.");
+            }
+            catch (InvalidOperationException ex)
+            {
+                var mensaje = ex.Message switch
+                {
+                    "CEDULA_DUPLICADA" => "La cédula ingresada ya pertenece a otro conductor.",
+                    "TELEFONO_DUPLICADO" => "El número de teléfono ya está registrado.",
+                    _ => ex.Message
+                };
+
+                return BadRequest(new { mensaje });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { mensaje = "Ocurrió un error interno: " + ex.Message });
+            }
         }
 
 
         [HttpPut]
         public async Task<IActionResult> Put([FromBody] ConductorDto dto)
         {
-            await _conductorService.UpdateAsync(dto);
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
 
-            return Ok("Conductor actualizado correctamente.");
+            try
+            {
+                await _conductorService.UpdateAsync(dto);
+                return Ok("Conductor actualizado correctamente.");
+            }
+            catch (InvalidOperationException ex)
+            {
+                var mensaje = ex.Message switch
+                {
+                    "CEDULA_DUPLICADA" => "La cédula ingresada ya pertenece a otro conductor.",
+                    "TELEFONO_DUPLICADO" => "El número de teléfono ya está registrado.",
+                    _ => ex.Message
+                };
+
+                return BadRequest(new { mensaje });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { mensaje = "Ocurrió un error interno: " + ex.Message });
+            }
         }
+        
 
 
         [HttpDelete("{id}")]

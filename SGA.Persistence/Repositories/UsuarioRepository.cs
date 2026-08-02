@@ -23,6 +23,11 @@ namespace SGA.Persistence.Repositories
             return _context.Usuarios.Find(id);
         }
 
+        public Usuario GetByIdentificador(string identificador)
+        {
+            return _context.Usuarios.FirstOrDefault(u => u.IdentificadorInstitucional == identificador);
+        }
+
         public Usuario Add(Usuario usuario)
         {
             usuario.FechaCreacion = DateTime.Now;

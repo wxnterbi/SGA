@@ -23,6 +23,16 @@ namespace SGA.Persistence.Repositories
             return _context.Conductores.Find(id);
         }
 
+        public Conductor GetByCedula(string cedula)
+        {
+            return _context.Conductores.FirstOrDefault(c => c.Cedula == cedula);
+        }
+
+        public Conductor GetByTelefono(string telefono)
+        {
+            return _context.Conductores.FirstOrDefault(c => c.Telefono == telefono);
+        }
+
         public Conductor Add(Conductor conductor)
         {
             conductor.FechaCreacion = DateTime.Now;
@@ -41,7 +51,9 @@ namespace SGA.Persistence.Repositories
                 throw new Exception("Conductor no encontrado.");
 
             conductorExistente.Nombre = conductor.Nombre;
-            conductorExistente.Identificacion = conductor.Identificacion;
+            conductorExistente.Cedula = conductor.Cedula; 
+            conductorExistente.Licencia = conductor.Licencia;
+            conductorExistente.Telefono = conductor.Telefono;
             conductorExistente.EstadoLaboral = conductor.EstadoLaboral;
             conductorExistente.FechaModificacion = DateTime.Now;
 

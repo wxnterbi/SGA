@@ -37,6 +37,15 @@ namespace SGA.Web.Controllers
                 await _conductorService.AddAsync(dto);
                 return RedirectToAction(nameof(Index));
             }
+            catch (InvalidOperationException ex)
+            {
+                if (ex.Message == "CEDULA_DUPLICADA")
+                    ModelState.AddModelError("Cedula", "La cédula ya está registrada para otro conductor.");
+                else if (ex.Message == "TELEFONO_DUPLICADO")
+                    ModelState.AddModelError("Telefono", "El número de teléfono ya está registrado.");
+
+                return View(dto);
+            }
             catch (Exception ex)
             {
                 ModelState.AddModelError("", ex.Message);
@@ -76,6 +85,15 @@ namespace SGA.Web.Controllers
             {
                 await _conductorService.UpdateAsync(dto);
                 return RedirectToAction(nameof(Index));
+            }
+            catch (InvalidOperationException ex)
+            {
+                if (ex.Message == "CEDULA_DUPLICADA")
+                    ModelState.AddModelError("Cedula", "La cédula ingresada ya pertenece a otro conductor.");
+                else if (ex.Message == "TELEFONO_DUPLICADO")
+                    ModelState.AddModelError("Telefono", "El teléfono ingresado ya pertenece a otro conductor.");
+
+                return View(dto);
             }
             catch (Exception ex)
             {

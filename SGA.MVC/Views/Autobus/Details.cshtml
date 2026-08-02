@@ -12,6 +12,10 @@
 
 <p><b>Estado:</b> @Model.EstadoDescripcion</p>
 
-<a asp-action="Index" class="btn btn-secondary">
+<a href="/Autobus/Edit/@Model.Id" class="btn btn-warning">
+    Editar
+</a>
+
+<a href="/Autobus" class="btn btn-secondary">
     Volver
 </a>

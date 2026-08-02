@@ -6,6 +6,8 @@ namespace SGA.Persistence.Interfaces
     {
         List<Conductor> GetAll();
         Conductor GetById(int id);
+        Conductor GetByCedula(string cedula);
+        Conductor GetByTelefono(string telefono);
         Conductor Add(Conductor conductor);
         Conductor Update(Conductor conductor);
         bool Delete(int id);

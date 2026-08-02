@@ -43,17 +43,37 @@ namespace SGA.Api.Controllers
         [HttpPost]
         public async Task<IActionResult> Post([FromBody] UsuarioDto dto)
         {
-            await _usuarioService.AddAsync(dto);
-
-            return Ok("Usuario registrado correctamente.");
+            try
+            {
+                await _usuarioService.AddAsync(dto);
+                return Ok("Usuario registrado correctamente.");
+            }
+            catch (InvalidOperationException ex)
+            {
+                return BadRequest(new { mensaje = ex.Message });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { mensaje = "Ocurrió un error interno: " + ex.Message });
+            }
         }
 
         [HttpPut]
         public async Task<IActionResult> Put([FromBody] UsuarioDto dto)
         {
-            await _usuarioService.UpdateAsync(dto);
-
-            return Ok("Usuario actualizado correctamente.");
+            try
+            {
+                await _usuarioService.UpdateAsync(dto);
+                return Ok("Usuario actualizado correctamente.");
+            }
+            catch (InvalidOperationException ex)
+            {
+                return BadRequest(new { mensaje = ex.Message });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { mensaje = "Ocurrió un error interno: " + ex.Message });
+            }
         }
 
         [HttpDelete("{id}")]

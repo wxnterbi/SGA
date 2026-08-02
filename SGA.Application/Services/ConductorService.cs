@@ -27,7 +27,7 @@ namespace SGA.Application.Services
             {
                 Id = c.Id,
                 Nombre = c.Nombre,
-                Cedula = c.Identificacion,
+                Cedula = c.Cedula,
                 Licencia = c.Licencia,  
                 Telefono = c.Telefono,
                 EstadoConductorId = (int)c.EstadoLaboral
@@ -45,7 +45,7 @@ namespace SGA.Application.Services
             {
                 Id = c.Id,
                 Nombre = c.Nombre,
-                Cedula = c.Identificacion,
+                Cedula = c.Cedula,
                 Licencia = c.Licencia,    
                 Telefono = c.Telefono,
                 EstadoConductorId = (int)c.EstadoLaboral
@@ -56,10 +56,22 @@ namespace SGA.Application.Services
 
         public async Task AddAsync(ConductorDto dto)
         {
+            var existeCedula = _conductorRepository.GetByCedula(dto.Cedula);
+            if (existeCedula != null)
+            {
+                throw new InvalidOperationException("CEDULA_DUPLICADA");
+            }
+
+            var existeTelefono = _conductorRepository.GetByTelefono(dto.Telefono);
+            if (existeTelefono != null)
+            {
+                throw new InvalidOperationException("TELEFONO_DUPLICADO");
+            }
+
             var conductor = new Conductor
             {
                 Nombre = dto.Nombre,
-                Identificacion = dto.Cedula,
+                Cedula = dto.Cedula,
                 Licencia = dto.Licencia,   
                 Telefono = dto.Telefono,
                 EstadoLaboral = (Domain.Enums.Configuration.EstadoLaboral)dto.EstadoConductorId
@@ -75,11 +87,23 @@ namespace SGA.Application.Services
 
         public async Task UpdateAsync(ConductorDto dto)
         {
+            var conductorConMismaCedula = _conductorRepository.GetByCedula(dto.Cedula);
+            if (conductorConMismaCedula != null && conductorConMismaCedula.Id != dto.Id)
+            {
+                throw new InvalidOperationException("CEDULA_DUPLICADA");
+            }
+
+            var conductorConMismoTelefono = _conductorRepository.GetByTelefono(dto.Telefono);
+            if (conductorConMismoTelefono != null && conductorConMismoTelefono.Id != dto.Id)
+            {
+                throw new InvalidOperationException("TELEFONO_DUPLICADO");
+            }
+
             var conductor = _conductorRepository.GetById(dto.Id);
             if (conductor != null)
             {
                 conductor.Nombre = dto.Nombre;
-                conductor.Identificacion = dto.Cedula;
+                conductor.Cedula = dto.Cedula;
                 conductor.Licencia = dto.Licencia;  
                 conductor.Telefono = dto.Telefono;
                 conductor.EstadoLaboral = (Domain.Enums.Configuration.EstadoLaboral)dto.EstadoConductorId;
