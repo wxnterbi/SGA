@@ -1,31 +1,119 @@
 ﻿@model SGA.Web.Models.RegistroAcceso.RegistroAccesoViewModel
 
 @{
-    ViewData["Title"] = "Detalles";
+    ViewData["Title"] = "Detalle del Acceso";
 }
 
-<h2>Detalles del Registro</h2>
+<div class="container mt-4">
 
-<hr />
+    <div class="card shadow-lg border-0">
 
-<dl class="row">
+        <div class="card-header bg-primary text-white">
 
-    <dt class="col-sm-3">Usuario</dt>
-    <dd class="col-sm-9">@Model.UsuarioId</dd>
+            <h3 class="mb-0">
+                <i class="fa-solid fa-bus"></i>
+                Detalle del Registro de Acceso
+            </h3>
 
-    <dt class="col-sm-3">Viaje</dt>
-    <dd class="col-sm-9">@Model.ViajeId</dd>
+        </div>
 
-    <dt class="col-sm-3">Permitido</dt>
-    <dd class="col-sm-9">@Model.Permitido</dd>
+        <div class="card-body">
 
-    <dt class="col-sm-3">Motivo</dt>
-    <dd class="col-sm-9">@Model.Motivo</dd>
+            <div class="row">
 
-    <dt class="col-sm-3">Fecha Hora</dt>
-    <dd class="col-sm-9">@Model.FechaHora</dd>
+                <div class="col-md-8">
 
-</dl>
+                    <div class="mb-4">
 
-<a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-warning">Editar</a>
-<a asp-action="Index" class="btn btn-secondary">Volver</a>
+                        <h5 class="text-primary">
+                            <i class="fa-solid fa-user"></i>
+                            Información
+                        </h5>
+
+                        <hr />
+
+                        <p>
+                            <strong>Matrícula:</strong>
+                            @Model.Matricula
+                        </p>
+
+                        <p>
+                            <strong>Viaje:</strong>
+                            #@Model.ViajeId
+                        </p>
+
+                        <p>
+                            <strong>Fecha:</strong>
+                            @Model.FechaHora.ToString("dd/MM/yyyy")
+                        </p>
+
+                        <p>
+                            <strong>Hora:</strong>
+                            @Model.FechaHora.ToString("hh:mm tt")
+                        </p>
+
+                        <p>
+                            <strong>Motivo:</strong>
+                            @Model.Motivo
+                        </p>
+
+                        <p>
+
+                            <strong>Estado:</strong>
+
+                            @if (Model.Permitido)
+                            {
+                                <span class="badge bg-success fs-6">
+                                    Acceso Permitido
+                                </span>
+                            }
+                            else
+                            {
+                                <span class="badge bg-danger fs-6">
+                                    Acceso Denegado
+                                </span>
+                            }
+
+                        </p>
+
+                    </div>
+
+                </div>
+
+                <div class="col-md-4 text-center">
+
+                    <h5 class="text-primary">
+                        Código QR
+                    </h5>
+
+                    <img src="https://api.qrserver.com/v1/create-qr-code/?size=220x220&data=ACCESO-@Model.Id-@Model.UsuarioId-@Model.FechaHora.Ticks"
+                         class="img-fluid border rounded shadow-sm" />
+
+                    <p class="text-muted mt-3">
+
+                        Escanee este código para validar el registro del acceso.
+
+                    </p>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="card-footer text-end">
+
+            <a asp-action="Index"
+               class="btn btn-outline-primary">
+
+                <i class="fa-solid fa-arrow-left"></i>
+
+                Volver
+
+            </a>
+
+        </div>
+
+    </div>
+
+</div>

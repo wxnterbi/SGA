@@ -18,8 +18,15 @@ namespace SGA.Api.Web.Controllers
         [HttpGet]
         public async Task<IActionResult> Get()
         {
-            var pagos = await _pagoService.GetAllAsync();
-            return Ok(pagos);
+            try
+            {
+                var pagos = await _pagoService.GetAllAsync();
+                return Ok(pagos);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.ToString());
+            }
         }
 
         [HttpGet("{id}")]
@@ -65,7 +72,27 @@ namespace SGA.Api.Web.Controllers
             catch (Exception ex)
             {
                 return NotFound(ex.Message);
+
+            }
+        }
+        [HttpPost("ComprarTicket")]
+        public async Task<IActionResult> ComprarTicket([FromBody] ComprarTicketDto dto)
+        {
+            try
+            {
+                await _pagoService.ComprarTicketAsync(dto);
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                var e = ex;
+
+                while (e.InnerException != null)
+                    e = e.InnerException;
+
+                return BadRequest(e.Message);
             }
         }
     }
 }
+

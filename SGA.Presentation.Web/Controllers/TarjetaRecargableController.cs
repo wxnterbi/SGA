@@ -29,88 +29,46 @@ namespace SGA.Web.Controllers
                 return NotFound();
 
             return View(tarjeta);
+
         }
 
-        // GET: TarjetaRecargable/Create
-        public IActionResult Create()
-        {
-            return View();
-        }
-
-        // POST: TarjetaRecargable/Create
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(TarjetaRecargableViewModel tarjeta)
-        {
-            if (!ModelState.IsValid)
-                return View(tarjeta);
-
-            var resultado = await _tarjetaApiService.CreateAsync(tarjeta);
-
-            if (!resultado)
-            {
-                ViewBag.Error = "No se pudo registrar la tarjeta.";
-                return View(tarjeta);
-            }
-
-            return RedirectToAction(nameof(Index));
-        }
-
-        // GET: TarjetaRecargable/Edit/5
-        public async Task<IActionResult> Edit(int id)
+        // GET
+        public async Task<IActionResult> Recargar(int id)
         {
             var tarjeta = await _tarjetaApiService.GetByIdAsync(id);
 
             if (tarjeta == null)
                 return NotFound();
 
-            return View(tarjeta);
+            var model = new RecargarSaldoViewModel
+            {
+                TarjetaId = tarjeta.Id,
+                UsuarioId = tarjeta.UsuarioId,
+                SaldoActual = tarjeta.Saldo
+            };
+
+            return View(model);
         }
 
-        // POST: TarjetaRecargable/Edit
+        // POST
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(TarjetaRecargableViewModel tarjeta)
+        public async Task<IActionResult> Recargar(RecargarSaldoViewModel model)
         {
             if (!ModelState.IsValid)
-                return View(tarjeta);
+                return View(model);
 
-            var resultado = await _tarjetaApiService.UpdateAsync(tarjeta);
-
-            if (!resultado)
-            {
-                ViewBag.Error = "No se pudo actualizar la tarjeta.";
-                return View(tarjeta);
-            }
-
-            return RedirectToAction(nameof(Index));
-        }
-
-        // GET: TarjetaRecargable/Delete/5
-        public async Task<IActionResult> Delete(int id)
-        {
-            var tarjeta = await _tarjetaApiService.GetByIdAsync(id);
-
-            if (tarjeta == null)
-                return NotFound();
-
-            return View(tarjeta);
-        }
-
-        // POST: TarjetaRecargable/Delete
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
-        {
-            var resultado = await _tarjetaApiService.DeleteAsync(id);
+            var resultado = await _tarjetaApiService.RecargarSaldoAsync(model);
 
             if (!resultado)
             {
-                ViewBag.Error = "No se pudo eliminar la tarjeta.";
-                return View();
+                ViewBag.Error = "No fue posible realizar la recarga.";
+                return View(model);
             }
 
-            return RedirectToAction(nameof(Index));
+            TempData["Success"] = "La recarga se realizó correctamente.";
+
+            return RedirectToAction(nameof(Details), new { id = model.TarjetaId });
         }
     }
 }

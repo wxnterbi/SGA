@@ -6,6 +6,8 @@
 
         public int UsuarioId { get; set; }
 
+        public string IdentificadorInstitucional { get; set; } = string.Empty;
+
         public decimal Monto { get; set; }
 
         public DateTime FechaPago { get; set; }

@@ -1,28 +1,92 @@
 ﻿@model SGA.Web.Models.Notificacion.NotificacionViewModel
 
 @{
-    ViewData["Title"] = "Detalles";
+    ViewData["Title"] = "Detalle";
 }
 
-<h2>Detalles de la Notificación</h2>
+<div class="row justify-content-center">
 
-<hr />
+    <div class="col-lg-8">
 
-<dl class="row">
+        <div class="card shadow-lg border-0">
 
-    <dt class="col-sm-3">Usuario</dt>
-    <dd class="col-sm-9">@Model.UsuarioId</dd>
+            <div class="card-header bg-primary text-white">
 
-    <dt class="col-sm-3">Tipo Evento</dt>
-    <dd class="col-sm-9">@Model.TipoEvento</dd>
+                <h3>
 
-    <dt class="col-sm-3">Mensaje</dt>
-    <dd class="col-sm-9">@Model.Mensaje</dd>
+                    <i class="fa-solid fa-bell"></i>
 
-    <dt class="col-sm-3">Fecha Hora</dt>
-    <dd class="col-sm-9">@Model.FechaHora</dd>
+                    Detalle de la Notificación
 
-</dl>
+                </h3>
 
-<a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-warning">Editar</a>
-<a asp-action="Index" class="btn btn-secondary">Volver</a>
+            </div>
+
+            <div class="card-body">
+
+                <div class="mb-4">
+
+                    <label class="fw-bold">
+                        Mensaje
+                    </label>
+
+                    <div class="border rounded p-3 bg-light">
+
+                        @Model.Mensaje
+
+                    </div>
+
+                </div>
+
+                <div class="row">
+
+                    <div class="col-md-6">
+
+                        <label class="fw-bold">
+                            Fecha
+                        </label>
+
+                        <div class="border rounded p-2 bg-light">
+
+                            @Model.FechaHora.ToString("dd/MM/yyyy")
+
+                        </div>
+
+                    </div>
+
+                    <div class="col-md-6">
+
+                        <label class="fw-bold">
+                            Hora
+                        </label>
+
+                        <div class="border rounded p-2 bg-light">
+
+                            @Model.FechaHora.ToString("HH:mm")
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+            <div class="card-footer text-end">
+
+                <a asp-action="Index"
+                   class="btn btn-primary">
+
+                    <i class="fa-solid fa-arrow-left"></i>
+
+                    Volver
+
+                </a>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>

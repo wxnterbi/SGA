@@ -1,56 +1,164 @@
 ﻿@model SGA.Web.Models.Pago.PagoViewModel
 
 @{
-    ViewData["Title"] = "Detalles del Pago";
+    ViewData["Title"] = "Detalle del Pago";
+
+    bool esMensual = Model.Monto >= 850;
 }
 
-<h2>Detalles del Pago</h2>
+<div class="container mt-4">
 
-<hr />
+    <div class="row justify-content-center">
 
-<dl class="row">
+        <div class="col-lg-8">
 
-    <dt class="col-sm-3">
-        Usuario
-    </dt>
+            <div class="card shadow-lg border-0">
 
-    <dd class="col-sm-9">
-        @Model.UsuarioId
-    </dd>
+                <div class="card-header bg-primary text-white text-center">
 
-    <dt class="col-sm-3">
-        Monto
-    </dt>
+                    <h3 class="mb-1">
+                        <i class="fa-solid fa-bus"></i>
+                        Sistema de Transporte Universitario
+                    </h3>
 
-    <dd class="col-sm-9">
-        @Model.Monto
-    </dd>
+                    <h5 class="mb-0">
+                        @(esMensual ? "Ticket Mensual" : "Ticket Individual")
+                    </h5>
 
-    <dt class="col-sm-3">
-        Fecha de Pago
-    </dt>
+                </div>
 
-    <dd class="col-sm-9">
-        @Model.FechaPago
-    </dd>
+                <div class="card-body">
 
-    <dt class="col-sm-3">
-        Modalidad
-    </dt>
+                    <div class="text-center mb-4">
 
-    <dd class="col-sm-9">
-        @Model.Modalidad
-    </dd>
+                        <img src="https://api.qrserver.com/v1/create-qr-code/?size=220x220&data=PAGO-@Model.Id"
+                             class="img-fluid shadow rounded" />
 
-</dl>
+                        <div class="mt-3">
 
-<a asp-action="Edit"
-   asp-route-id="@Model.Id"
-   class="btn btn-warning">
-    Editar
-</a>
+                            <span class="badge bg-dark fs-6">
+                                Ticket #@Model.Id
+                            </span>
 
-<a asp-action="Index"
-   class="btn btn-secondary">
-    Volver
-</a>
+                        </div>
+
+                    </div>
+
+                    <hr />
+
+                    <div class="row">
+
+                        <div class="col-md-6">
+
+                            <p>
+                                <strong>
+                                    <i class="fa-solid fa-id-card"></i>
+                                    Matrícula
+                                </strong>
+                                <br />
+                                @Model.IdentificadorInstitucional
+                            </p>
+
+                            <p>
+                                <strong>
+                                    <i class="fa-solid fa-money-bill-wave"></i>
+                                    Monto Pagado
+                                </strong>
+                                <br />
+                                <span class="text-success fw-bold fs-5">
+                                    RD$ @Model.Monto.ToString("N2")
+                                </span>
+                            </p>
+
+                            <p>
+                                <strong>
+                                    <i class="fa-solid fa-ticket"></i>
+                                    Tipo
+                                </strong>
+                                <br />
+                                @(esMensual ? "Ticket Mensual" : "Ticket Individual")
+                            </p>
+
+                        </div>
+
+                        <div class="col-md-6">
+
+                            <p>
+                                <strong>
+                                    <i class="fa-solid fa-calendar-days"></i>
+                                    Fecha de Compra
+                                </strong>
+                                <br />
+                                @Model.FechaPago.ToString("dd/MM/yyyy hh:mm tt")
+                            </p>
+
+                            <p>
+                                <strong>
+                                    <i class="fa-solid fa-credit-card"></i>
+                                    Modalidad
+                                </strong>
+                                <br />
+                                @Model.Modalidad
+                            </p>
+
+                            <p>
+                                <strong>
+                                    Estado
+                                </strong>
+                                <br />
+                                <span class="badge bg-success fs-6">
+                                    PAGADO
+                                </span>
+                            </p>
+
+                        </div>
+
+                    </div>
+
+                    <hr />
+
+                    <div class="alert alert-primary text-center">
+
+                        <i class="fa-solid fa-qrcode fa-2x mb-2"></i>
+
+                        <h5>
+                            Código QR del Ticket
+                        </h5>
+
+                        <p class="mb-0">
+                            Muestre este código al abordar el autobús para validar su viaje.
+                        </p>
+
+                    </div>
+
+                </div>
+
+                <div class="card-footer d-flex justify-content-between">
+
+                    <a asp-action="Index"
+                       class="btn btn-secondary">
+
+                        <i class="fa-solid fa-arrow-left"></i>
+
+                        Volver
+
+                    </a>
+
+                    <button class="btn btn-primary"
+                            onclick="window.print()">
+
+                        <i class="fa-solid fa-print"></i>
+
+                        Imprimir
+
+                    </button>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>

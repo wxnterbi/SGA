@@ -13,5 +13,9 @@ namespace SGA.Web.Interfaces.TarjetaRecargable
         Task<bool> UpdateAsync(TarjetaRecargableViewModel tarjeta);
 
         Task<bool> DeleteAsync(int id);
+
+        Task<bool> RecargarSaldoAsync(RecargarSaldoViewModel model);
+    
+        Task<TarjetaRecargableViewModel?> GetByUsuarioIdAsync(int usuarioId);
     }
 }

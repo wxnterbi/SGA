@@ -1,37 +1,72 @@
 ﻿@model IEnumerable<SGA.Web.Models.TarjetaRecargable.TarjetaRecargableViewModel>
 
 @{
-    ViewData["Title"] = "Tarjetas Recargables";
+    ViewData["Title"] = "Mi Tarjeta";
 }
 
-<h2>Tarjetas Recargables</h2>
+<div class="container mt-4">
 
-<p>
-    <a asp-action="Create" class="btn btn-primary">Nueva Tarjeta</a>
-</p>
+    <div class="text-center mb-5">
 
-<table class="table table-bordered">
-    <thead>
-        <tr>
-            <th>Usuario</th>
-            <th>Saldo</th>
-            <th>Estado</th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
+        <h2 class="fw-bold">
+            <i class="fa-solid fa-credit-card text-primary"></i>
+            Mi Tarjeta Recargable
+        </h2>
+
+        <p class="text-muted">
+            Consulta el saldo y el estado de tu tarjeta.
+        </p>
+
+    </div>
+
+    <div class="row justify-content-center">
+
         @foreach (var item in Model)
         {
-            <tr>
-                <td>@item.UsuarioId</td>
-                <td>@item.Saldo</td>
-                <td>@item.Estado</td>
-                <td>
-                    <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-warning btn-sm">Editar</a>
-                    <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-info btn-sm">Detalles</a>
-                    <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-danger btn-sm">Eliminar</a>
-                </td>
-            </tr>
+            <div class="col-lg-5 col-md-7 col-sm-10 mb-4">
+
+                <div class="card shadow border-0 rounded-4 h-100">
+
+                    <div class="card-body">
+
+                        <h5 class="card-title mb-4">
+                            <i class="fa-solid fa-wallet text-primary"></i>
+                            Tarjeta Recargable
+                        </h5>
+
+                        <p class="mb-2">
+                            <strong>Identificador Institucional:</strong>
+                            @item.IdentificadorInstitucional
+                        </p>
+
+                        <p class="mb-2">
+                            <strong>Saldo:</strong>
+                            <span class="text-success fw-bold">
+                                RD$ @item.Saldo.ToString("N2")
+                            </span>
+                        </p>
+
+                        <div class="d-grid">
+
+                            <a asp-action="Details"
+                               asp-route-id="@item.Id"
+                               class="btn btn-primary">
+
+                                <i class="fa-solid fa-eye"></i>
+
+                                Ver detalles
+
+                            </a>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
         }
-    </tbody>
-</table>
+
+    </div>
+
+</div>

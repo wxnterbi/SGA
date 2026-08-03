@@ -1,0 +1,160 @@
+﻿@model SGA.Web.Models.TarjetaRecargable.RecargarSaldoViewModel
+
+@{
+    ViewData["Title"] = "Recargar Tarjeta";
+}
+
+<div class="container mt-5">
+
+    <div class="row justify-content-center">
+
+        <div class="col-lg-7">
+
+            <div class="card shadow border-0 rounded-4">
+
+                <div class="card-header bg-primary text-white text-center py-4">
+
+                    <h2>
+                        <i class="fa-solid fa-wallet"></i>
+                        Recargar Tarjeta
+                    </h2>
+
+                </div>
+
+                <div class="card-body p-4">
+
+                    @if (ViewBag.Error != null)
+                    {
+                        <div class="alert alert-danger">
+                            @ViewBag.Error
+                        </div>
+                    }
+
+                    <form asp-action="Recargar" method="post">
+
+                        <input asp-for="TarjetaId" type="hidden" />
+                        <input asp-for="UsuarioId" type="hidden" />
+
+                        <div class="mb-4">
+
+                            <label class="form-label fw-bold">
+                                Saldo actual
+                            </label>
+
+                            <input class="form-control"
+                                   value="RD$ @Model.SaldoActual.ToString("N2")"
+                                   readonly />
+
+                        </div>
+
+                        <div class="mb-3">
+
+                            <label asp-for="Monto" class="form-label"></label>
+
+                            <input asp-for="Monto"
+                                   class="form-control"
+                                   placeholder="Ingrese el monto" />
+
+                            <span asp-validation-for="Monto"
+                                  class="text-danger"></span>
+
+                        </div>
+
+                        <div class="mb-3">
+
+                            <label asp-for="NumeroTarjeta"
+                                   class="form-label"></label>
+
+                            <input asp-for="NumeroTarjeta"
+                                   class="form-control"
+                                   placeholder="1234 5678 9012 3456" />
+
+                            <span asp-validation-for="NumeroTarjeta"
+                                  class="text-danger"></span>
+
+                        </div>
+
+                        <div class="mb-3">
+
+                            <label asp-for="NombreTitular"
+                                   class="form-label"></label>
+
+                            <input asp-for="NombreTitular"
+                                   class="form-control"
+                                   placeholder="Nombre del titular" />
+
+                            <span asp-validation-for="NombreTitular"
+                                  class="text-danger"></span>
+
+                        </div>
+
+                        <div class="row">
+
+                            <div class="col-md-6 mb-3">
+
+                                <label asp-for="FechaExpiracion"
+                                       class="form-label"></label>
+
+                                <input asp-for="FechaExpiracion"
+                                       class="form-control"
+                                       placeholder="MM/AA" />
+
+                                <span asp-validation-for="FechaExpiracion"
+                                      class="text-danger"></span>
+
+                            </div>
+
+                            <div class="col-md-6 mb-3">
+
+                                <label asp-for="CVV"
+                                       class="form-label"></label>
+
+                                <input asp-for="CVV"
+                                       class="form-control"
+                                       placeholder="123" />
+
+                                <span asp-validation-for="CVV"
+                                      class="text-danger"></span>
+
+                            </div>
+
+                        </div>
+
+                        <div class="text-center mt-4">
+
+                            <button type="submit"
+                                    class="btn btn-success btn-lg px-5">
+
+                                <i class="fa-solid fa-credit-card"></i>
+
+                                Confirmar Recarga
+
+                            </button>
+
+                            <a asp-action="Details"
+                               asp-route-id="@Model.TarjetaId"
+                               class="btn btn-secondary btn-lg ms-3">
+
+                                Cancelar
+
+                            </a>
+
+                        </div>
+
+                    </form>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

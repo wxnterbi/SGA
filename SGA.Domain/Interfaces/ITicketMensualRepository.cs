@@ -10,5 +10,6 @@ namespace SGA.Persistence.Interfaces
         Task UpdateAsync(TicketMensual ticket);
         Task<IEnumerable<TicketMensual>> GetAllAsync();
         Task DeleteAsync(int id);
+        Task<TicketMensual?> GetActivoByUsuarioAsync(int usuarioId);
     }
 }

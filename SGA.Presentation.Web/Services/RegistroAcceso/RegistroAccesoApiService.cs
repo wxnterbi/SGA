@@ -24,7 +24,13 @@ namespace SGA.Web.Services.RegistroAcceso
         {
             return await _httpClient.GetFromJsonAsync<RegistroAccesoViewModel>($"api/RegistroAcceso/{id}");
         }
+        public async Task<List<RegistroAccesoViewModel>> GetByUsuarioIdAsync(int usuarioId)
+        {
+            var registros = await _httpClient.GetFromJsonAsync<List<RegistroAccesoViewModel>>
+                ($"api/RegistroAcceso/Usuario/{usuarioId}");
 
+            return registros ?? new List<RegistroAccesoViewModel>();
+        }
         public async Task<bool> CreateAsync(RegistroAccesoViewModel registro)
         {
             var response = await _httpClient.PostAsJsonAsync("api/RegistroAcceso", registro);

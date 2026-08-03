@@ -1,0 +1,740 @@
+﻿@model SGA.Web.Models.Pago.ComprarTicketViewModel
+
+@{
+    ViewData["Title"] = "Comprar Ticket";
+}
+@if (ViewBag.Error != null)
+{
+    <div class="alert alert-warning alert-dismissible fade show" role="alert">
+        <i class="fa-solid fa-circle-exclamation"></i>
+        @ViewBag.Error
+
+        <button type="button"
+                class="btn-close"
+                data-bs-dismiss="alert">
+        </button>
+    </div>
+}
+<div class="container py-5">
+
+    <div class="row justify-content-center">
+
+        <div class="col-lg-9 col-xl-8">
+
+            <div class="text-center mb-4">
+                <h2 class="fw-bold">Comprar Ticket</h2>
+                <p class="text-muted">
+                    Selecciona tu ruta, horario y parada
+                </p>
+            </div>
+
+
+            <div class="card shadow-sm border-0 mb-4">
+
+                <div class="card-header bg-dark text-white">
+                    <h5 class="mb-0">
+                        Información del usuario
+                    </h5>
+                </div>
+
+                <div class="card-body">
+
+                    <div class="row">
+
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label fw-semibold">
+                                Identificador institucional
+                            </label>
+
+                            <input type="text"
+                                   class="form-control"
+                                   value="@Model.IdentificadorInstitucional"
+                                   readonly />
+                        </div>
+
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label fw-semibold">
+                                Saldo disponible
+                            </label>
+
+                            <div class="form-control bg-light fw-bold">
+                                RD$ @Model.Saldo.ToString("N2")
+                            </div>
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <form asp-action="ComprarTicket"
+                  method="post">
+
+                @Html.AntiForgeryToken()
+
+                <input type="hidden"
+                       asp-for="UsuarioId" />
+
+                <input type="hidden"
+                       asp-for="IdentificadorInstitucional" />
+
+                <input type="hidden"
+                       asp-for="Saldo" />
+
+                <input type="hidden"
+                       asp-for="Precio"
+                       id="Precio" />
+
+                <div class="card shadow-sm border-0 mb-4">
+
+                    <div class="card-header bg-primary text-white">
+                        <h5 class="mb-0">
+                            Tipo de compra
+                        </h5>
+                    </div>
+
+                    <div class="card-body">
+
+                        <label asp-for="EsMensual" class="form-label fw-semibold">
+                            ¿Qué deseas comprar?
+                        </label>
+
+                        <select asp-for="EsMensual"
+                                class="form-select"
+                                id="EsMensual">
+
+                            <option value="false">
+                                Ticket Individual
+                            </option>
+
+                            <option value="true">
+                                Ticket Mensual (RD$850.00)
+                            </option>
+
+                        </select>
+
+                    </div>
+
+                </div>
+
+                <div class="card shadow-sm border-0 mb-4">
+
+                    <div class="card-header bg-dark text-white">
+                        <h5 class="mb-0">
+                            Tipo de ticket
+                        </h5>
+                    </div>
+
+                    <div class="card-body">
+
+                        <div class="row g-3">
+
+                            <div class="col-md-4">
+
+                                <input type="radio"
+                                       class="btn-check"
+                                       asp-for="TipoTicket"
+                                       value="1"
+                                       id="ticketEntrada"
+                                       autocomplete="off" />
+
+                                <label class="btn btn-outline-primary w-100 py-3"
+                                       for="ticketEntrada">
+
+                                    <strong>Entrada</strong>
+
+                                    <br />
+
+                                    <small>
+                                        Solo ida
+                                    </small>
+
+                                </label>
+
+                            </div>
+
+                            <div class="col-md-4">
+
+                                <input type="radio"
+                                       class="btn-check"
+                                       asp-for="TipoTicket"
+                                       value="2"
+                                       id="ticketSalida"
+                                       autocomplete="off" />
+
+                                <label class="btn btn-outline-primary w-100 py-3"
+                                       for="ticketSalida">
+
+                                    <strong>Salida</strong>
+
+                                    <br />
+
+                                    <small>
+                                        Solo regreso
+                                    </small>
+
+                                </label>
+
+                            </div>
+
+                            <div class="col-md-4">
+
+                                <input type="radio"
+                                       class="btn-check"
+                                       asp-for="TipoTicket"
+                                       value="3"
+                                       id="ticketCompleto"
+                                       autocomplete="off" />
+
+                                <label class="btn btn-outline-primary w-100 py-3"
+                                       for="ticketCompleto">
+
+                                    <strong>Entrada + Salida</strong>
+
+                                    <br />
+
+                                    <small>
+                                        Ida y regreso
+                                    </small>
+
+                                </label>
+
+                            </div>
+
+                        </div>
+
+                        <span asp-validation-for="TipoTicket"
+                              class="text-danger">
+                        </span>
+
+                    </div>
+
+                </div>
+
+                <div class="card shadow-sm border-0 mb-4"
+                     id="seccionEntrada"
+                     style="display:none;">
+
+                    <div class="card-header bg-primary text-white">
+
+                        <h5 class="mb-0">
+                            Datos de entrada
+                        </h5>
+
+                    </div>
+
+                    <div class="card-body">
+
+                        <div class="row">
+
+                            <div class="col-md-4 mb-3">
+
+                                <label class="form-label fw-semibold">
+                                    Ruta
+                                </label>
+
+                                <select asp-for="RutaEntradaId"
+                                        class="form-select"
+                                        id="RutaEntradaId">
+
+                                    <option value="">
+                                        Seleccionar ruta
+                                    </option>
+
+                                    @foreach (var ruta in Model.Rutas)
+                                    {
+                                        <option value="@ruta.Id">
+
+                                            @ruta.Nombre
+                                            (@ruta.Origen → @ruta.Destino)
+
+                                        </option>
+                                    }
+
+                                </select>
+
+                            </div>
+
+
+                            <div class="col-md-4 mb-3">
+
+                                <label class="form-label fw-semibold">
+                                    Horario
+                                </label>
+
+                                <select asp-for="HorarioEntradaId"
+                                        class="form-select"
+                                        id="HorarioEntradaId">
+
+                                    <option value="">
+                                        Seleccionar horario
+                                    </option>
+
+                                    @foreach (var horario in Model.Horarios)
+                                    {
+                                        <option value="@horario.Id"
+                                                data-ruta="@horario.RutaId">
+
+                                            @horario.HoraSalida.ToString(@"hh\:mm")
+
+                                        </option>
+                                    }
+
+                                </select>
+
+                            </div>
+
+
+                            <div class="col-md-4 mb-3">
+
+                                <label class="form-label fw-semibold">
+                                    Parada
+                                </label>
+
+                                <select asp-for="ParadaEntradaId"
+                                        class="form-select">
+
+                                    <option value="">
+                                        Seleccionar parada
+                                    </option>
+
+                                    @foreach (var parada in Model.Paradas.OrderBy(p => p.Orden))
+                                    {
+                                        <option value="@parada.Id">
+
+                                            @parada.Nombre
+
+                                            @if (!string.IsNullOrWhiteSpace(parada.Ubicacion))
+                                            {
+                                                <text>
+                                                    - @parada.Ubicacion
+                                                </text>
+                                            }
+
+                                        </option>
+                                    }
+
+                                </select>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <div class="card shadow-sm border-0 mb-4"
+                     id="seccionSalida"
+                     style="display:none;">
+
+                    <div class="card-header bg-success text-white">
+
+                        <h5 class="mb-0">
+                            Datos de salida
+                        </h5>
+
+                    </div>
+
+                    <div class="card-body">
+
+                        <div class="row">
+
+                            <div class="col-md-4 mb-3">
+
+                                <label class="form-label fw-semibold">
+                                    Ruta
+                                </label>
+
+                                <select asp-for="RutaSalidaId"
+                                        class="form-select"
+                                        id="RutaSalidaId">
+
+                                    <option value="">
+                                        Seleccionar ruta
+                                    </option>
+
+                                    @foreach (var ruta in Model.Rutas)
+                                    {
+                                        <option value="@ruta.Id">
+
+                                            @ruta.Nombre
+                                            (@ruta.Origen → @ruta.Destino)
+
+                                        </option>
+                                    }
+
+                                </select>
+
+                            </div>
+
+
+                            <div class="col-md-4 mb-3">
+
+                                <label class="form-label fw-semibold">
+                                    Horario
+                                </label>
+
+                                <select asp-for="HorarioSalidaId"
+                                        class="form-select"
+                                        id="HorarioSalidaId">
+
+                                    <option value="">
+                                        Seleccionar horario
+                                    </option>
+
+                                    @foreach (var horario in Model.Horarios)
+                                    {
+                                        <option value="@horario.Id"
+                                                data-ruta="@horario.RutaId">
+
+                                            @horario.HoraSalida.ToString(@"hh\:mm")
+
+                                        </option>
+                                    }
+
+                                </select>
+
+                            </div>
+
+
+                            <div class="col-md-4 mb-3">
+
+                                <label class="form-label fw-semibold">
+                                    Parada
+                                </label>
+
+                                <select asp-for="ParadaSalidaId"
+                                        class="form-select">
+
+                                    <option value="">
+                                        Seleccionar parada
+                                    </option>
+
+                                    @foreach (var parada in Model.Paradas.OrderBy(p => p.Orden))
+                                    {
+                                        <option value="@parada.Id">
+
+                                            @parada.Nombre
+
+                                            @if (!string.IsNullOrWhiteSpace(parada.Ubicacion))
+                                            {
+                                                <text>
+                                                    - @parada.Ubicacion
+                                                </text>
+                                            }
+
+                                        </option>
+                                    }
+
+                                </select>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <div class="card shadow-sm border-0 mb-4">
+
+                    <div class="card-header bg-light">
+
+                        <h5 class="mb-0">
+                            Resumen de compra
+                        </h5>
+
+                    </div>
+
+                    <div class="card-body">
+
+                        <div class="d-flex justify-content-between mb-2">
+
+                            <span>
+                                Precio del ticket
+                            </span>
+
+                            <strong>
+                                RD$ <span id="precioTexto">0.00</span>
+                            </strong>
+
+                        </div>
+
+                        <hr />
+
+                        <div class="d-flex justify-content-between">
+
+                            <span class="fw-bold">
+                                Total
+                            </span>
+
+                            <strong class="fs-4">
+                                RD$ <span id="totalTexto">0.00</span>
+                            </strong>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                @if (ViewBag.Error != null)
+                {
+                    <div class="alert alert-danger">
+                        @ViewBag.Error
+                    </div>
+                }
+
+
+                <div class="d-flex justify-content-between">
+
+                    <a asp-controller="Pago"
+                       asp-action="Index"
+                       class="btn btn-outline-secondary">
+
+                        Cancelar
+
+                    </a>
+
+
+                    <button type="submit"
+                            class="btn btn-success btn-lg px-5"
+                            id="btnComprar">
+
+                        Comprar Ticket
+
+                    </button>
+
+                </div>
+
+            </form>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+@section Scripts {
+
+    <partial name="_ValidationScriptsPartial" />
+
+    <script>
+
+        document.addEventListener("DOMContentLoaded", function () {
+
+            const ticketEntrada =
+                document.getElementById("ticketEntrada");
+
+            const ticketSalida =
+                document.getElementById("ticketSalida");
+
+            const ticketCompleto =
+                document.getElementById("ticketCompleto");
+
+            const seccionEntrada =
+                document.getElementById("seccionEntrada");
+
+            const seccionSalida =
+                document.getElementById("seccionSalida");
+
+            const precioTexto =
+                document.getElementById("precioTexto");
+
+            const totalTexto =
+                document.getElementById("totalTexto");
+
+            const precioInput =
+                document.getElementById("Precio");
+
+
+            function actualizarCompra() {
+
+                let precio = 0;
+
+                const esMensual =
+                     document.getElementById("EsMensual").value === "true";
+
+                seccionEntrada.style.display = "none";
+                seccionSalida.style.display = "none";
+
+                 if (esMensual) {
+
+                    seccionEntrada.style.display = "block";
+                    seccionSalida.style.display = "block";
+
+                    precio = 850;
+
+                }
+                    else if (ticketEntrada.checked) {
+
+                    seccionEntrada.style.display = "block";
+
+                    precio = 25;
+
+                }
+
+
+                else if (ticketSalida.checked) {
+
+                    seccionSalida.style.display = "block";
+
+                    precio = 25;
+
+                }
+
+
+                else if (ticketCompleto.checked) {
+
+                    seccionEntrada.style.display = "block";
+                    seccionSalida.style.display = "block";
+
+                    precio = 50;
+
+                }
+
+
+                precioTexto.textContent =
+                    precio.toFixed(2);
+
+                totalTexto.textContent =
+                    precio.toFixed(2);
+
+                precioInput.value = precio;
+
+
+                validarSaldo(precio);
+            }
+
+
+            function validarSaldo(precio) {
+
+                const saldo = @Model.Saldo.ToString(
+                                    System.Globalization.CultureInfo.InvariantCulture
+                            );
+
+            const btnComprar =
+                document.getElementById("btnComprar");
+
+                if (precio > saldo) {
+
+                    btnComprar.disabled = true;
+
+                    btnComprar.textContent =
+                        "Saldo insuficiente";
+
+                }
+                else {
+
+                    btnComprar.disabled = false;
+
+                    btnComprar.textContent =
+                        "Comprar Ticket";
+
+                }
+
+            }
+
+            function filtrarHorarios(
+                rutaSelectId,
+                horarioSelectId
+            ) {
+
+                const rutaSelect =
+                    document.getElementById(rutaSelectId);
+
+                const horarioSelect =
+                    document.getElementById(horarioSelectId);
+
+                if (!rutaSelect || !horarioSelect)
+                    return;
+
+
+                function actualizarHorarios() {
+
+                    const rutaId =
+                        rutaSelect.value;
+
+
+                    horarioSelect.value = "";
+
+
+                    const opciones =
+                        horarioSelect.querySelectorAll(
+                            "option[data-ruta]"
+                        );
+
+
+                    opciones.forEach(function (opcion) {
+
+                        if (opcion.dataset.ruta === rutaId) {
+
+                            opcion.style.display = "";
+
+                        }
+                        else {
+
+                            opcion.style.display = "none";
+
+                        }
+
+                    });
+
+                }
+
+
+                rutaSelect.addEventListener(
+                    "change",
+                    actualizarHorarios
+                );
+
+
+                actualizarHorarios();
+
+            }
+
+
+            filtrarHorarios(
+                "RutaEntradaId",
+                "HorarioEntradaId"
+            );
+
+
+            filtrarHorarios(
+                "RutaSalidaId",
+                "HorarioSalidaId"
+            );
+
+
+            ticketEntrada.addEventListener(
+                "change",
+                actualizarCompra
+            );
+
+            ticketSalida.addEventListener(
+                "change",
+                actualizarCompra
+            );
+
+            ticketCompleto.addEventListener(
+                "change",
+                actualizarCompra
+            );
+
+            document
+                .getElementById("EsMensual")
+                .addEventListener("change", actualizarCompra);
+      
+            actualizarCompra();
+
+        });
+
+    </script>
+}

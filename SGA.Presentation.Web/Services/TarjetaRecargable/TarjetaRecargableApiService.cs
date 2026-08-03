@@ -45,5 +45,25 @@ namespace SGA.Web.Services.TarjetaRecargable
 
             return response.IsSuccessStatusCode;
         }
+
+        public async Task<bool> RecargarSaldoAsync(RecargarSaldoViewModel model)
+        {
+            var dto = new
+            {
+                UsuarioId = model.UsuarioId,
+                Monto = model.Monto
+            };
+
+            var response = await _httpClient.PostAsJsonAsync(
+                "api/TarjetaRecargable/Recargar",
+                dto);
+
+            return response.IsSuccessStatusCode;
+        }
+        public async Task<TarjetaRecargableViewModel?> GetByUsuarioIdAsync(int usuarioId)
+        {
+            return await _httpClient.GetFromJsonAsync<TarjetaRecargableViewModel>(
+                $"api/TarjetaRecargable/Usuario/{usuarioId}");
+        }
     }
 }

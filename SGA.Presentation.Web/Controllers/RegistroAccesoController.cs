@@ -12,11 +12,31 @@ namespace SGA.Web.Controllers
         {
             _registroApiService = registroApiService;
         }
+        public async Task<IActionResult> MisAccesos()
+        {
+            int usuarioId = 2; // luego será el usuario autenticado
+
+            var registros = await _registroApiService.GetByUsuarioIdAsync(usuarioId);
+
+            registros = registros
+                .OrderByDescending(x => x.FechaHora)
+                .ToList();
+
+            return View(registros);
+        }
 
         // GET: RegistroAcceso
         public async Task<IActionResult> Index()
         {
+            int usuarioId = 2;
+
             var registros = await _registroApiService.GetAllAsync();
+
+            registros = registros
+                .Where(x => x.UsuarioId == usuarioId)
+                .OrderByDescending(x => x.FechaHora)
+                .ToList();
+
             return View(registros);
         }
 

@@ -6,6 +6,8 @@
 
         public int UsuarioId { get; set; }
 
+        public string Matricula { get; set; } = string.Empty;
+
         public int ViajeId { get; set; }
 
         public bool Permitido { get; set; }

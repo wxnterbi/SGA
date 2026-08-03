@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using SGA.Web.Interfaces.Pago;
+using SGA.Web.Interfaces.TarjetaRecargable;
 using SGA.Web.Models.Pago;
 
 namespace SGA.Web.Controllers
@@ -7,16 +8,25 @@ namespace SGA.Web.Controllers
     public class PagoController : Controller
     {
         private readonly IPagoApiService _pagoApiService;
+        private readonly ITarjetaRecargableApiService _tarjetaService;
 
-        public PagoController(IPagoApiService pagoApiService)
+        public PagoController(
+            IPagoApiService pagoApiService,
+            ITarjetaRecargableApiService tarjetaService)
         {
             _pagoApiService = pagoApiService;
+            _tarjetaService = tarjetaService;
         }
 
         // GET: Pago
         public async Task<IActionResult> Index()
         {
             var pagos = await _pagoApiService.GetAllAsync();
+
+            pagos = pagos
+                .OrderByDescending(p => p.FechaPago)
+                .ToList();
+
             return View(pagos);
         }
 
@@ -50,6 +60,7 @@ namespace SGA.Web.Controllers
             if (!resultado)
             {
                 ViewBag.Error = "No se pudo registrar el pago.";
+
                 return View(pago);
             }
 
@@ -80,6 +91,7 @@ namespace SGA.Web.Controllers
             if (!resultado)
             {
                 ViewBag.Error = "No se pudo actualizar el pago.";
+
                 return View(pago);
             }
 
@@ -107,10 +119,80 @@ namespace SGA.Web.Controllers
             if (!resultado)
             {
                 ViewBag.Error = "No se pudo eliminar el pago.";
+
                 return View();
             }
 
             return RedirectToAction(nameof(Index));
+        }
+
+        // GET: Pago/ComprarTicket
+        public async Task<IActionResult> ComprarTicket()
+        {
+            int usuarioId = 2;
+
+            var tarjeta = await _tarjetaService.GetByUsuarioIdAsync(usuarioId);
+
+            if (tarjeta == null)
+                return NotFound();
+
+            var model = new ComprarTicketViewModel
+            {
+                UsuarioId = tarjeta.UsuarioId,
+                IdentificadorInstitucional = tarjeta.IdentificadorInstitucional,
+                Saldo = tarjeta.Saldo
+            };
+
+            return View(model);
+        }
+
+        // POST: Pago/ComprarTicket
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> ComprarTicket(ComprarTicketViewModel model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View(model);
+            }
+
+            try
+            {
+                var resultado = await _pagoApiService.ComprarTicketAsync(model);
+
+                if (!resultado)
+                {
+                    await CargarDatosTicket(model);
+
+                    ViewBag.Error = "No fue posible realizar la compra.";
+
+                    return View(model);
+                }
+
+                TempData["Success"] = "Ticket comprado correctamente.";
+
+                return RedirectToAction(nameof(Index));
+            }
+            catch (Exception ex)
+            {
+                await CargarDatosTicket(model);
+
+                ViewBag.Error = ex.Message;
+
+                return View(model);
+            }
+        }
+        private async Task CargarDatosTicket(
+            ComprarTicketViewModel model)
+        {
+            model.Rutas =
+                await _pagoApiService.GetRutasAsync();
+
+            model.Horarios =
+                await _pagoApiService.GetHorariosAsync();
+
+            model.Paradas =
+                await _pagoApiService.GetParadasAsync();
         }
     }
 }

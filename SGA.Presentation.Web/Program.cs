@@ -8,13 +8,11 @@ using SGA.Web.Interfaces.RegistroAcceso;
 using SGA.Web.Services.RegistroAcceso;
 using SGA.Web.Interfaces.Notificacion;
 using SGA.Web.Services.Notificacion;
+using SGA.Web.Services.Login;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
 builder.Services.AddControllersWithViews();
-
-// Configuración de HttpClient para consumir la API
 
 builder.Services.AddHttpClient<IPagoApiService, PagoApiService>(client =>
 {
@@ -41,9 +39,22 @@ builder.Services.AddHttpClient<INotificacionApiService, NotificacionApiService>(
     client.BaseAddress = new Uri(builder.Configuration["ApiSettings:BaseUrl"]!);
 });
 
+builder.Services.AddHttpClient<UsuarioApiService>(client =>
+{
+    client.BaseAddress = new Uri(builder.Configuration["ApiSettings:BaseUrl"]!);
+});
+
+builder.Services.AddDistributedMemoryCache();
+
+builder.Services.AddSession(options =>
+{
+    options.IdleTimeout = TimeSpan.FromHours(2);
+    options.Cookie.HttpOnly = true;
+    options.Cookie.IsEssential = true;
+});
+
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
 {
     app.UseExceptionHandler("/Home/Error");
@@ -55,6 +66,8 @@ app.UseHttpsRedirection();
 app.UseStaticFiles();
 
 app.UseRouting();
+
+app.UseSession();
 
 app.UseAuthorization();
 

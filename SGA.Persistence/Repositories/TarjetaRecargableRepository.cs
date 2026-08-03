@@ -13,15 +13,23 @@ namespace SGA.Persistence.Repository
 
         public async Task<TarjetaRecargable> GetByIdAsync(int id)
         {
-            return await _context.TarjetasRecargables.FindAsync(id);
+            return await _context.TarjetasRecargables
+                .Include(t => t.Usuario)
+                .FirstOrDefaultAsync(t => t.Id == id);
         }
 
         public async Task<IEnumerable<TarjetaRecargable>> GetAllAsync()
         {
-            return await _context.TarjetasRecargables.ToListAsync();
+            return await _context.TarjetasRecargables
+                .Include(t => t.Usuario)
+                .ToListAsync();
         }
-        public async Task<TarjetaRecargable> GetByUsuarioIdAsync(int usuarioId) =>
-            await _context.TarjetasRecargables.FirstOrDefaultAsync(t => t.UsuarioId == usuarioId);
+        public async Task<TarjetaRecargable> GetByUsuarioIdAsync(int usuarioId)
+        {
+            return await _context.TarjetasRecargables
+                .Include(t => t.Usuario)
+                .FirstOrDefaultAsync(t => t.UsuarioId == usuarioId);
+        }
         public async Task AddAsync(TarjetaRecargable tarjeta)
         {
             await _context.TarjetasRecargables.AddAsync(tarjeta);

@@ -1,8 +1,285 @@
 ﻿@{
-    ViewData["Title"] = "Home Page";
+    ViewData["Title"] = "Inicio";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
-</div>
+<section class="hero">
+
+    <div class="hero-overlay"></div>
+
+    <div class="container">
+
+        <div class="row align-items-center">
+
+            <div class="col-lg-6">
+
+                <h1>
+
+                    Transporte Institucional
+                    <br />
+                    del ITLA
+
+                </h1>
+
+                <p>
+
+                    Consulta rutas, reserva tus tickets de transporte,
+                    administra tu tarjeta recargable y mantente informado
+                    desde un solo lugar.
+
+                </p>
+
+                <div class="mt-4">
+
+                    <a asp-controller="Pago"
+                       asp-action="Index"
+                       class="btn btn-light btn-lg me-3">
+
+                        <i class="fa-solid fa-ticket"></i>
+
+                        Reservar Ticket
+
+                    </a>
+
+                    <a asp-controller="TicketMensual"
+                       asp-action="Index"
+                       class="btn btn-outline-light btn-lg">
+
+                        <i class="fa-solid fa-calendar-check"></i>
+
+                        Mi Ticket
+
+                    </a>
+
+                </div>
+
+            </div>
+
+            <div class="col-lg-6 text-center">
+
+                <img src="~/images/bus.png"
+                     class="hero-bus img-fluid"
+                     alt="Bus ITLA">
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+<section class="py-5">
+
+    <h2 class="section-title">
+
+        ¿Qué deseas hacer?
+
+    </h2>
+
+    <div class="row g-4">
+
+        <div class="col-md-6 col-lg-3">
+
+            <div class="quick-card">
+
+                <i class="fa-solid fa-ticket"></i>
+
+                <h4>Reservar Ticket</h4>
+
+                <p>
+
+                    Compra tu ticket para utilizar el transporte estudiantil.
+
+                </p>
+
+                <a asp-controller="Pago"
+                   asp-action="Index"
+                   class="btn btn-primary">
+
+                    Entrar
+
+                </a>
+
+            </div>
+
+        </div>
+
+        <div class="col-md-6 col-lg-3">
+
+            <div class="quick-card">
+
+                <i class="fa-solid fa-calendar-check"></i>
+
+                <h4>Ticket Mensual</h4>
+
+                <p>
+
+                    Consulta o solicita tu ticket mensual.
+
+                </p>
+
+                <a asp-controller="TicketMensual"
+                   asp-action="Index"
+                   class="btn btn-primary">
+
+                    Entrar
+
+                </a>
+
+            </div>
+
+        </div>
+
+        <div class="col-md-6 col-lg-3">
+
+            <div class="quick-card">
+
+                <i class="fa-solid fa-credit-card"></i>
+
+                <h4>Mi Tarjeta</h4>
+
+                <p>
+
+                    Consulta el saldo de tu tarjeta recargable.
+
+                </p>
+
+                <a asp-controller="TarjetaRecargable"
+                   asp-action="Index"
+                   class="btn btn-primary">
+
+                    Entrar
+
+                </a>
+
+            </div>
+
+        </div>
+
+        <div class="col-md-6 col-lg-3">
+
+            <div class="quick-card">
+
+                <i class="fa-solid fa-bell"></i>
+
+                <h4>Notificaciones</h4>
+
+                <p>
+
+                    Consulta avisos importantes del transporte.
+
+                </p>
+
+                <a asp-controller="Notificacion"
+                   asp-action="Index"
+                   class="btn btn-primary">
+
+                    Entrar
+
+                </a>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+<section class="py-5">
+
+    <h2 class="section-title">
+
+        ¿Qué puedes hacer con el sistema?
+
+    </h2>
+
+    <p class="text-center text-muted mb-5" style="max-width:750px;margin:auto;">
+
+        El Sistema de Gestión de Transporte Estudiantil del ITLA permite administrar
+        de forma rápida y segura todos los servicios relacionados con el transporte
+        institucional desde un solo lugar.
+
+    </p>
+
+    <div class="row g-4">
+
+        <div class="col-md-6 col-lg-3">
+
+            <div class="quick-card">
+
+                <i class="fa-solid fa-ticket"></i>
+
+                <h4>Reservar Tickets</h4>
+
+                <p>
+
+                    Reserva tu asiento en pocos segundos para utilizar el
+                    transporte estudiantil.
+
+                </p>
+
+            </div>
+
+        </div>
+
+        <div class="col-md-6 col-lg-3">
+
+            <div class="quick-card">
+
+                <i class="fa-solid fa-credit-card"></i>
+
+                <h4>Gestionar Tarjeta</h4>
+
+                <p>
+
+                    Consulta el saldo y administra tu tarjeta recargable
+                    de manera sencilla.
+
+                </p>
+
+            </div>
+
+        </div>
+
+        <div class="col-md-6 col-lg-3">
+
+            <div class="quick-card">
+
+                <i class="fa-solid fa-route"></i>
+
+                <h4>Consultar Viajes</h4>
+
+                <p>
+
+                    Visualiza tu historial de viajes y lleva un control
+                    de tus accesos al transporte.
+
+                </p>
+
+            </div>
+
+        </div>
+
+        <div class="col-md-6 col-lg-3">
+
+            <div class="quick-card">
+
+                <i class="fa-solid fa-bell"></i>
+
+                <h4>Recibir Avisos</h4>
+
+                <p>
+
+                    Mantente informado sobre cambios de rutas, horarios y
+                    notificaciones importantes.
+
+                </p>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>

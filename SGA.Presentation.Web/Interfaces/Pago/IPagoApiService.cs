@@ -13,5 +13,13 @@ namespace SGA.Web.Interfaces.Pago
         Task<bool> UpdateAsync(PagoViewModel pago);
 
         Task<bool> DeleteAsync(int id);
+
+        Task<bool> ComprarTicketAsync(ComprarTicketViewModel model);
+
+        Task<List<RutaCompraViewModel>> GetRutasAsync();
+
+        Task<List<HorarioCompraViewModel>> GetHorariosAsync();
+
+        Task<List<ParadaCompraViewModel>> GetParadasAsync();
     }
 }

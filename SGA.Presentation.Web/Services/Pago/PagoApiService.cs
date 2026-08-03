@@ -1,16 +1,19 @@
-﻿using System.Net.Http.Json;
+﻿using Microsoft.Extensions.Configuration;
 using SGA.Web.Interfaces.Pago;
 using SGA.Web.Models.Pago;
+using System.Net.Http.Json;
 
 namespace SGA.Web.Services.Pago
 {
     public class PagoApiService : IPagoApiService
     {
         private readonly HttpClient _httpClient;
+        private readonly IConfiguration _configuration;
 
-        public PagoApiService(HttpClient httpClient)
+        public PagoApiService(HttpClient httpClient, IConfiguration configuration)
         {
             _httpClient = httpClient;
+            _configuration = configuration;
         }
 
         public async Task<List<PagoViewModel>> GetAllAsync()
@@ -44,6 +47,43 @@ namespace SGA.Web.Services.Pago
             var response = await _httpClient.DeleteAsync($"api/Pago/{id}");
 
             return response.IsSuccessStatusCode;
+        }
+        public async Task<bool> ComprarTicketAsync(ComprarTicketViewModel model)
+        {
+            var response = await _httpClient.PostAsJsonAsync(
+                "api/Pago/ComprarTicket",
+                model);
+
+            if (!response.IsSuccessStatusCode)
+            {
+                var error = await response.Content.ReadAsStringAsync();
+                throw new Exception(error);
+            }
+
+            return true;
+        }
+        public async Task<List<RutaCompraViewModel>> GetRutasAsync()
+        {
+            var url = $"{_configuration["ApiSettings:DesktopApiUrl"]}api/Ruta";
+
+            return await _httpClient.GetFromJsonAsync<List<RutaCompraViewModel>>(url)
+                   ?? new List<RutaCompraViewModel>();
+        }
+
+        public async Task<List<HorarioCompraViewModel>> GetHorariosAsync()
+        {
+            var url = $"{_configuration["ApiSettings:DesktopApiUrl"]}api/Horario";
+
+            return await _httpClient.GetFromJsonAsync<List<HorarioCompraViewModel>>(url)
+                   ?? new List<HorarioCompraViewModel>();
+        }
+
+        public async Task<List<ParadaCompraViewModel>> GetParadasAsync()
+        {
+            var url = $"{_configuration["ApiSettings:DesktopApiUrl"]}api/Parada";
+
+            return await _httpClient.GetFromJsonAsync<List<ParadaCompraViewModel>>(url)
+                   ?? new List<ParadaCompraViewModel>();
         }
     }
 }

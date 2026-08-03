@@ -16,8 +16,26 @@ namespace SGA.Web.Controllers
         // GET: Notificacion
         public async Task<IActionResult> Index()
         {
+            int usuarioId = 2; // luego lo cambiarás por el usuario logueado
+
             var notificaciones = await _notificacionApiService.GetAllAsync();
+
+            notificaciones = notificaciones
+                .Where(x => x.UsuarioId == usuarioId)
+                .OrderByDescending(x => x.FechaHora)
+                .ToList();
+
             return View(notificaciones);
+        }
+
+        public async Task<IActionResult> MarcarLeida(int id)
+        {
+            var notificacion = await _notificacionApiService.GetByIdAsync(id);
+
+            if (notificacion == null)
+                return NotFound();
+
+            return RedirectToAction(nameof(Index));
         }
 
         // GET: Notificacion/Details/5

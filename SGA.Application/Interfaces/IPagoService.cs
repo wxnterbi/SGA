@@ -5,5 +5,6 @@ namespace SGA.Application.Interfaces
 {
     public interface IPagoService : IBaseService<PagoDto>
     {
+        Task ComprarTicketAsync(ComprarTicketDto dto);
     }
 }

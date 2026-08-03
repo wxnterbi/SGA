@@ -1,0 +1,26 @@
+﻿@model SGA.Web.Models.Login.LoginViewModel
+
+<h2>Iniciar sesión</h2>
+
+<form asp-action="Index">
+
+    <div class="mb-3">
+
+        <label>Matrícula</label>
+
+        <input asp-for="Matricula" class="form-control" />
+
+    </div>
+
+    <button class="btn btn-primary">
+        Entrar
+    </button>
+
+</form>
+
+@if (ViewBag.Error != null)
+{
+    <div class="alert alert-danger mt-3">
+        @ViewBag.Error
+    </div>
+}
