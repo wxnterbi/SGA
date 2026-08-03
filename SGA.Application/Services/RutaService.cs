@@ -3,6 +3,9 @@ using SGA.Application.Interfaces;
 using SGA.Domain.Entities.Configuration;
 using SGA.Infrastructure.Notifications;
 using SGA.Persistence.Interfaces;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace SGA.Application.Services
 {
@@ -19,35 +22,32 @@ namespace SGA.Application.Services
             _notificationService = notificationService;
         }
 
-        public Task<IEnumerable<RutaDto>> GetAllAsync()
+        // 🟢 LIBERA EL HILO DE LA UI DE VERDAD
+        public async Task<IEnumerable<RutaDto>> GetAllAsync()
         {
-            var rutas = _rutaRepository.GetAll();
+            var rutas = await _rutaRepository.GetAllAsync();
 
-            var resultado = rutas.Select(r => new RutaDto
+            return rutas.Select(r => new RutaDto
             {
                 Id = r.Id,
                 Nombre = r.Nombre,
                 Origen = r.Origen,
                 Destino = r.Destino
             });
-
-            return Task.FromResult(resultado);
         }
 
-        public Task<RutaDto?> GetByIdAsync(int id)
+        public async Task<RutaDto?> GetByIdAsync(int id)
         {
-            var ruta = _rutaRepository.GetById(id);
+            var ruta = await _rutaRepository.GetByIdAsync(id);
+            if (ruta == null) return null;
 
-            if (ruta == null)
-                return Task.FromResult<RutaDto?>(null);
-
-            return Task.FromResult<RutaDto?>(new RutaDto
+            return new RutaDto
             {
                 Id = ruta.Id,
                 Nombre = ruta.Nombre,
                 Origen = ruta.Origen,
                 Destino = ruta.Destino
-            });
+            };
         }
 
         public async Task AddAsync(RutaDto dto)
@@ -59,7 +59,7 @@ namespace SGA.Application.Services
                 Destino = dto.Destino
             };
 
-            _rutaRepository.Add(ruta);
+            await _rutaRepository.AddAsync(ruta);
 
             await _notificationService.SendNotificationAsync(
                 "estudiante@itla.edu.do",
@@ -67,10 +67,9 @@ namespace SGA.Application.Services
                 "Se registró una nueva ruta correctamente.");
         }
 
-        public Task UpdateAsync(RutaDto dto)
+        public async Task UpdateAsync(RutaDto dto)
         {
-            var ruta = _rutaRepository.GetById(dto.Id);
-
+            var ruta = await _rutaRepository.GetByIdAsync(dto.Id);
             if (ruta == null)
                 throw new Exception("Ruta no encontrada.");
 
@@ -78,19 +77,14 @@ namespace SGA.Application.Services
             ruta.Origen = dto.Origen;
             ruta.Destino = dto.Destino;
 
-            _rutaRepository.Update(ruta);
-
-            return Task.CompletedTask;
+            await _rutaRepository.UpdateAsync(ruta);
         }
 
-        public Task DeleteAsync(int id)
+        public async Task DeleteAsync(int id)
         {
-            var eliminado = _rutaRepository.Delete(id);
-
+            var eliminado = await _rutaRepository.DeleteAsync(id);
             if (!eliminado)
                 throw new Exception("Ruta no encontrada.");
-
-            return Task.CompletedTask;
         }
     }
 }

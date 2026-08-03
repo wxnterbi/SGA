@@ -1,6 +1,9 @@
 ﻿using SGA.Domain.Entities.Configuration;
 using SGA.Persistence.Context;
 using SGA.Persistence.Interfaces;
+using Microsoft.EntityFrameworkCore;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace SGA.Persistence.Repositories
 {
@@ -13,30 +16,28 @@ namespace SGA.Persistence.Repositories
             _context = context;
         }
 
-        public List<Ruta> GetAll()
+        // 🟢 AHORA SÍ ES ASÍNCRONO REAL
+        public async Task<List<Ruta>> GetAllAsync()
         {
-            return _context.Rutas.ToList();
+            return await _context.Rutas.AsNoTracking().ToListAsync();
         }
 
-        public Ruta GetById(int id)
+        public async Task<Ruta?> GetByIdAsync(int id)
         {
-            return _context.Rutas.Find(id);
+            return await _context.Rutas.FindAsync(id);
         }
 
-        public Ruta Add(Ruta ruta)
+        public async Task<Ruta> AddAsync(Ruta ruta)
         {
             ruta.FechaCreacion = DateTime.Now;
-
-            _context.Rutas.Add(ruta);
-            _context.SaveChanges();
-
+            await _context.Rutas.AddAsync(ruta);
+            await _context.SaveChangesAsync();
             return ruta;
         }
 
-        public Ruta Update(Ruta ruta)
+        public async Task<Ruta> UpdateAsync(Ruta ruta)
         {
-            var rutaExistente = _context.Rutas.Find(ruta.Id);
-
+            var rutaExistente = await _context.Rutas.FindAsync(ruta.Id);
             if (rutaExistente == null)
                 throw new Exception("Ruta no encontrada.");
 
@@ -45,21 +46,18 @@ namespace SGA.Persistence.Repositories
             rutaExistente.Destino = ruta.Destino;
             rutaExistente.FechaModificacion = DateTime.Now;
 
-            _context.SaveChanges();
-
+            await _context.SaveChangesAsync();
             return rutaExistente;
         }
 
-        public bool Delete(int id)
+        public async Task<bool> DeleteAsync(int id)
         {
-            var ruta = _context.Rutas.Find(id);
-
+            var ruta = await _context.Rutas.FindAsync(id);
             if (ruta == null)
                 return false;
 
             _context.Rutas.Remove(ruta);
-            _context.SaveChanges();
-
+            await _context.SaveChangesAsync();
             return true;
         }
     }

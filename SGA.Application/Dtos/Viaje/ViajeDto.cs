@@ -12,5 +12,8 @@ namespace SGA.Application.Dtos.Viaje
         public EstadoViaje Estado { get; set; }
         public DateTime? HoraInicioReal { get; set; }
         public DateTime? HoraFinReal { get; set; }
+        public string? NombreRuta { get; set; }
+        public string? PlacaAutobus { get; set; }
+        public string? NombreConductor { get; set; }
     }
 }

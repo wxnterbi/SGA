@@ -14,14 +14,22 @@ namespace SGA.Persistence.Repositories
             _context = context;
         }
 
-        public async Task<Viaje> GetByIdAsync(int id)
+        public async Task<Viaje?> GetByIdAsync(int id)
         {
-            return await _context.Viajes.FindAsync(id);
+            return await _context.Viajes
+                .Include(v => v.Ruta)
+                .Include(v => v.Autobus)
+                .Include(v => v.Conductor)
+                .FirstOrDefaultAsync(v => v.Id == id);
         }
 
         public async Task<IEnumerable<Viaje>> GetAllAsync()
         {
-            return await _context.Viajes.ToListAsync();
+            return await _context.Viajes
+                .Include(v => v.Ruta)
+                .Include(v => v.Autobus)
+                .Include(v => v.Conductor)
+                .ToListAsync();
         }
 
         public async Task AddAsync(Viaje viaje)

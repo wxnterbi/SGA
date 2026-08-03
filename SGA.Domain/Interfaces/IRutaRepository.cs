@@ -1,13 +1,15 @@
 ﻿using SGA.Domain.Entities.Configuration;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace SGA.Persistence.Interfaces
 {
     public interface IRutaRepository
     {
-        List<Ruta> GetAll();
-        Ruta GetById(int id);
-        Ruta Add(Ruta ruta);
-        Ruta Update(Ruta ruta);
-        bool Delete(int id);
+        Task<List<Ruta>> GetAllAsync();
+        Task<Ruta?> GetByIdAsync(int id);
+        Task<Ruta> AddAsync(Ruta ruta);
+        Task<Ruta> UpdateAsync(Ruta ruta);
+        Task<bool> DeleteAsync(int id);
     }
 }

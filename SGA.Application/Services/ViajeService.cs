@@ -23,38 +23,20 @@ namespace SGA.Application.Services
             _notificationService = notificationService;
         }
 
-        public async Task<ViajeDto> GetByIdAsync(int id)
+        public async Task<ViajeDto?> GetByIdAsync(int id)
         {
             var viaje = await _viajeRepository.GetByIdAsync(id);
             if (viaje == null) return null;
 
-            return new ViajeDto
-            {
-                Id = viaje.Id,
-                RutaId = viaje.RutaId,
-                HorarioId = viaje.HorarioId,
-                AutobusId = viaje.AutobusId,
-                ConductorId = viaje.ConductorId,
-                Estado = viaje.Estado,
-                HoraInicioReal = viaje.HoraInicioReal,
-                HoraFinReal = viaje.HoraFinReal
-            };
+            return MapToDto(viaje);
         }
 
         public async Task<IEnumerable<ViajeDto>> GetAllAsync()
         {
             var viajes = await _viajeRepository.GetAllAsync();
-            return viajes.Select(viaje => new ViajeDto
-            {
-                Id = viaje.Id,
-                RutaId = viaje.RutaId,
-                HorarioId = viaje.HorarioId,
-                AutobusId = viaje.AutobusId,
-                ConductorId = viaje.ConductorId,
-                Estado = viaje.Estado,
-                HoraInicioReal = viaje.HoraInicioReal,
-                HoraFinReal = viaje.HoraFinReal
-            });
+
+            // 💡 AQUÍ ESTABA EL DETALLE: Ahora sí mapea NombreRuta, PlacaAutobus y NombreConductor
+            return viajes.Select(viaje => MapToDto(viaje));
         }
 
         public async Task AddAsync(ViajeDto dto)
@@ -74,7 +56,7 @@ namespace SGA.Application.Services
                 Estado = dto.Estado
             };
 
-            _viajeRepository.AddAsync(viaje);
+            await _viajeRepository.AddAsync(viaje);
 
             await _notificationService.SendNotificationAsync(
                 "estudiante@itla.edu.do",
@@ -102,6 +84,34 @@ namespace SGA.Application.Services
         public async Task DeleteAsync(int id)
         {
             await _viajeRepository.DeleteAsync(id);
+        }
+
+        // 🟢 MÉTODO PRIVADO AUXILIAR DE MAPEO
+        private static ViajeDto MapToDto(Viaje viaje)
+        {
+            return new ViajeDto
+            {
+                Id = viaje.Id,
+                RutaId = viaje.RutaId,
+                HorarioId = viaje.HorarioId,
+                AutobusId = viaje.AutobusId,
+                ConductorId = viaje.ConductorId,
+                Estado = viaje.Estado,
+                HoraInicioReal = viaje.HoraInicioReal,
+                HoraFinReal = viaje.HoraFinReal,
+
+                NombreRuta = viaje.Ruta != null
+                    ? $"{viaje.Ruta.Origen} - {viaje.Ruta.Destino}"
+                    : $"Ruta #{viaje.RutaId}",
+
+                PlacaAutobus = viaje.Autobus != null
+                    ? viaje.Autobus.Placa
+                    : $"Autobús #{viaje.AutobusId}",
+
+                NombreConductor = viaje.Conductor != null
+                    ? viaje.Conductor.Nombre
+                    : $"Conductor #{viaje.ConductorId}"
+            };
         }
     }
 }
