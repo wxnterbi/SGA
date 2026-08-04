@@ -1,6 +1,5 @@
-﻿using SGA.Application.Interfaces;
-using SGA.Application.Services;
-using SGA.Desktop.Services;
+﻿using Microsoft.Extensions.DependencyInjection;
+using SGA.Desktop.Interfaces.Viaje;
 using System;
 using System.Windows.Forms;
 
@@ -8,14 +7,11 @@ namespace SGA.Desktop
 {
     public partial class FrmLogin : Form
     {
-
-        // Constructor sin parámetros (el que llama tu Program.cs)
         public FrmLogin()
         {
             InitializeComponent();
         }
 
-        // Evento del botón Ingresar
         private void btnIngresar_Click(object sender, EventArgs e)
         {
             string identificador = txtIdentificador.Text.Trim();
@@ -35,9 +31,8 @@ namespace SGA.Desktop
                 {
                     this.Hide();
 
-                    IViajeService viajeService = new ViajeApiService();
-                    // Le pasamos los servicios al Dashboard
-                    using (FrmMainDashboard dashboard = new FrmMainDashboard(viajeService, null!, null!, null!, null!))
+                    // 🟢 Se instancia FrmMainDashboard usando el constructor vacio y el DI Container
+                    using (FrmMainDashboard dashboard = Program.ServiceProvider.GetRequiredService<FrmMainDashboard>())
                     {
                         DialogResult resultado = dashboard.ShowDialog();
 
@@ -66,28 +61,17 @@ namespace SGA.Desktop
             }
         }
 
-        // Evento del botón Cancelar / Salir
         private void btnCancelar_Click(object sender, EventArgs e)
         {
             System.Windows.Forms.Application.Exit();
         }
 
-        // Método temporal para probar el flujo sin la API conectada aún
         private bool SimularLlamadaApi(string identificador, string password)
         {
-            if (identificador == "admin" && password == "1234")
-            {
-                return true;
-            }
-            return false;
+            return identificador == "admin" && password == "1234";
         }
 
-        private void lblTitulo_Click(object sender, EventArgs e)
-        {
-        }
-
-        private void pictureBox1_Click(object sender, EventArgs e)
-        {
-        }
+        private void lblTitulo_Click(object sender, EventArgs e) { }
+        private void pictureBox1_Click(object sender, EventArgs e) { }
     }
 }

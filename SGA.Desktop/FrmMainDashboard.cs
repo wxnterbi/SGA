@@ -1,53 +1,44 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
-using SGA.Application.Interfaces;
-using SGA.Application.Services;
+using SGA.Desktop.Interfaces.Autobus;
+using SGA.Desktop.Interfaces.Viaje;
+using SGA.Desktop.Modulos.Reporte;
+using SGA.Desktop.Modulos.RutaHorarios;
 using SGA.Desktop.Modulos.Transporte;
+using SGA.Desktop.Modulos.Usuario;
 using SGA.Desktop.Modulos.Viaje;
 using System;
-using System.Reflection;
 using System.Windows.Forms;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 
 namespace SGA.Desktop
 {
     public partial class FrmMainDashboard : Form
     {
         private Form? formularioActivo = null;
-        private readonly IViajeService _viajeService;
-        private readonly IRutaService _rutaService;
-        private readonly IAutobusService _autobusService;
-        private readonly IConductorService _conductorService;
-        private readonly IHorarioService _horarioService;
 
-        public FrmMainDashboard(
-        IViajeService viajeService,
-        IRutaService rutaService,
-        IAutobusService autobusService,
-        IConductorService conductorService,
-        IHorarioService horarioService)
+        // Constructor vacio que resuelve los modulos desde el ServiceProvider
+        public FrmMainDashboard()
         {
             InitializeComponent();
-
-            // 2. Solo los asignas a los campos privados (sin el 'new')
-            _viajeService = viajeService;
-            _rutaService = rutaService;
-            _autobusService = autobusService;
-            _conductorService = conductorService;
-            _horarioService = horarioService;
-
-            this.Shown += FrmMainDashboard_Shown;
         }
 
-        private void FrmMainDashboard_Shown(object sender, EventArgs e)
+        private void FrmMainDashboard_Load(object sender, EventArgs e)
         {
-            // Carga la vista una vez que la ventana principal ya está totalmente renderizada
-            AbrirFormularioHijo(new Modulos.Viaje.FrmViajePrincipal(
-                _viajeService,
-                _rutaService,
-                _autobusService,
-                _conductorService,
-                _horarioService
-                ), "Control de Viajes");
+            CargarModuloViajes();
+        }
+
+        private void CargarModuloViajes()
+        {
+            try
+            {
+                var frmViajes = Program.ServiceProvider.GetRequiredService<FrmViajePrincipal>();
+                AbrirFormularioHijo(frmViajes, "Control de Viajes");
+            }
+            catch
+            {
+                // 🟢 Resolver el servicio de la API antes de crear el formulario manualmente
+                var viajeApiService = Program.ServiceProvider.GetRequiredService<IViajeApiService>();
+                AbrirFormularioHijo(new FrmViajePrincipal(viajeApiService), "Control de Viajes");
+            }
         }
 
         // Método genérico para abrir un formulario dentro del pnlContenedor
@@ -65,50 +56,68 @@ namespace SGA.Desktop
             formularioHijo.FormBorderStyle = FormBorderStyle.None;
             formularioHijo.Dock = DockStyle.Fill;
 
+            pnlContenedor.Controls.Clear();
             pnlContenedor.Controls.Add(formularioHijo);
             pnlContenedor.Tag = formularioHijo;
             formularioHijo.BringToFront();
             formularioHijo.Show();
         }
 
-        private void FrmMainDashboard_Load(object sender, EventArgs e)
-        {
-            AbrirFormularioHijo(new Modulos.Viaje.FrmViajePrincipal(
-                _viajeService,
-                _rutaService,
-                _autobusService,
-                _conductorService,
-                _horarioService
-                ), "Control de Viajes");
-        }
-
         private void btnViajes_Click(object sender, EventArgs e)
         {
-            var frmViajes = Program.ServiceProvider.GetRequiredService<Modulos.Viaje.FrmViajePrincipal>();
-
-            // 2. Se la pasamos a tu método para abrir formularios hijos
-            AbrirFormularioHijo(frmViajes, "Control de Viajes");
+            CargarModuloViajes();
         }
 
         private void btnUsuarios_Click(object sender, EventArgs e)
         {
-            AbrirFormularioHijo(new Modulos.Usuario.FrmGestionUsuario(), "Gestión de Usuarios");
+            try
+            {
+                var frmUsuarios = Program.ServiceProvider.GetRequiredService<FrmGestionUsuario>();
+                AbrirFormularioHijo(frmUsuarios, "Gestión de Usuarios");
+            }
+            catch
+            {
+                AbrirFormularioHijo(new FrmGestionUsuario(), "Gestión de Usuarios");
+            }
         }
 
         private void btnTransporte_Click(object sender, EventArgs e)
         {
-            var frmTransporte = Program.ServiceProvider.GetRequiredService<SGA.Desktop.Modulos.Transporte.FrmGestionTransporte>();
-            AbrirFormularioHijo(frmTransporte, "Gestión de Transporte");
+            try
+            {
+                var frmTransporte = Program.ServiceProvider.GetRequiredService<FrmGestionTransporte>();
+                AbrirFormularioHijo(frmTransporte, "Gestión de Transporte");
+            }
+            catch
+            {
+                AbrirFormularioHijo(new FrmGestionTransporte(), "Gestión de Transporte");
+            }
         }
 
         private void btnRutaHorarios_Click(object sender, EventArgs e)
         {
-            AbrirFormularioHijo(new Modulos.RutaHorarios.FrmGestionRutaHorario(), "Rutas y Horarios");
+            try
+            {
+                var frmRutas = Program.ServiceProvider.GetRequiredService<FrmGestionRutaHorario>();
+                AbrirFormularioHijo(frmRutas, "Rutas y Horarios");
+            }
+            catch
+            {
+                AbrirFormularioHijo(new FrmGestionRutaHorario(), "Rutas y Horarios");
+            }
         }
 
         private void btnReportes_Click(object sender, EventArgs e)
         {
-            AbrirFormularioHijo(new Modulos.Reporte.FrmReporteAuditoria(), "Reportes y Auditoría");
+            try
+            {
+                var frmReportes = Program.ServiceProvider.GetRequiredService<FrmReporteAuditoria>();
+                AbrirFormularioHijo(frmReportes, "Reportes y Auditoría");
+            }
+            catch
+            {
+                AbrirFormularioHijo(new FrmReporteAuditoria(), "Reportes y Auditoría");
+            }
         }
 
         private void btnCerrarSesion_Click(object sender, EventArgs e)
@@ -121,8 +130,8 @@ namespace SGA.Desktop
 
             if (confirmacion == DialogResult.Yes)
             {
-                this.DialogResult = DialogResult.OK; 
-                this.Close(); 
+                this.DialogResult = DialogResult.OK;
+                this.Close();
             }
         }
     }

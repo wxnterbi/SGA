@@ -1,12 +1,15 @@
 ﻿using FluentValidation;
 using SGA.Application.Dtos.Viaje;
 using SGA.Persistence.Repositories;
+using SGA.Persistence.Interfaces;
 
 namespace SGA.Application.Validations
 {
     public class ViajeValidator : AbstractValidator<ViajeDto>
     {
-        public ViajeValidator()
+        private readonly IViajeRepository _viajeRepository;
+
+        public ViajeValidator(IViajeRepository viajeRepository)
         {
             _viajeRepository = viajeRepository;
 

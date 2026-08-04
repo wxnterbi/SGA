@@ -1,4 +1,5 @@
 ﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
@@ -6,19 +7,19 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using Microsoft.Extensions.DependencyInjection;
 using SGA.Application.Dtos.Usuario;
-using SGA.Application.Interfaces;
+using SGA.Desktop.Interfaces;
 
 namespace SGA.Desktop.Modulos.Usuario
 {
     public partial class FrmGestionUsuario : Form
     {
-        private readonly IUsuarioService _usuarioService;
+        private readonly IUsuarioApiService _usuarioApiService;
         private List<UsuarioDto> _listaUsuariosOriginal = new List<UsuarioDto>();
 
-        public FrmGestionUsuario(IUsuarioService usuarioService = null)
+        public FrmGestionUsuario(IUsuarioApiService usuarioApiService = null)
         {
             InitializeComponent();
-            _usuarioService = usuarioService ?? Program.ServiceProvider.GetRequiredService<IUsuarioService>();
+            _usuarioApiService = usuarioApiService ?? Program.ServiceProvider.GetRequiredService<IUsuarioApiService>();
 
             ConfigurarEstilosGrid();
             InicializarFiltros();
@@ -27,7 +28,6 @@ namespace SGA.Desktop.Modulos.Usuario
 
         private void ConfigurarEstilosGrid()
         {
-            // 1. Configuración de columnas provenientes del DTO
             if (dgvUsuarios.Columns["Id"] != null)
             {
                 dgvUsuarios.Columns["Id"].HeaderText = "Id";
@@ -60,7 +60,6 @@ namespace SGA.Desktop.Modulos.Usuario
                 dgvUsuarios.Columns["Estado"].DisplayIndex = 4;
             }
 
-            // 2. Crear botones solo si no existen
             if (!dgvUsuarios.Columns.Contains("btnDetalles"))
             {
                 var btnDetalles = new DataGridViewButtonColumn
@@ -91,7 +90,6 @@ namespace SGA.Desktop.Modulos.Usuario
                 dgvUsuarios.Columns.Add(btnRecargar);
             }
 
-            // 3. FORZAR la posición visual fija al final de la tabla
             dgvUsuarios.Columns["btnDetalles"].DisplayIndex = dgvUsuarios.Columns.Count - 2;
             dgvUsuarios.Columns["btnRecargar"].DisplayIndex = dgvUsuarios.Columns.Count - 1;
         }
@@ -111,16 +109,13 @@ namespace SGA.Desktop.Modulos.Usuario
         {
             this.Load += FrmGestionUsuario_Load;
 
-            // Eventos de controles de búsqueda y filtros
             txtBuscar.TextChanged += (s, e) => AplicarFiltro();
             cmbTipoUsuario.SelectedIndexChanged += (s, e) => AplicarFiltro();
             cmbEstado.SelectedIndexChanged += (s, e) => AplicarFiltro();
 
-            // Eventos de botones de la interfaz
             btnRefrescar.Click += async (s, e) => await CargarUsuariosAsync();
             btnLimpiarFiltros.Click += BtnLimpiarFiltros_Click;
 
-            // Evento para los clics en la grilla
             dgvUsuarios.CellClick += DgvUsuarios_CellClick;
         }
 
@@ -134,9 +129,8 @@ namespace SGA.Desktop.Modulos.Usuario
             try
             {
                 Cursor = Cursors.WaitCursor;
-                var usuarios = await _usuarioService.GetAllAsync();
+                var usuarios = await _usuarioApiService.GetAllAsync();
 
-                // Ordenar por defecto: últimos registrados primero
                 _listaUsuariosOriginal = usuarios?.OrderByDescending(u => u.Id).ToList() ?? new List<UsuarioDto>();
 
                 ActualizarTarjetasKPI(_listaUsuariosOriginal);
@@ -144,7 +138,7 @@ namespace SGA.Desktop.Modulos.Usuario
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"Error al cargar usuarios: {ex.Message}", "SGA", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show($"Error al cargar usuarios desde la API: {ex.Message}", "SGA API Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
             finally
             {
@@ -165,7 +159,6 @@ namespace SGA.Desktop.Modulos.Usuario
             string filtroTexto = txtBuscar.Text.Trim().ToLower();
             var resultado = _listaUsuariosOriginal.AsEnumerable();
 
-            // 1. Filtro por Texto
             if (!string.IsNullOrEmpty(filtroTexto))
             {
                 resultado = resultado.Where(u =>
@@ -174,14 +167,12 @@ namespace SGA.Desktop.Modulos.Usuario
                 );
             }
 
-            // 2. Filtro por Tipo de Usuario
             if (cmbTipoUsuario.SelectedIndex > 0)
             {
                 string tipoSeleccionado = cmbTipoUsuario.SelectedItem.ToString();
                 resultado = resultado.Where(u => u.TipoUsuario.ToString().Equals(tipoSeleccionado, StringComparison.OrdinalIgnoreCase));
             }
 
-            // 3. Filtro por Estado
             if (cmbEstado.SelectedIndex > 0)
             {
                 string estadoSeleccionado = cmbEstado.SelectedItem.ToString();
@@ -200,7 +191,6 @@ namespace SGA.Desktop.Modulos.Usuario
 
         private void FormatearGrilla()
         {
-            // Ajustar encabezados y anchos fijos de columnas de datos
             if (dgvUsuarios.Columns["Id"] != null)
             {
                 dgvUsuarios.Columns["Id"].Width = 50;
@@ -218,7 +208,6 @@ namespace SGA.Desktop.Modulos.Usuario
             if (dgvUsuarios.Columns["Estado"] != null)
                 dgvUsuarios.Columns["Estado"].HeaderText = "Estado";
 
-            // Botón Detalles
             if (!dgvUsuarios.Columns.Contains("btnDetalles"))
             {
                 var btnDetalles = new DataGridViewButtonColumn
@@ -234,7 +223,6 @@ namespace SGA.Desktop.Modulos.Usuario
                 dgvUsuarios.Columns.Add(btnDetalles);
             }
 
-            // Botón Recargar
             if (!dgvUsuarios.Columns.Contains("btnRecargar"))
             {
                 var btnRecargar = new DataGridViewButtonColumn

@@ -1,10 +1,13 @@
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using SGA.Desktop.Interfaces;
 using SGA.Desktop.Interfaces.Autobus;
 using SGA.Desktop.Interfaces.Viaje;
 using SGA.Desktop.Modulos.Transporte;
+using SGA.Desktop.Modulos.Usuario;
 using SGA.Desktop.Modulos.Viaje;
-using SGA.Desktop.Services.Autobus;
+using SGA.Desktop.Services;          // <-- Agregado para UsuarioApiService
+using SGA.Desktop.Services.Autobus;     // <-- Agregado por si ViajeApiService está en esta carpeta
 using System;
 using System.IO;
 using System.Net.Http;
@@ -51,7 +54,7 @@ namespace SGA.Desktop
             {
                 client.BaseAddress = new Uri(baseUrl);
             });
-            services.AddHttpClient<IAutobusApiService, AutobusApiService>(client =>
+            services.AddHttpClient<IUsuarioApiService, UsuarioApiService>(client =>
             {
                 client.BaseAddress = new Uri(baseUrl);
             });
@@ -59,11 +62,6 @@ namespace SGA.Desktop
             {
                 client.BaseAddress = new Uri(baseUrl);
             });
-
-            // Nota: Conforme migres cada módulo, agregarás sus clientes API aquí:
-            // services.AddHttpClient<IRutaApiService, RutaApiService>(c => c.BaseAddress = new Uri(baseUrl));
-            // services.AddHttpClient<IAutobusApiService, AutobusApiService>(c => c.BaseAddress = new Uri(baseUrl));
-
 
             // =========================================================
             // 2. REGISTRO DE FORMULARIOS (UI)
@@ -76,6 +74,8 @@ namespace SGA.Desktop
             services.AddTransient<SGA.Desktop.Modulos.Transporte.FrmGestionTransporte>();
             services.AddTransient<SGA.Desktop.Modulos.Usuario.FrmGestionUsuario>();
             services.AddTransient<SGA.Desktop.Modulos.Usuario.FrmDetalleUsuario>();
+            services.AddTransient<SGA.Desktop.Modulos.Usuario.FrmAgregarNuevoUsuario>();
+            services.AddTransient<SGA.Desktop.Modulos.Usuario.FrmRecargarTarjetaModal>();
         }
     }
 }
