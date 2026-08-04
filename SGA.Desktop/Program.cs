@@ -1,16 +1,13 @@
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using SGA.Application.BusinessRules;
-using SGA.Application.Interfaces;
-using SGA.Application.Services;
+using SGA.Desktop.Interfaces.Autobus;
+using SGA.Desktop.Interfaces.Viaje;
+using SGA.Desktop.Modulos.Transporte;
 using SGA.Desktop.Modulos.Viaje;
-using SGA.Infrastructure.Notifications; // Importante para EmailNotificationService
-using SGA.Persistence.Context;
-using SGA.Persistence.Interfaces;
-using SGA.Persistence.Repositories;
-using SGA.Persistence.Repository;
+using SGA.Desktop.Services.Autobus;
 using System;
+using System.IO;
+using System.Net.Http;
 using System.Windows.Forms;
 
 namespace SGA.Desktop
@@ -37,47 +34,48 @@ namespace SGA.Desktop
 
         private static void ConfigureServices(IServiceCollection services)
         {
+            // Cargar appsettings.json
             var builder = new ConfigurationBuilder()
                 .SetBasePath(AppDomain.CurrentDomain.BaseDirectory)
                 .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true);
 
             IConfiguration configuration = builder.Build();
 
-            // 1. REGLAS DE NEGOCIO (Transient)
-            services.AddTransient<ViajeRules>();
-            services.AddTransient<NotificacionRules>();
+            // Leer la URL base de SGA.Api ("https://localhost:7218/")
+            string baseUrl = configuration["ApiSettings:BaseUrl"] ?? "https://localhost:7218/";
 
-            // 2. SERVICIOS DE NOTIFICACIÓN
-            // A) Interfaz de Application -> NotificacionService
-            services.AddTransient<SGA.Application.Interfaces.INotificacionService, SGA.Application.Services.NotificacionService>();
+            // =========================================================
+            // 1. REGISTRO DE SERVICIOS API (HttpClient)
+            // =========================================================
+            services.AddHttpClient<IAutobusApiService, AutobusApiService>(client =>
+            {
+                client.BaseAddress = new Uri(baseUrl);
+            });
+            services.AddHttpClient<IAutobusApiService, AutobusApiService>(client =>
+            {
+                client.BaseAddress = new Uri(baseUrl);
+            });
+            services.AddHttpClient<IViajeApiService, ViajeApiService>(client =>
+            {
+                client.BaseAddress = new Uri(baseUrl);
+            });
 
-            // B) Interfaz de Infrastructure -> EmailNotificationService (¡La clase real de tu proyecto!)
-            services.AddTransient<SGA.Infrastructure.Notifications.INotificationService, EmailNotificationService>();
+            // Nota: Conforme migres cada módulo, agregarás sus clientes API aquí:
+            // services.AddHttpClient<IRutaApiService, RutaApiService>(c => c.BaseAddress = new Uri(baseUrl));
+            // services.AddHttpClient<IAutobusApiService, AutobusApiService>(c => c.BaseAddress = new Uri(baseUrl));
 
-            // 3. DBCONTEXT
-            services.AddDbContext<SGABD>(options =>
-                options.UseSqlServer("Server=.\\SQLEXPRESS;Database=SGABD;Trusted_Connection=True;TrustServerCertificate=True;",
-                sqlOptions => sqlOptions.EnableRetryOnFailure()),
-                ServiceLifetime.Transient);
 
-            // 4. REPOSITORIOS (Transient)
-            services.AddTransient<IRutaRepository, RutaRepository>();
-            services.AddTransient<IAutobusRepository, AutobusRepository>();
-            services.AddTransient<IConductorRepository, ConductorRepository>();
-            services.AddTransient<IHorarioRepository, HorarioRepository>();
-            services.AddTransient<IViajeRepository, ViajeRepository>();
-            services.AddTransient<INotificacionRepository, NotificacionRepository>();
-
-            // 5. SERVICIOS DE APLICACIÓN (Transient)
-            services.AddTransient<IViajeService, ViajeService>();
-            services.AddTransient<IRutaService, RutaService>();
-            services.AddTransient<IAutobusService, AutobusService>();
-            services.AddTransient<IConductorService, ConductorService>();
-            services.AddTransient<IHorarioService, HorarioService>();
-
-            // 6. FORMULARIOS (Transient)
+            // =========================================================
+            // 2. REGISTRO DE FORMULARIOS (UI)
+            // =========================================================
+            services.AddTransient<FrmGestionTransporte>();
+            services.AddTransient<FrmNuevoAutobusModal>();
             services.AddTransient<FrmViajePrincipal>();
             services.AddTransient<FrmNuevoViajeModal>();
+            services.AddTransient<FrmMainDashboard>();
+            services.AddTransient<SGA.Desktop.Modulos.Transporte.FrmGestionTransporte>();
+            services.AddTransient<SGA.Desktop.Modulos.Usuario.FrmGestionUsuario>();
+            services.AddTransient<SGA.Desktop.Modulos.Usuario.FrmDetalleUsuario>();
         }
     }
 }

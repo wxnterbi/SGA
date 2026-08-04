@@ -14,6 +14,7 @@ namespace SGA.Domain.Entities.Reservation
         public EstadoViaje Estado { get; set; }
         public DateTime? HoraInicioReal { get; set; }
         public DateTime? HoraFinReal { get; set; }
+        public virtual Horario Horario { get; set; }
         public virtual Ruta? Ruta { get; set; }
         public virtual Autobus? Autobus { get; set; }
         public virtual Conductor? Conductor { get; set; }

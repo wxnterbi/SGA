@@ -19,9 +19,9 @@ namespace SGA.Application.Services
             _notificationService = notificationService;
         }
 
-        public Task<IEnumerable<HorarioDto>> GetAllAsync()
+        public async Task<IEnumerable<HorarioDto>> GetAllAsync()
         {
-            var horarios = _horarioRepository.GetAll();
+            var horarios = await _horarioRepository.GetAllAsync();
 
             var resultado = horarios.Select(h => new HorarioDto
             {
@@ -31,7 +31,7 @@ namespace SGA.Application.Services
                 RutaId = h.RutaId
             });
 
-            return Task.FromResult(resultado);
+            return await Task.FromResult(resultado);
         }
 
         public Task<HorarioDto?> GetByIdAsync(int id)

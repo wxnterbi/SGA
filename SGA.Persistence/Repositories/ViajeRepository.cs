@@ -1,7 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using SGA.Domain.Entities.Reservation;
+using SGA.Domain.Enums.Reservation;
 using SGA.Persistence.Context;
 using SGA.Persistence.Interfaces;
-using SGA.Domain.Entities.Reservation;
 
 namespace SGA.Persistence.Repositories
 {
@@ -14,12 +15,33 @@ namespace SGA.Persistence.Repositories
             _context = context;
         }
 
+        public async Task<bool> ExisteConductorEnHorarioAsync(int conductorId, int horarioId, int viajeIdExcluir = 0)
+        {
+            return await _context.Viajes
+                .AnyAsync(v => v.ConductorId == conductorId
+                            && v.HorarioId == horarioId
+                            && v.Id != viajeIdExcluir
+                            && v.Estado != EstadoViaje.Cancelado
+                            && v.Estado != EstadoViaje.Finalizado);
+        }
+
+        public async Task<bool> ExisteAutobusEnHorarioAsync(int autobusId, int horarioId, int viajeIdExcluir = 0)
+        {
+            return await _context.Viajes
+                .AnyAsync(v => v.AutobusId == autobusId
+                            && v.HorarioId == horarioId
+                            && v.Id != viajeIdExcluir
+                            && v.Estado != EstadoViaje.Cancelado
+                            && v.Estado != EstadoViaje.Finalizado);
+        }
+
         public async Task<Viaje?> GetByIdAsync(int id)
         {
             return await _context.Viajes
                 .Include(v => v.Ruta)
                 .Include(v => v.Autobus)
                 .Include(v => v.Conductor)
+                .Include(v => v.Horario)
                 .FirstOrDefaultAsync(v => v.Id == id);
         }
 
@@ -29,6 +51,7 @@ namespace SGA.Persistence.Repositories
                 .Include(v => v.Ruta)
                 .Include(v => v.Autobus)
                 .Include(v => v.Conductor)
+                .Include(v => v.Horario)
                 .ToListAsync();
         }
 

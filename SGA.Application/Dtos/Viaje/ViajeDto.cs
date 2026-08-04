@@ -7,6 +7,7 @@ namespace SGA.Application.Dtos.Viaje
         public int Id { get; set; }
         public int RutaId { get; set; }
         public int HorarioId { get; set; }
+        public string? HorarioTexto { get; set; }
         public int AutobusId { get; set; }
         public int ConductorId { get; set; }
         public EstadoViaje Estado { get; set; }

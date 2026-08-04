@@ -21,7 +21,7 @@ namespace SGA.Application.Services
 
         public async Task<IEnumerable<ConductorDto>> GetAllAsync()
         {
-            var conductores = _conductorRepository.GetAll();
+            var conductores = await _conductorRepository.GetAllAsync();
 
             var dtos = conductores.Select(c => new ConductorDto
             {

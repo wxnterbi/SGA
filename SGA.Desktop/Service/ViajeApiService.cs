@@ -1,48 +1,62 @@
-﻿using SGA.Application.Dtos;
-using SGA.Application.Dtos.Viaje;
-using SGA.Application.Interfaces;
+﻿using SGA.Application.Dtos.Viaje;
+using System;
 using System.Collections.Generic;
+using System.Net.Http;
+using System.Net.Http.Json;
 using System.Threading.Tasks;
 
-namespace SGA.Desktop.Services
+namespace SGA.Desktop.Interfaces.Viaje
 {
-    public class ViajeApiService : IViajeService
+    public class ViajeApiService : IViajeApiService
     {
-        private readonly ApiClient _apiClient;
+        private readonly HttpClient _httpClient;
 
-        public ViajeApiService()
+        public ViajeApiService(HttpClient httpClient)
         {
-            _apiClient = new ApiClient();
+            _httpClient = httpClient;
         }
 
-        public async Task<IEnumerable<ViajeDto>> GetAllAsync()
+        public async Task<List<ViajeDto>> GetAllAsync()
         {
-            var result = await _apiClient.GetAsync<List<ViajeDto>>("Viaje");
-            return result ?? new List<ViajeDto>();
+            try
+            {
+                var response = await _httpClient.GetFromJsonAsync<List<ViajeDto>>("api/viajes");
+                return response ?? new List<ViajeDto>();
+            }
+            catch
+            {
+                return new List<ViajeDto>();
+            }
         }
 
         public async Task<ViajeDto?> GetByIdAsync(int id)
         {
-            return await _apiClient.GetAsync<ViajeDto>($"Viaje/{id}");
+            try
+            {
+                return await _httpClient.GetFromJsonAsync<ViajeDto>($"api/viajes/{id}");
+            }
+            catch
+            {
+                return null;
+            }
         }
 
-        // Retorna Task (void asíncrono) para cumplir con IBaseService
-        public async Task AddAsync(ViajeDto dto)
+        public async Task<bool> CreateAsync(CreateViajeDto dto)
         {
-            await _apiClient.PostAsync<ViajeDto, ViajeDto>("Viaje", dto);
+            var response = await _httpClient.PostAsJsonAsync("api/viajes", dto);
+            return response.IsSuccessStatusCode;
         }
 
-        // Retorna Task para cumplir con IBaseService
-        public async Task UpdateAsync(ViajeDto dto)
+        public async Task<bool> UpdateAsync(int id, UpdateViajeDto dto)
         {
-            await _apiClient.PostAsync<ViajeDto, ViajeDto>("Viaje", dto);
+            var response = await _httpClient.PutAsJsonAsync($"api/viajes/{id}", dto);
+            return response.IsSuccessStatusCode;
         }
 
-        // Retorna Task para cumplir con IBaseService
-        public async Task DeleteAsync(int id)
+        public async Task<bool> DeleteAsync(int id)
         {
-            // Petición DELETE cuando la implementes en ApiClient
-            await Task.CompletedTask;
+            var response = await _httpClient.DeleteAsync($"api/viajes/{id}");
+            return response.IsSuccessStatusCode;
         }
     }
 }

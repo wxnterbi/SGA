@@ -2,8 +2,13 @@
 using SGA.Application.Dtos.Viaje;
 using SGA.Application.Interfaces;
 using SGA.Domain.Entities.Reservation;
+using SGA.Domain.Enums.Reservation;
 using SGA.Infrastructure.Notifications;
 using SGA.Persistence.Interfaces;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace SGA.Application.Services
 {
@@ -34,8 +39,6 @@ namespace SGA.Application.Services
         public async Task<IEnumerable<ViajeDto>> GetAllAsync()
         {
             var viajes = await _viajeRepository.GetAllAsync();
-
-            // 💡 AQUÍ ESTABA EL DETALLE: Ahora sí mapea NombreRuta, PlacaAutobus y NombreConductor
             return viajes.Select(viaje => MapToDto(viaje));
         }
 
@@ -53,7 +56,7 @@ namespace SGA.Application.Services
                 HorarioId = dto.HorarioId,
                 AutobusId = dto.AutobusId,
                 ConductorId = dto.ConductorId,
-                Estado = dto.Estado
+                Estado = dto.Estado == 0 ? EstadoViaje.Programado : dto.Estado
             };
 
             await _viajeRepository.AddAsync(viaje);
@@ -86,7 +89,6 @@ namespace SGA.Application.Services
             await _viajeRepository.DeleteAsync(id);
         }
 
-        // 🟢 MÉTODO PRIVADO AUXILIAR DE MAPEO
         private static ViajeDto MapToDto(Viaje viaje)
         {
             return new ViajeDto
@@ -99,6 +101,10 @@ namespace SGA.Application.Services
                 Estado = viaje.Estado,
                 HoraInicioReal = viaje.HoraInicioReal,
                 HoraFinReal = viaje.HoraFinReal,
+
+                HorarioTexto = viaje.Horario != null
+                    ? DateTime.Today.Add(viaje.Horario.HoraSalida).ToString("hh:mm tt")
+                    : "N/A",
 
                 NombreRuta = viaje.Ruta != null
                     ? $"{viaje.Ruta.Origen} - {viaje.Ruta.Destino}"

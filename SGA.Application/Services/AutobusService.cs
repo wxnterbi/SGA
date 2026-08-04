@@ -22,7 +22,7 @@ namespace SGA.Application.Services
 
         public async Task<IEnumerable<AutobusDto>> GetAllAsync()
         {
-            var autobuses = _autobusRepository.GetAll();
+            var autobuses = await _autobusRepository.GetAllAsync();
 
             var dtos = autobuses.Select(a => new AutobusDto
             {

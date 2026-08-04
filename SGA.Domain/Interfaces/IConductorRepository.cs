@@ -4,7 +4,7 @@ namespace SGA.Persistence.Interfaces
 {
     public interface IConductorRepository
     {
-        List<Conductor> GetAll();
+        Task<List<Conductor>> GetAllAsync();
         Conductor GetById(int id);
         Conductor GetByCedula(string cedula);
         Conductor GetByTelefono(string telefono);

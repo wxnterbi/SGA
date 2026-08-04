@@ -4,7 +4,7 @@ namespace SGA.Persistence.Interfaces
 {
     public interface IHorarioRepository
     {
-        List<Horario> GetAll();
+        Task<List<Horario>> GetAllAsync();
         Horario GetById(int id);
         Horario Add(Horario horario);
         Horario Update(Horario horario);

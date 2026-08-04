@@ -1,6 +1,7 @@
 ﻿using SGA.Domain.Entities.Configuration;
 using SGA.Persistence.Context;
 using SGA.Persistence.Interfaces;
+using Microsoft.EntityFrameworkCore;
 
 namespace SGA.Persistence.Repositories
 {
@@ -13,9 +14,9 @@ namespace SGA.Persistence.Repositories
             _context = context;
         }
 
-        public List<Conductor> GetAll()
+        public async Task<List<Conductor>> GetAllAsync()
         {
-            return _context.Conductores.ToList();
+            return await _context.Conductores.AsNoTracking().ToListAsync();
         }
 
         public Conductor GetById(int id)

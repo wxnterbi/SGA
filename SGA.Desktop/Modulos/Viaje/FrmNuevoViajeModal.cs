@@ -1,45 +1,37 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using System.Windows.Forms;
-using SGA.Application.Dtos.Autobus;
+﻿using SGA.Application.Dtos.Autobus;
 using SGA.Application.Dtos.Conductor;
 using SGA.Application.Dtos.Horario;
 using SGA.Application.Dtos.Ruta;
 using SGA.Application.Dtos.Viaje;
-using SGA.Application.Interfaces;
-using SGA.Domain.Enums.Reservation;
+using SGA.Desktop.Interfaces.Viaje;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Net.Http;
+using System.Net.Http.Json;
+using System.Threading.Tasks;
+using System.Windows.Forms;
 
 namespace SGA.Desktop.Modulos.Viaje
 {
     public partial class FrmNuevoViajeModal : Form
     {
-        private readonly IViajeService _viajeService;
-        private readonly IRutaService _rutaService;
-        private readonly IAutobusService _autobusService;
-        private readonly IConductorService _conductorService;
-        private readonly IHorarioService _horarioService;
+        private readonly IViajeApiService _viajeApiService;
+        private readonly HttpClient _httpClient;
 
         public ViajeDto ViajeProcesado { get; private set; }
         public bool EsEdicion { get; private set; }
         private readonly ViajeDto _viajeAEditar;
 
         public FrmNuevoViajeModal(
-            IViajeService viajeService,
-            IRutaService rutaService,
-            IAutobusService autobusService,
-            IConductorService conductorService,
-            IHorarioService horarioService,
+            IViajeApiService viajeApiService,
+            HttpClient httpClient,
             ViajeDto viajeAEditar = null)
         {
             InitializeComponent();
 
-            _viajeService = viajeService;
-            _rutaService = rutaService;
-            _autobusService = autobusService;
-            _conductorService = conductorService;
-            _horarioService = horarioService;
+            _viajeApiService = viajeApiService;
+            _httpClient = httpClient;
 
             _viajeAEditar = viajeAEditar;
             EsEdicion = _viajeAEditar != null;
@@ -51,93 +43,82 @@ namespace SGA.Desktop.Modulos.Viaje
             {
                 this.Text = EsEdicion ? "Actualizar Viaje" : "Programar Nuevo Viaje";
 
-                // COMENTA ESTA LÍNEA TEMPORALMENTE:
-                await CargarDatosDesdeBaseDeDatosAsync();
+                await CargarDatosDesdeApiAsync();
 
-                MessageBox.Show("¡El modal abrió al instante sin consultas a BD!");
+                if (EsEdicion)
+                {
+                    CargarDatosParaEdicion();
+                }
+                else
+                {
+                    LimpiarSelecciones();
+                }
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"Error: {ex.Message}");
+                MessageBox.Show($"Error al inicializar la ventana: {ex.Message}",
+                                "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
-        private async Task CargarDatosDesdeBaseDeDatosAsync()
+        private async Task CargarDatosDesdeApiAsync()
         {
             try
             {
-                // 1. Obtener los datos uno por uno desde la BD (evita choques en DbContext)
-                List<RutaDto> rutas = null;
-                List<AutobusDto> autobuses = null;
-                List<ConductorDto> conductores = null;
-                List<HorarioDto> horarios = null;
+                var rutas = await _httpClient.GetFromJsonAsync<List<RutaDto>>("api/rutas") ?? new List<RutaDto>();
+                var autobuses = await _httpClient.GetFromJsonAsync<List<AutobusDto>>("api/autobuses") ?? new List<AutobusDto>();
+                var conductores = await _httpClient.GetFromJsonAsync<List<ConductorDto>>("api/conductores") ?? new List<ConductorDto>();
+                var horarios = await _httpClient.GetFromJsonAsync<List<HorarioDto>>("api/horarios") ?? new List<HorarioDto>();
 
-                if (_rutaService != null)
-                {
-                    var res = await _rutaService.GetAllAsync();
-                    rutas = res?.ToList();
-                }
-
-                if (_autobusService != null)
-                {
-                    var res = await _autobusService.GetAllAsync();
-                    autobuses = res?.ToList();
-                }
-
-                if (_conductorService != null)
-                {
-                    var res = await _conductorService.GetAllAsync();
-                    conductores = res?.ToList();
-                }
-
-                if (_horarioService != null)
-                {
-                    var res = await _horarioService.GetAllAsync();
-                    horarios = res?.ToList();
-                }
-
-                // 2. Poblar los controles de la interfaz de forma segura
-                if (rutas != null && cmbRuta != null)
+                if (cmbRuta != null)
                 {
                     cmbRuta.DisplayMember = "Nombre";
                     cmbRuta.ValueMember = "Id";
-                    cmbRuta.DataSource = rutas;
+                    cmbRuta.DataSource = rutas.ToList();
                 }
 
-                if (autobuses != null && cmbAutobus != null)
+                if (cmbAutobus != null)
                 {
                     cmbAutobus.DisplayMember = "Placa";
                     cmbAutobus.ValueMember = "Id";
-                    cmbAutobus.DataSource = autobuses;
+                    cmbAutobus.DataSource = autobuses.ToList();
                 }
 
-                if (conductores != null && cmbConductor != null)
+                if (cmbConductor != null)
                 {
                     cmbConductor.DisplayMember = "Nombre";
                     cmbConductor.ValueMember = "Id";
-                    cmbConductor.DataSource = conductores;
+                    cmbConductor.DataSource = conductores.ToList();
                 }
 
-                if (horarios != null && cmbHorario != null)
+                if (cmbHorario != null)
                 {
-                    cmbHorario.DisplayMember = "HoraInicio";
+                    var listaHorarios = horarios.Select(h => new
+                    {
+                        Id = h.Id,
+                        TextoMostrar = DateTime.Today.Add(h.HoraSalida).ToString("hh:mm tt")
+                    }).ToList();
+
+                    cmbHorario.DisplayMember = "TextoMostrar";
                     cmbHorario.ValueMember = "Id";
-                    cmbHorario.DataSource = horarios;
-                }
-
-                // 3. Deseleccionar si es un registro nuevo
-                if (!EsEdicion)
-                {
-                    if (cmbRuta != null) cmbRuta.SelectedIndex = -1;
-                    if (cmbAutobus != null) cmbAutobus.SelectedIndex = -1;
-                    if (cmbConductor != null) cmbConductor.SelectedIndex = -1;
-                    if (cmbHorario != null) cmbHorario.SelectedIndex = -1;
+                    cmbHorario.DataSource = listaHorarios;
                 }
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"Error al cargar datos: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show($"Error al cargar datos desde el servidor API:\n{ex.Message}",
+                                "SGA ITLA",
+                                MessageBoxButtons.OK,
+                                MessageBoxIcon.Error);
             }
+        }
+
+        private void LimpiarSelecciones()
+        {
+            if (cmbRuta != null) cmbRuta.SelectedIndex = -1;
+            if (cmbAutobus != null) cmbAutobus.SelectedIndex = -1;
+            if (cmbConductor != null) cmbConductor.SelectedIndex = -1;
+            if (cmbHorario != null) cmbHorario.SelectedIndex = -1;
         }
 
         private void CargarDatosParaEdicion()
@@ -153,69 +134,76 @@ namespace SGA.Desktop.Modulos.Viaje
 
         private async void btnGuardar_Click(object sender, EventArgs e)
         {
-            if (!ValidarSeleccion()) return;
-
             try
             {
-                var dto = new ViajeDto
+                // Extraer el ID de forma segura incluso si SelectedValue devuelve un tipo anónimo
+                int ObtenerIdCombo(ComboBox combo)
                 {
-                    Id = EsEdicion ? _viajeAEditar.Id : 0,
-                    RutaId = Convert.ToInt32(cmbRuta.SelectedValue),
-                    AutobusId = Convert.ToInt32(cmbAutobus.SelectedValue),
-                    ConductorId = Convert.ToInt32(cmbConductor.SelectedValue),
-                    HorarioId = Convert.ToInt32(cmbHorario.SelectedValue),
-                    Estado = EsEdicion ? _viajeAEditar.Estado : EstadoViaje.Programado
-                };
+                    if (combo.SelectedValue != null && int.TryParse(combo.SelectedValue.ToString(), out int idVal))
+                        return idVal;
 
-                if (_viajeService != null)
-                {
-                    if (EsEdicion)
+                    if (combo.SelectedItem != null)
                     {
-                        await _viajeService.UpdateAsync(dto);
-                        MessageBox.Show("El viaje ha sido actualizado en la base de datos.", "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        var prop = combo.SelectedItem.GetType().GetProperty("Id");
+                        if (prop != null)
+                            return Convert.ToInt32(prop.GetValue(combo.SelectedItem, null));
                     }
-                    else
-                    {
-                        await _viajeService.AddAsync(dto);
-                        MessageBox.Show("El viaje ha sido registrado exitosamente en la base de datos.", "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                    }
+                    return 0;
                 }
 
-                ViajeProcesado = dto;
-                this.DialogResult = DialogResult.OK;
-                this.Close();
+                int rutaId = ObtenerIdCombo(cmbRuta);
+                int autobusId = ObtenerIdCombo(cmbAutobus);
+                int conductorId = ObtenerIdCombo(cmbConductor);
+                int horarioId = ObtenerIdCombo(cmbHorario);
+
+                // Validaciones locales previas al envío
+                if (rutaId <= 0 || autobusId <= 0 || conductorId <= 0 || horarioId <= 0)
+                {
+                    MessageBox.Show("Debe seleccionar una Ruta, Autobús, Conductor y Horario válidos.",
+                                    "Validación", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
+                }
+
+                bool exito = false;
+
+                if (EsEdicion)
+                {
+                    var updateDto = new UpdateViajeDto
+                    {
+                        RutaId = rutaId,
+                        AutobusId = autobusId,
+                        ConductorId = conductorId,
+                        HorarioId = horarioId,
+                        Estado = _viajeAEditar.Estado
+                    };
+
+                    exito = await _viajeApiService.UpdateAsync(_viajeAEditar.Id, updateDto);
+                }
+                else
+                {
+                    var createDto = new CreateViajeDto
+                    {
+                        RutaId = rutaId,
+                        AutobusId = autobusId,
+                        ConductorId = conductorId,
+                        HorarioId = horarioId
+                    };
+
+                    exito = await _viajeApiService.CreateAsync(createDto);
+                }
+
+                if (exito)
+                {
+                    MessageBox.Show("El viaje se guardó exitosamente.", "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    this.DialogResult = DialogResult.OK;
+                    this.Close();
+                }
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"Ocurrió un error al guardar en la base de datos: {ex.Message}",
-                                "Error de Servidor", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show($"Error de Validación / Servidor:\n\n{ex.Message}",
+                                "Validación de Viaje", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
-        }
-
-        private bool ValidarSeleccion()
-        {
-            if (cmbRuta.SelectedValue == null)
-            {
-                MessageBox.Show("Debe seleccionar una Ruta válida.", "Validación", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                return false;
-            }
-            if (cmbAutobus.SelectedValue == null)
-            {
-                MessageBox.Show("Debe seleccionar un Autobús válido.", "Validación", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                return false;
-            }
-            if (cmbConductor.SelectedValue == null)
-            {
-                MessageBox.Show("Debe seleccionar un Conductor válido.", "Validación", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                return false;
-            }
-            if (cmbHorario.SelectedValue == null)
-            {
-                MessageBox.Show("Debe seleccionar un Horario válido.", "Validación", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                return false;
-            }
-
-            return true;
         }
 
         private void btnCancelar_Click(object sender, EventArgs e)

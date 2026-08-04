@@ -4,7 +4,7 @@ namespace SGA.Persistence.Interfaces
 {
     public interface IAutobusRepository
     {
-        List<Autobus> GetAll();
+        Task<List<Autobus>> GetAllAsync();
 
         Autobus GetById(int id);
 
@@ -13,5 +13,7 @@ namespace SGA.Persistence.Interfaces
         Autobus Update(Autobus autobus);
 
         bool Delete(int id);
+
+        Task<bool> ExistePlacaAsync(string placa, int idExcluir = 0);
     }
 }

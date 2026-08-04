@@ -27,6 +27,7 @@
             this.btnIniciarViaje = new System.Windows.Forms.Button();
             this.btnCompletarViaje = new System.Windows.Forms.Button();
             this.btnCancelarViaje = new System.Windows.Forms.Button();
+            this.btnEliminarViaje = new System.Windows.Forms.Button();
             this.btnRefrescar = new System.Windows.Forms.Button();
 
             ((System.ComponentModel.ISupportInitialize)(this.dgvViajes)).BeginInit();
@@ -125,8 +126,6 @@
             this.dgvViajes.TabIndex = 6;
 
             // 
-            // Botones de Acción (Pie de página)
-            // 
             // btnIniciarViaje
             // 
             this.btnIniciarViaje.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(23)))), ((int)(((byte)(162)))), ((int)(((byte)(184)))));
@@ -161,11 +160,11 @@
             // 
             // btnCancelarViaje
             // 
-            this.btnCancelarViaje.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(53)))), ((int)(((byte)(69)))));
+            this.btnCancelarViaje.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(193)))), ((int)(((byte)(7)))));
             this.btnCancelarViaje.FlatAppearance.BorderSize = 0;
             this.btnCancelarViaje.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnCancelarViaje.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-            this.btnCancelarViaje.ForeColor = System.Drawing.Color.White;
+            this.btnCancelarViaje.ForeColor = System.Drawing.Color.Black;
             this.btnCancelarViaje.Location = new System.Drawing.Point(248, 412);
             this.btnCancelarViaje.Name = "btnCancelarViaje";
             this.btnCancelarViaje.Size = new System.Drawing.Size(110, 32);
@@ -173,6 +172,22 @@
             this.btnCancelarViaje.Text = "Cancelar Viaje";
             this.btnCancelarViaje.UseVisualStyleBackColor = false;
             this.btnCancelarViaje.Click += new System.EventHandler(this.btnCancelarViaje_Click);
+
+            // 
+            // btnEliminarViaje (NUEVO)
+            // 
+            this.btnEliminarViaje.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(53)))), ((int)(((byte)(69)))));
+            this.btnEliminarViaje.FlatAppearance.BorderSize = 0;
+            this.btnEliminarViaje.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnEliminarViaje.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+            this.btnEliminarViaje.ForeColor = System.Drawing.Color.White;
+            this.btnEliminarViaje.Location = new System.Drawing.Point(366, 412);
+            this.btnEliminarViaje.Name = "btnEliminarViaje";
+            this.btnEliminarViaje.Size = new System.Drawing.Size(110, 32);
+            this.btnEliminarViaje.TabIndex = 11;
+            this.btnEliminarViaje.Text = "Eliminar Viaje";
+            this.btnEliminarViaje.UseVisualStyleBackColor = false;
+            this.btnEliminarViaje.Click += new System.EventHandler(this.btnEliminarViaje_Click);
 
             // 
             // btnRefrescar
@@ -198,8 +213,8 @@
             this.BackColor = System.Drawing.Color.White;
             this.ClientSize = new System.Drawing.Size(784, 461);
 
-            // AQUÍ AGREGAMOS TODOS LOS CONTROLES AL FORMULARIO
             this.Controls.Add(this.btnRefrescar);
+            this.Controls.Add(this.btnEliminarViaje);
             this.Controls.Add(this.btnCancelarViaje);
             this.Controls.Add(this.btnCompletarViaje);
             this.Controls.Add(this.btnIniciarViaje);
@@ -233,6 +248,7 @@
         private System.Windows.Forms.Button btnIniciarViaje;
         private System.Windows.Forms.Button btnCompletarViaje;
         private System.Windows.Forms.Button btnCancelarViaje;
+        private System.Windows.Forms.Button btnEliminarViaje;
         private System.Windows.Forms.Button btnRefrescar;
     }
 }

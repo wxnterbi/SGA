@@ -1,6 +1,7 @@
 ﻿using SGA.Domain.Entities.Configuration;
 using SGA.Persistence.Context;
 using SGA.Persistence.Interfaces;
+using Microsoft.EntityFrameworkCore;
 
 namespace SGA.Persistence.Repositories
 {
@@ -13,9 +14,9 @@ namespace SGA.Persistence.Repositories
             _context = context;
         }
 
-        public List<Horario> GetAll()
+        public async Task<List<Horario>> GetAllAsync()
         {
-            return _context.Horarios.ToList();
+            return await _context.Horarios.ToListAsync();
         }
 
         public Horario GetById(int id)

@@ -1,4 +1,5 @@
-﻿using SGA.Domain.Entities.Configuration;
+﻿using Microsoft.EntityFrameworkCore;
+using SGA.Domain.Entities.Configuration;
 using SGA.Persistence.Context;
 using SGA.Persistence.Interfaces;
 
@@ -13,9 +14,9 @@ namespace SGA.Persistence.Repositories
             _context = context;
         }
 
-        public List<Autobus> GetAll()
+        public async Task<List<Autobus>> GetAllAsync()
         {
-            return _context.Autobuses.ToList();
+            return await _context.Autobuses.AsNoTracking().ToListAsync();
         }
 
         public Autobus GetById(int id)
@@ -65,6 +66,12 @@ namespace SGA.Persistence.Repositories
             _context.SaveChanges();
 
             return true;
+        }
+
+        public async Task<bool> ExistePlacaAsync(string placa, int idExcluir = 0)
+        {
+            return await _context.Autobuses
+                .AnyAsync(a => a.Placa.ToUpper() == placa.ToUpper() && a.Id != idExcluir);
         }
     }
 }

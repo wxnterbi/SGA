@@ -1,6 +1,7 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using SGA.Application.Interfaces;
 using SGA.Application.Services;
+using SGA.Desktop.Modulos.Transporte;
 using SGA.Desktop.Modulos.Viaje;
 using System;
 using System.Reflection;
@@ -96,7 +97,8 @@ namespace SGA.Desktop
 
         private void btnTransporte_Click(object sender, EventArgs e)
         {
-            AbrirFormularioHijo(new Modulos.Transporte.FrmGestionTransporte(), "Gestión de Autobuses");
+            var frmTransporte = Program.ServiceProvider.GetRequiredService<SGA.Desktop.Modulos.Transporte.FrmGestionTransporte>();
+            AbrirFormularioHijo(frmTransporte, "Gestión de Transporte");
         }
 
         private void btnRutaHorarios_Click(object sender, EventArgs e)
