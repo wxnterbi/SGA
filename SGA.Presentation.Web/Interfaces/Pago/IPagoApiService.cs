@@ -14,7 +14,7 @@ namespace SGA.Web.Interfaces.Pago
 
         Task<bool> DeleteAsync(int id);
 
-        Task<bool> ComprarTicketAsync(ComprarTicketViewModel model);
+        Task<HttpResponseMessage> ComprarTicketAsync(ComprarTicketViewModel model);
 
         Task<List<RutaCompraViewModel>> GetRutasAsync();
 

@@ -8,7 +8,6 @@ using SGA.Web.Interfaces.RegistroAcceso;
 using SGA.Web.Services.RegistroAcceso;
 using SGA.Web.Interfaces.Notificacion;
 using SGA.Web.Services.Notificacion;
-using SGA.Web.Services.Login;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -35,11 +34,6 @@ builder.Services.AddHttpClient<IRegistroAccesoApiService, RegistroAccesoApiServi
 });
 
 builder.Services.AddHttpClient<INotificacionApiService, NotificacionApiService>(client =>
-{
-    client.BaseAddress = new Uri(builder.Configuration["ApiSettings:BaseUrl"]!);
-});
-
-builder.Services.AddHttpClient<UsuarioApiService>(client =>
 {
     client.BaseAddress = new Uri(builder.Configuration["ApiSettings:BaseUrl"]!);
 });

@@ -117,6 +117,54 @@
 
                     <hr />
 
+                    @if (Model.NombreRutaEntrada != null || Model.NombreRutaSalida != null)
+                    {
+                        <hr />
+
+                        <h5 class="mb-3">
+                            <i class="fa-solid fa-route"></i>
+                            Información del recorrido
+                        </h5>
+
+                        @if (Model.NombreRutaEntrada != null)
+                        {
+                            <div class="mb-3">
+                                <h6 class="text-primary">Entrada</h6>
+
+                                <p>
+                                    <strong>Ruta:</strong> @Model.NombreRutaEntrada
+                                </p>
+
+                                <p>
+                                    <strong>Horario:</strong> @Model.NombreHorarioEntrada
+                                </p>
+
+                                <p>
+                                    <strong>Parada:</strong> @Model.NombreParadaEntrada
+                                </p>
+                            </div>
+                        }
+
+                        @if (Model.NombreRutaSalida != null)
+                        {
+                            <div class="mb-3">
+                                <h6 class="text-success">Salida</h6>
+
+                                <p>
+                                    <strong>Ruta:</strong> @Model.NombreRutaSalida
+                                </p>
+
+                                <p>
+                                    <strong>Horario:</strong> @Model.NombreHorarioSalida
+                                </p>
+
+                                <p>
+                                    <strong>Parada:</strong> @Model.NombreParadaSalida
+                                </p>
+                            </div>
+                        }
+                    }
+
                     <div class="alert alert-primary text-center">
 
                         <i class="fa-solid fa-qrcode fa-2x mb-2"></i>

@@ -2,6 +2,8 @@
 using SGA.Web.Interfaces.Pago;
 using SGA.Web.Models.Pago;
 using System.Net.Http.Json;
+using System.Text.Json;
+using System.Linq;
 
 namespace SGA.Web.Services.Pago
 {
@@ -48,19 +50,12 @@ namespace SGA.Web.Services.Pago
 
             return response.IsSuccessStatusCode;
         }
-        public async Task<bool> ComprarTicketAsync(ComprarTicketViewModel model)
+        public async Task<HttpResponseMessage> ComprarTicketAsync(
+            ComprarTicketViewModel model)
         {
-            var response = await _httpClient.PostAsJsonAsync(
+            return await _httpClient.PostAsJsonAsync(
                 "api/Pago/ComprarTicket",
                 model);
-
-            if (!response.IsSuccessStatusCode)
-            {
-                var error = await response.Content.ReadAsStringAsync();
-                throw new Exception(error);
-            }
-
-            return true;
         }
         public async Task<List<RutaCompraViewModel>> GetRutasAsync()
         {

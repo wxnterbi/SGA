@@ -78,6 +78,11 @@ namespace SGA.Api.Web.Controllers
         [HttpPost("ComprarTicket")]
         public async Task<IActionResult> ComprarTicket([FromBody] ComprarTicketDto dto)
         {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
             try
             {
                 await _pagoService.ComprarTicketAsync(dto);

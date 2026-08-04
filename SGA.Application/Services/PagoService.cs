@@ -20,6 +20,9 @@ namespace SGA.Application.Services
         private readonly ITicketMensualService _ticketMensualService;
         private readonly ITicketMensualRepository _ticketRepository;
         private readonly INotificacionService _notificacionService;
+        private readonly IRutaRepository _rutaRepository;
+        private readonly IHorarioRepository _horarioRepository;
+        private readonly IParadaRepository _paradaRepository;
 
         public PagoService(
             IPagoRepository pagoRepository,
@@ -29,7 +32,11 @@ namespace SGA.Application.Services
             ITarjetaRecargableService tarjetaService,
             ITicketMensualService ticketMensualService,
             ITicketMensualRepository ticketRepository,
-            INotificacionService notificacionService)
+            INotificacionService notificacionService,
+            IRutaRepository rutaRepository,
+            IHorarioRepository horarioRepository,
+            IParadaRepository paradaRepository
+            )
         {
             _pagoRepository = pagoRepository;
             _usuarioRepository = usuarioRepository;
@@ -39,6 +46,9 @@ namespace SGA.Application.Services
             _ticketMensualService = ticketMensualService;
             _ticketRepository = ticketRepository;
             _notificacionService = notificacionService;
+            _rutaRepository = rutaRepository;
+            _horarioRepository = horarioRepository;
+            _paradaRepository = paradaRepository;
         }
 
         public async Task<IEnumerable<PagoDto>> GetAllAsync()
@@ -76,7 +86,34 @@ namespace SGA.Application.Services
 
             var usuario = _usuarioRepository.GetById(pago.UsuarioId);
 
+            var rutaEntrada = pago.RutaEntradaId.HasValue
+                ? _rutaRepository.GetById(pago.RutaEntradaId.Value)
+                : null;
+
+            var horarioEntrada = pago.HorarioEntradaId.HasValue
+                ? _horarioRepository.GetById(pago.HorarioEntradaId.Value)
+                : null;
+
+            var paradaEntrada = pago.ParadaEntradaId.HasValue
+                ? _paradaRepository.GetById(pago.ParadaEntradaId.Value)
+                : null;
+
+            var rutaSalida = pago.RutaSalidaId.HasValue
+                ? _rutaRepository.GetById(pago.RutaSalidaId.Value)
+                : null;
+
+            var horarioSalida = pago.HorarioSalidaId.HasValue
+                ? _horarioRepository.GetById(pago.HorarioSalidaId.Value)
+                : null;
+
+            var paradaSalida = pago.ParadaSalidaId.HasValue
+                ? _paradaRepository.GetById(pago.ParadaSalidaId.Value)
+                : null;
+
             return new PagoDto
+
+
+
             {
                 Id = pago.Id,
                 UsuarioId = pago.UsuarioId,
@@ -85,7 +122,23 @@ namespace SGA.Application.Services
                 FechaPago = pago.FechaPago,
                 Modalidad = pago.Modalidad,
                 Concepto = pago.Concepto,
-                TipoTicket = pago.TipoTicket
+                TipoTicket = pago.TipoTicket,
+
+                RutaEntradaId = pago.RutaEntradaId,
+                HorarioEntradaId = pago.HorarioEntradaId,
+                ParadaEntradaId = pago.ParadaEntradaId,
+
+                RutaSalidaId = pago.RutaSalidaId,
+                HorarioSalidaId = pago.HorarioSalidaId,
+                ParadaSalidaId = pago.ParadaSalidaId,
+
+                NombreRutaEntrada = rutaEntrada?.Nombre,
+                NombreHorarioEntrada = horarioEntrada?.HoraSalida.ToString(@"hh\:mm"),
+                NombreParadaEntrada = paradaEntrada?.Nombre,
+
+                NombreRutaSalida = rutaSalida?.Nombre,
+                NombreHorarioSalida = horarioSalida?.HoraSalida.ToString(@"hh\:mm"),
+                NombreParadaSalida = paradaSalida?.Nombre,
             };
         }
 
@@ -146,6 +199,7 @@ namespace SGA.Application.Services
         }
         public async Task ComprarTicketAsync(ComprarTicketDto dto)
         {
+
             var ticketActivo = await _ticketRepository.GetActivoByUsuarioAsync(dto.UsuarioId);
 
             if (ticketActivo != null)
@@ -201,7 +255,15 @@ namespace SGA.Application.Services
                 FechaPago = DateTime.Now,
                 Modalidad = "Tarjeta Recargable",
                 Concepto = ConceptoPago.CompraTicket,
-                TipoTicket = dto.TipoTicket
+                TipoTicket = dto.TipoTicket,
+
+                RutaEntradaId = dto.RutaEntradaId,
+                HorarioEntradaId = dto.HorarioEntradaId,
+                ParadaEntradaId = dto.ParadaEntradaId,
+
+                RutaSalidaId = dto.RutaSalidaId,
+                HorarioSalidaId = dto.HorarioSalidaId,
+                ParadaSalidaId = dto.ParadaSalidaId
             };
 
             await _pagoRepository.AddAsync(pago);

@@ -12,5 +12,16 @@ namespace SGA.Domain.Entities.Reservation
         public string Modalidad { get; set; }
         public ConceptoPago Concepto { get; set; }
         public TipoTicket? TipoTicket { get; set; }
+        public int? RutaEntradaId { get; set; }
+
+        public int? HorarioEntradaId { get; set; }
+
+        public int? ParadaEntradaId { get; set; }
+
+        public int? RutaSalidaId { get; set; }
+
+        public int? HorarioSalidaId { get; set; }
+
+        public int? ParadaSalidaId { get; set; }
     }
 }
