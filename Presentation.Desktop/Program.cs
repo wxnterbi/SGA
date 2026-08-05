@@ -1,17 +1,197 @@
-namespace Presentation.Desktop
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+using System.Windows.Forms;
+using SGA.Presentation.Desktop.Forms;
+using SGA.Presentation.Desktop.Forms.Login;
+using SGA.Presentation.Desktop.Forms.Viaje;
+using SGA.Presentation.Desktop.Interfaces;
+using SGA.Presentation.Desktop.Services.Viaje;
+using System;
+using System.Windows.Forms;
+
+namespace SGA.Presentation.Desktop
 {
     internal static class Program
     {
-        /// <summary>
-        ///  The main entry point for the application.
-        /// </summary>
+        public static IServiceProvider ServiceProvider { get; private set; } = null!;
+
         [STAThread]
         static void Main()
         {
-            // To customize application configuration such as set high DPI settings or default font,
-            // see https://aka.ms/applicationconfiguration.
             ApplicationConfiguration.Initialize();
-            Application.Run(new Form1());
+
+            var services = new ServiceCollection();
+
+            ConfigureServices(services);
+
+            ServiceProvider = services.BuildServiceProvider();
+
+            System.Windows.Forms.Application.Run(ServiceProvider.GetRequiredService<FrmViajePrincipal>());
+        }
+
+        private static void ConfigureServices(IServiceCollection services)
+        {
+            //---------------------------------------------------------
+            // Configuración
+            //---------------------------------------------------------
+
+            IConfiguration configuration = new ConfigurationBuilder()
+                .SetBasePath(AppDomain.CurrentDomain.BaseDirectory)
+                .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
+                .Build();
+
+            services.AddSingleton(configuration);
+
+            string baseUrl = configuration["ApiSettings:BaseUrl"]!;
+
+            //---------------------------------------------------------
+            // HttpClient
+            //---------------------------------------------------------
+
+            services.AddHttpClient();
+
+            //---------------------------------------------------------
+            // API SERVICES
+            //---------------------------------------------------------
+
+            #region Viajes
+
+            services.AddHttpClient<IViajeApiService, ViajeApiService>(client =>
+            {
+                client.BaseAddress = new Uri(baseUrl);
+            });
+
+            #endregion
+
+            #region Autobuses
+
+            //services.AddHttpClient<IAutobusApiService, AutobusApiService>(client =>
+            //{
+            //    client.BaseAddress = new Uri(baseUrl);
+            //});
+
+            #endregion
+
+            #region Usuarios
+
+            //services.AddHttpClient<IUsuarioApiService, UsuarioApiService>(client =>
+            //{
+            //    client.BaseAddress = new Uri(baseUrl);
+            //});
+
+            #endregion
+
+            #region Conductores
+
+            //services.AddHttpClient<IConductorApiService, ConductorApiService>(client =>
+            //{
+            //    client.BaseAddress = new Uri(baseUrl);
+            //});
+
+            #endregion
+
+            #region Horarios
+
+            //services.AddHttpClient<IHorarioApiService, HorarioApiService>(client =>
+            //{
+            //    client.BaseAddress = new Uri(baseUrl);
+            //});
+
+            #endregion
+
+            #region Rutas
+
+            //services.AddHttpClient<IRutaApiService, RutaApiService>(client =>
+            //{
+            //    client.BaseAddress = new Uri(baseUrl);
+            //});
+
+            #endregion
+
+            #region Paradas
+
+            //services.AddHttpClient<IParadaApiService, ParadaApiService>(client =>
+            //{
+            //    client.BaseAddress = new Uri(baseUrl);
+            //});
+
+            #endregion
+
+            #region Incidencias
+
+            //services.AddHttpClient<IIncidenciaApiService, IncidenciaApiService>(client =>
+            //{
+            //    client.BaseAddress = new Uri(baseUrl);
+            //});
+
+            #endregion
+
+            //---------------------------------------------------------
+            // FORMS
+            //---------------------------------------------------------
+
+            #region Login
+
+            services.AddTransient<FrmLogin>();
+
+            #endregion
+
+            #region Dashboard
+
+            //services.AddTransient<FrmDashboard>();
+
+            #endregion
+
+            #region Viajes
+
+            services.AddTransient<FrmViajePrincipal>();
+            services.AddTransient<FrmNuevoViaje>();
+
+            #endregion
+
+            #region Autobuses
+
+            //services.AddTransient<FrmAutobusPrincipal>();
+            //services.AddTransient<FrmNuevoAutobus>();
+
+            #endregion
+
+            #region Usuarios
+
+            //services.AddTransient<FrmUsuarioPrincipal>();
+            //services.AddTransient<FrmNuevoUsuario>();
+
+            #endregion
+
+            #region Conductores
+
+            //services.AddTransient<FrmConductorPrincipal>();
+
+            #endregion
+
+            #region Horarios
+
+            //services.AddTransient<FrmHorarioPrincipal>();
+
+            #endregion
+
+            #region Rutas
+
+            //services.AddTransient<FrmRutaPrincipal>();
+
+            #endregion
+
+            #region Paradas
+
+            //services.AddTransient<FrmParadaPrincipal>();
+
+            #endregion
+
+            #region Incidencias
+
+            //services.AddTransient<FrmIncidenciaPrincipal>();
+
+            #endregion
         }
     }
 }

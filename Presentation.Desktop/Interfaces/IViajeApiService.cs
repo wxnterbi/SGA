@@ -1,10 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using SGA.Application.Dtos.Viaje;
 
 namespace SGA.Presentation.Desktop.Interfaces
 {
-    internal interface IViajeApiService
+    public interface IViajeApiService
     {
+        Task<List<ViajeDto>> GetAllAsync();
+
+        Task<ViajeDto?> GetByIdAsync(int id);
+
+        Task<bool> CreateAsync(ViajeDto viaje);
+
+        Task<bool> UpdateAsync(ViajeDto viaje);
+
+        Task<bool> DeleteAsync(int id);
     }
 }
