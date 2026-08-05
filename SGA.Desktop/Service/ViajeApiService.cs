@@ -1,4 +1,5 @@
 ﻿using SGA.Application.Dtos.Viaje;
+using SGA.Desktop.Interfaces.Viaje;
 using System;
 using System.Collections.Generic;
 using System.Net.Http;
@@ -18,44 +19,45 @@ namespace SGA.Desktop.Interfaces.Viaje
 
         public async Task<List<ViajeDto>> GetAllAsync()
         {
-            try
-            {
-                var response = await _httpClient.GetFromJsonAsync<List<ViajeDto>>("api/viajes");
-                return response ?? new List<ViajeDto>();
-            }
-            catch
-            {
-                return new List<ViajeDto>();
-            }
+            // Se usa "viajes" en lugar de "api/viajes" porque BaseAddress ya incluye "/api/"
+            var response = await _httpClient.GetFromJsonAsync<List<ViajeDto>>("viajes");
+            return response ?? new List<ViajeDto>();
         }
 
         public async Task<ViajeDto?> GetByIdAsync(int id)
         {
-            try
-            {
-                return await _httpClient.GetFromJsonAsync<ViajeDto>($"api/viajes/{id}");
-            }
-            catch
-            {
-                return null;
-            }
+            return await _httpClient.GetFromJsonAsync<ViajeDto>($"viajes/{id}");
         }
 
         public async Task<bool> CreateAsync(CreateViajeDto dto)
         {
-            var response = await _httpClient.PostAsJsonAsync("api/viajes", dto);
-            return response.IsSuccessStatusCode;
+            var response = await _httpClient.PostAsJsonAsync("viajes", dto);
+
+            if (!response.IsSuccessStatusCode)
+            {
+                string errorMensaje = await response.Content.ReadAsStringAsync();
+                throw new InvalidOperationException(errorMensaje);
+            }
+
+            return true;
         }
 
         public async Task<bool> UpdateAsync(int id, UpdateViajeDto dto)
         {
-            var response = await _httpClient.PutAsJsonAsync($"api/viajes/{id}", dto);
-            return response.IsSuccessStatusCode;
+            var response = await _httpClient.PutAsJsonAsync($"viajes/{id}", dto);
+
+            if (!response.IsSuccessStatusCode)
+            {
+                string errorMensaje = await response.Content.ReadAsStringAsync();
+                throw new InvalidOperationException(errorMensaje);
+            }
+
+            return true;
         }
 
         public async Task<bool> DeleteAsync(int id)
         {
-            var response = await _httpClient.DeleteAsync($"api/viajes/{id}");
+            var response = await _httpClient.DeleteAsync($"viajes/{id}");
             return response.IsSuccessStatusCode;
         }
     }

@@ -19,22 +19,21 @@ namespace SGA.Desktop.Services.Autobus
 
         public async Task<List<AutobusDto>> GetAllAsync()
         {
-            var response = await _httpClient.GetFromJsonAsync<List<AutobusDto>>("api/autobuses");
+            var response = await _httpClient.GetFromJsonAsync<List<AutobusDto>>("autobuses");
             return response ?? new List<AutobusDto>();
         }
 
         public async Task<AutobusDto> GetByIdAsync(int id)
         {
-            return await _httpClient.GetFromJsonAsync<AutobusDto>($"api/autobuses/{id}");
+            return await _httpClient.GetFromJsonAsync<AutobusDto>($"autobuses/{id}");
         }
 
         public async Task<bool> CreateAsync(CreateAutobusDto createDto)
         {
-            var response = await _httpClient.PostAsJsonAsync("api/autobuses", createDto);
+            var response = await _httpClient.PostAsJsonAsync("autobuses", createDto);
 
             if (!response.IsSuccessStatusCode)
             {
-                // Leer mensaje de error enviado por FluentValidation desde la API
                 string errorMensaje = await response.Content.ReadAsStringAsync();
                 throw new InvalidOperationException(errorMensaje);
             }
@@ -44,7 +43,7 @@ namespace SGA.Desktop.Services.Autobus
 
         public async Task<bool> UpdateAsync(int id, UpdateAutobusDto updateDto)
         {
-            var response = await _httpClient.PutAsJsonAsync($"api/autobuses/{id}", updateDto);
+            var response = await _httpClient.PutAsJsonAsync($"autobuses/{id}", updateDto);
 
             if (!response.IsSuccessStatusCode)
             {
@@ -57,7 +56,7 @@ namespace SGA.Desktop.Services.Autobus
 
         public async Task<bool> DeleteAsync(int id)
         {
-            var response = await _httpClient.DeleteAsync($"api/autobuses/{id}");
+            var response = await _httpClient.DeleteAsync($"autobuses/{id}");
             return response.IsSuccessStatusCode;
         }
     }

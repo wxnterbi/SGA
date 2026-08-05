@@ -1,11 +1,9 @@
 ﻿using System;
-using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using Microsoft.Extensions.DependencyInjection;
-using SGA.Application.Dtos.TarjetaRecargable;
 using SGA.Application.Dtos.Usuario;
-using SGA.Application.Interfaces;
+using SGA.Desktop.Interfaces;
 using SGA.Domain.Enums.Configuration;
 
 namespace SGA.Desktop.Modulos.Usuario
@@ -13,22 +11,19 @@ namespace SGA.Desktop.Modulos.Usuario
     public partial class FrmDetalleUsuario : Form
     {
         private readonly int _usuarioId;
-        private readonly IUsuarioService _usuarioService;
-        private readonly ITarjetaRecargableService _tarjetaService;
+        private readonly IUsuarioApiService _usuarioApiService;
 
         private UsuarioDto _usuarioActual;
-        private TarjetaRecargableDto _tarjetaActual;
         private bool _modoEdicion = false;
 
-        public FrmDetalleUsuario(
-            int usuarioId,
-            IUsuarioService usuarioService = null,
-            ITarjetaRecargableService tarjetaService = null)
+        public FrmDetalleUsuario(int usuarioId)
         {
             InitializeComponent();
+
             _usuarioId = usuarioId;
-            _usuarioService = usuarioService ?? Program.ServiceProvider.GetRequiredService<IUsuarioService>();
-            _tarjetaService = tarjetaService ?? Program.ServiceProvider.GetRequiredService<ITarjetaRecargableService>();
+
+            _usuarioApiService = Program.ServiceProvider
+                .GetRequiredService<IUsuarioApiService>();
 
             this.Load += FrmDetalleUsuario_Load;
             btnEditar.Click += BtnEditar_Click;
@@ -53,7 +48,7 @@ namespace SGA.Desktop.Modulos.Usuario
         {
             try
             {
-                _usuarioActual = await _usuarioService.GetByIdAsync(_usuarioId);
+                _usuarioActual = await _usuarioApiService.GetByIdAsync(_usuarioId);
 
                 if (_usuarioActual != null)
                 {
@@ -62,24 +57,11 @@ namespace SGA.Desktop.Modulos.Usuario
                     txtNombre.Text = _usuarioActual.Nombre;
                     cboTipoUsuario.SelectedItem = _usuarioActual.TipoUsuario;
                     cboEstado.SelectedItem = _usuarioActual.Estado;
-
-                    // Consultar Tarjeta Recargable asignada
-                    var tarjetas = await _tarjetaService.GetAllAsync();
-                    _tarjetaActual = tarjetas?.FirstOrDefault(t => t.UsuarioId == _usuarioId);
-
-                    if (_tarjetaActual != null)
-                    {
-                        lblSaldoValor.Text = $"RD$ {_tarjetaActual.Saldo:N2}";
-                    }
-                    else
-                    {
-                        lblSaldoValor.Text = "Sin Tarjeta";
-                    }
                 }
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"Error al cargar detalles: {ex.Message}", "SGA", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show($"Error al cargar los detalles del usuario: {ex.Message}", "SGA Usuarios", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
@@ -105,30 +87,64 @@ namespace SGA.Desktop.Modulos.Usuario
         {
             try
             {
-                _usuarioActual.Nombre = txtNombre.Text.Trim();
-                _usuarioActual.IdentificadorInstitucional = txtIdentificador.Text.Trim();
-                _usuarioActual.TipoUsuario = (TipoUsuario)cboTipoUsuario.SelectedItem;
-                _usuarioActual.Estado = (EstadoUsuario)cboEstado.SelectedItem;
+                if (_usuarioActual == null) return;
 
-                await _usuarioService.UpdateAsync(_usuarioActual);
+                var dto = new UpdateUsuarioDto
+                {
+                    Id = _usuarioActual.Id,
+                    IdentificadorInstitucional = txtIdentificador.Text.Trim(),
+                    Nombre = txtNombre.Text.Trim(),
+                    TipoUsuario = (TipoUsuario)cboTipoUsuario.SelectedItem,
+                    Estado = (EstadoUsuario)cboEstado.SelectedItem
+                };
 
-                MessageBox.Show("Usuario actualizado correctamente.", "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                this.DialogResult = DialogResult.OK;
-                this.Close();
+                var actualizado = await _usuarioApiService.UpdateAsync(
+                    _usuarioActual.Id,
+                    dto
+                );
+
+                if (actualizado)
+                {
+                    MessageBox.Show(
+                        "Usuario actualizado correctamente.",
+                        "SGA Usuarios",
+                        MessageBoxButtons.OK,
+                        MessageBoxIcon.Information
+                    );
+
+                    this.DialogResult = DialogResult.OK;
+                    this.Close();
+                }
+                else
+                {
+                    MessageBox.Show(
+                        "No se pudo actualizar el usuario.",
+                        "SGA Usuarios",
+                        MessageBoxButtons.OK,
+                        MessageBoxIcon.Warning
+                    );
+                }
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"Error al actualizar: {ex.Message}", "SGA", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show(
+                    $"Error al actualizar usuario: {ex.Message}",
+                    "SGA Usuarios",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Error
+                );
             }
         }
 
         private async void BtnRecargar_Click(object sender, EventArgs e)
         {
+            if (_usuarioActual == null) return;
+
             using (var frmRecarga = new FrmRecargarTarjetaModal(_usuarioActual.Id, _usuarioActual.Nombre))
             {
                 if (frmRecarga.ShowDialog() == DialogResult.OK)
                 {
-                    await CargarDatosUsuarioAsync(); // Refrescar saldo localmente
+                    await CargarDatosUsuarioAsync();
                     this.DialogResult = DialogResult.OK;
                 }
             }

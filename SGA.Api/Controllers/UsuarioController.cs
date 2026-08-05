@@ -1,9 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using SGA.Application.Dtos.Usuario;
-using SGA.Domain.Entities.Configuration;
 using SGA.Application.Interfaces;
 
-namespace SGA.Api.Controllers
+namespace SGA.Api.Desktop.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
@@ -16,13 +15,14 @@ namespace SGA.Api.Controllers
             _usuarioService = usuarioService;
         }
 
+
         [HttpGet]
         public async Task<IActionResult> Get()
         {
             var usuarios = await _usuarioService.GetAllAsync();
-
             return Ok(usuarios);
         }
+
 
         [HttpGet("{id}")]
         public async Task<IActionResult> GetById(int id)
@@ -33,55 +33,46 @@ namespace SGA.Api.Controllers
             var usuario = await _usuarioService.GetByIdAsync(id);
 
             if (usuario == null)
-            {
                 return NotFound("Usuario no encontrado.");
-            }
 
             return Ok(usuario);
         }
 
+
         [HttpPost]
-        public async Task<IActionResult> Post([FromBody] UsuarioDto dto)
+        public async Task<IActionResult> Post([FromBody] CreateUsuarioDto dto)
         {
             try
             {
                 await _usuarioService.AddAsync(dto);
                 return Ok("Usuario registrado correctamente.");
             }
-            catch (InvalidOperationException ex)
-            {
-                return BadRequest(new { mensaje = ex.Message });
-            }
             catch (Exception ex)
             {
-                return StatusCode(500, new { mensaje = "Ocurrió un error interno: " + ex.Message });
+                return BadRequest(ex.Message);
             }
         }
 
-        [HttpPut]
-        public async Task<IActionResult> Put([FromBody] UsuarioDto dto)
+
+        [HttpPut("{id}")]
+        public async Task<IActionResult> Put(int id, [FromBody] UpdateUsuarioDto dto)
         {
             try
             {
-                await _usuarioService.UpdateAsync(dto);
+                await _usuarioService.UpdateAsync(id, dto);
+
                 return Ok("Usuario actualizado correctamente.");
-            }
-            catch (InvalidOperationException ex)
-            {
-                return BadRequest(new { mensaje = ex.Message });
             }
             catch (Exception ex)
             {
-                return StatusCode(500, new { mensaje = "Ocurrió un error interno: " + ex.Message });
+                return BadRequest(ex.Message);
             }
         }
+
 
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(int id)
         {
-            if (id <= 0)
-                return BadRequest("El ID debe ser mayor que cero.");
-
             await _usuarioService.DeleteAsync(id);
 
             return Ok("Usuario eliminado correctamente.");

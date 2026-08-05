@@ -27,7 +27,7 @@ namespace SGA.Web.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create(UsuarioDto dto)
+        public async Task<IActionResult> Create(CreateUsuarioDto dto)
         {
             if (!ModelState.IsValid)
                 return View(dto);
@@ -72,14 +72,14 @@ namespace SGA.Web.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Edit(UsuarioDto dto)
+        public async Task<IActionResult> Edit(UpdateUsuarioDto dto)
         {
             if (!ModelState.IsValid)
                 return View(dto);
 
             try
             {
-                await _usuarioService.UpdateAsync(dto);
+                await _usuarioService.UpdateAsync(dto.Id, dto);
                 return RedirectToAction(nameof(Index));
             }
             catch (InvalidOperationException ex)

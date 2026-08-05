@@ -1,7 +1,8 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using SGA.Application.Dtos.Ruta;
-using SGA.Application.Interfaces;
+using SGA.Desktop.Services;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Forms;
 
@@ -9,22 +10,17 @@ namespace SGA.Desktop.Modulos.RutaHorarios
 {
     public partial class FrmGestionRutaHorario : Form
     {
-        private readonly IRutaService _rutaService;
-        private readonly IHorarioService _horarioService;
+        private readonly ApiClient _apiClient;
 
-        public FrmGestionRutaHorario(IRutaService rutaService = null, IHorarioService horarioService = null)
+        public FrmGestionRutaHorario(ApiClient apiClient = null)
         {
             InitializeComponent();
 
-            _rutaService = rutaService ?? Program.ServiceProvider.GetRequiredService<IRutaService>();
-            _horarioService = horarioService ?? Program.ServiceProvider.GetRequiredService<IHorarioService>();
+            _apiClient = apiClient ?? Program.ServiceProvider.GetRequiredService<ApiClient>();
 
             this.Load += FrmGestionRutaHorario_Load;
 
-            // Evento para filtrar al escribir
             txtBuscarRuta.TextChanged += TxtBuscarRuta_TextChanged;
-
-            // Evento Maestro-Detalle: Al cambiar de ruta, se actualizan los horarios
             dgvRutas.SelectionChanged += DgvRutas_SelectionChanged;
         }
 
@@ -37,10 +33,9 @@ namespace SGA.Desktop.Modulos.RutaHorarios
         {
             try
             {
-                var rutas = await _rutaService.GetAllAsync();
-                dgvRutas.DataSource = rutas.ToList();
+                var rutas = await _apiClient.GetAsync<List<RutaDto>>("rutas");
+                dgvRutas.DataSource = rutas?.ToList() ?? new List<RutaDto>();
 
-                // Formatear columnas visibles según las propiedades reales de RutaDto
                 if (dgvRutas.Columns["Id"] != null) dgvRutas.Columns["Id"].Width = 50;
                 if (dgvRutas.Columns["Nombre"] != null) dgvRutas.Columns["Nombre"].HeaderText = "Ruta";
                 if (dgvRutas.Columns["Origen"] != null) dgvRutas.Columns["Origen"].HeaderText = "Origen";
@@ -48,7 +43,7 @@ namespace SGA.Desktop.Modulos.RutaHorarios
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"Error al cargar rutas: {ex.Message}", "SGA ITLA", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show($"Error al cargar rutas desde la API: {ex.Message}", "SGA ITLA", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
@@ -67,28 +62,27 @@ namespace SGA.Desktop.Modulos.RutaHorarios
         {
             try
             {
-                // 1. Obtenemos todos los horarios
-                var todosLosHorarios = await _horarioService.GetAllAsync();
+                var todosLosHorarios = await _apiClient.GetAsync<List<HorarioDto>>("horarios");
 
-                // 2. Filtramos en memoria por el ID de la Ruta seleccionada
-                var horariosDeLaRuta = todosLosHorarios
-                    .Where(h => h.RutaId == rutaId)
-                    .Select(h => new
-                    {
-                        // Convierte la hora a string legible (ej: "06:30 AM", "07:30 PM")
-                        HoraSalida = DateTime.Today.Add(h.HoraSalida).ToString("hh:mm tt"),
-                        Dias = h.DiasOperacion
-                    })
-                    .ToList();
+                if (todosLosHorarios != null)
+                {
+                    var horariosDeLaRuta = todosLosHorarios
+                        .Where(h => h.RutaId == rutaId)
+                        .Select(h => new
+                        {
+                            HoraSalida = DateTime.Today.Add(h.HoraSalida).ToString("hh:mm tt"),
+                            Dias = h.DiasOperacion
+                        })
+                        .ToList();
 
-                // 3. Asignamos a la tabla de la derecha
-                dgvHorarios.DataSource = horariosDeLaRuta;
+                    dgvHorarios.DataSource = horariosDeLaRuta;
 
-                if (dgvHorarios.Columns["HoraSalida"] != null)
-                    dgvHorarios.Columns["HoraSalida"].HeaderText = "Hora de Salida";
+                    if (dgvHorarios.Columns["HoraSalida"] != null)
+                        dgvHorarios.Columns["HoraSalida"].HeaderText = "Hora de Salida";
 
-                if (dgvHorarios.Columns["Dias"] != null)
-                    dgvHorarios.Columns["Dias"].HeaderText = "Días de Operación";
+                    if (dgvHorarios.Columns["Dias"] != null)
+                        dgvHorarios.Columns["Dias"].HeaderText = "Días de Operación";
+                }
             }
             catch (Exception)
             {
@@ -99,7 +93,6 @@ namespace SGA.Desktop.Modulos.RutaHorarios
         private void TxtBuscarRuta_TextChanged(object sender, EventArgs e)
         {
             string filtro = txtBuscarRuta.Text.ToLower().Trim();
-            // Lógica de filtrado opcional
         }
 
         private void btnNuevaRuta_Click(object sender, EventArgs e)
@@ -121,7 +114,6 @@ namespace SGA.Desktop.Modulos.RutaHorarios
                 return;
             }
 
-            // Pasamos el ID de la ruta seleccionada
             using (var modal = new FrmNuevoHorario(rutaSeleccionada.Id))
             {
                 if (modal.ShowDialog() == DialogResult.OK)
@@ -130,5 +122,13 @@ namespace SGA.Desktop.Modulos.RutaHorarios
                 }
             }
         }
+    }
+
+    public class HorarioDto
+    {
+        public int Id { get; set; }
+        public int RutaId { get; set; }
+        public TimeSpan HoraSalida { get; set; }
+        public string DiasOperacion { get; set; }
     }
 }

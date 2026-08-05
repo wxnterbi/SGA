@@ -2,38 +2,187 @@
 {
     partial class FrmAgregarNuevoUsuario
     {
-        /// <summary>
-        /// Required designer variable.
-        /// </summary>
         private System.ComponentModel.IContainer components = null;
 
-        /// <summary>
-        /// Clean up any resources being used.
-        /// </summary>
-        /// <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
         protected override void Dispose(bool disposing)
         {
             if (disposing && (components != null))
-            {
                 components.Dispose();
-            }
+
             base.Dispose(disposing);
         }
 
         #region Windows Form Designer generated code
 
-        /// <summary>
-        /// Required method for Designer support - do not modify
-        /// the contents of this method with the code editor.
-        /// </summary>
         private void InitializeComponent()
         {
-            this.components = new System.ComponentModel.Container();
+            this.pnlHeader = new System.Windows.Forms.Panel();
+            this.lblTitulo = new System.Windows.Forms.Label();
+
+            this.lblIdentificador = new System.Windows.Forms.Label();
+            this.txtIdentificador = new System.Windows.Forms.TextBox();
+
+            this.lblNombre = new System.Windows.Forms.Label();
+            this.txtNombre = new System.Windows.Forms.TextBox();
+
+            this.lblTipo = new System.Windows.Forms.Label();
+            this.cboTipoUsuario = new System.Windows.Forms.ComboBox();
+
+            this.lblEstado = new System.Windows.Forms.Label();
+            this.cboEstado = new System.Windows.Forms.ComboBox();
+
+            this.btnGuardar = new System.Windows.Forms.Button();
+            this.btnCancelar = new System.Windows.Forms.Button();
+
+            this.pnlHeader.SuspendLayout();
+            this.SuspendLayout();
+
+            // pnlHeader
+
+            this.pnlHeader.BackColor = System.Drawing.Color.FromArgb(15, 33, 55);
+            this.pnlHeader.Controls.Add(this.lblTitulo);
+            this.pnlHeader.Dock = System.Windows.Forms.DockStyle.Top;
+            this.pnlHeader.Location = new System.Drawing.Point(0, 0);
+            this.pnlHeader.Name = "pnlHeader";
+            this.pnlHeader.Size = new System.Drawing.Size(420, 60);
+
+            // lblTitulo
+
+            this.lblTitulo.AutoSize = true;
+            this.lblTitulo.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold);
+            this.lblTitulo.ForeColor = System.Drawing.Color.White;
+            this.lblTitulo.Location = new System.Drawing.Point(20, 18);
+            this.lblTitulo.Text = "Registrar Usuario";
+
+            // lblIdentificador
+
+            this.lblIdentificador.AutoSize = true;
+            this.lblIdentificador.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
+            this.lblIdentificador.Location = new System.Drawing.Point(25, 80);
+            this.lblIdentificador.Text = "ID Institucional";
+
+            // txtIdentificador
+
+            this.txtIdentificador.Font = new System.Drawing.Font("Segoe UI", 10F);
+            this.txtIdentificador.Location = new System.Drawing.Point(28, 100);
+            this.txtIdentificador.Size = new System.Drawing.Size(360, 25);
+
+            // lblNombre
+
+            this.lblNombre.AutoSize = true;
+            this.lblNombre.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
+            this.lblNombre.Location = new System.Drawing.Point(25, 140);
+            this.lblNombre.Text = "Nombre Completo";
+
+            // txtNombre
+
+            this.txtNombre.Font = new System.Drawing.Font("Segoe UI", 10F);
+            this.txtNombre.Location = new System.Drawing.Point(28, 160);
+            this.txtNombre.Size = new System.Drawing.Size(360, 25);
+
+            // lblTipo
+
+            this.lblTipo.AutoSize = true;
+            this.lblTipo.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
+            this.lblTipo.Location = new System.Drawing.Point(25, 205);
+            this.lblTipo.Text = "Tipo de Usuario";
+
+            // cboTipoUsuario
+
+            this.cboTipoUsuario.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cboTipoUsuario.Font = new System.Drawing.Font("Segoe UI", 10F);
+            this.cboTipoUsuario.Location = new System.Drawing.Point(28, 225);
+            this.cboTipoUsuario.Size = new System.Drawing.Size(160, 25);
+
+            // lblEstado
+
+            this.lblEstado.AutoSize = true;
+            this.lblEstado.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
+            this.lblEstado.Location = new System.Drawing.Point(220, 205);
+            this.lblEstado.Text = "Estado";
+
+            // cboEstado
+
+            this.cboEstado.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cboEstado.Font = new System.Drawing.Font("Segoe UI", 10F);
+            this.cboEstado.Location = new System.Drawing.Point(223, 225);
+            this.cboEstado.Size = new System.Drawing.Size(165, 25);
+
+            // btnGuardar
+
+            this.btnGuardar.BackColor = System.Drawing.Color.FromArgb(40, 167, 69);
+            this.btnGuardar.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnGuardar.ForeColor = System.Drawing.Color.White;
+            this.btnGuardar.Location = new System.Drawing.Point(288, 290);
+            this.btnGuardar.Name = "btnGuardar";
+            this.btnGuardar.Size = new System.Drawing.Size(100, 35);
+            this.btnGuardar.Text = "Guardar";
+            this.btnGuardar.UseVisualStyleBackColor = false;
+
+            // btnCancelar
+
+            this.btnCancelar.BackColor = System.Drawing.Color.FromArgb(108, 117, 125);
+            this.btnCancelar.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnCancelar.ForeColor = System.Drawing.Color.White;
+            this.btnCancelar.Location = new System.Drawing.Point(170, 290);
+            this.btnCancelar.Name = "btnCancelar";
+            this.btnCancelar.Size = new System.Drawing.Size(100, 35);
+            this.btnCancelar.Text = "Cancelar";
+            this.btnCancelar.UseVisualStyleBackColor = false;
+
+            // FrmAgregarNuevoUsuario
+
+            this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(800, 450);
-            this.Text = "FrmAgregarNuevoUsuario";
+            this.ClientSize = new System.Drawing.Size(420, 350);
+
+            this.Controls.Add(this.pnlHeader);
+
+            this.Controls.Add(this.lblIdentificador);
+            this.Controls.Add(this.txtIdentificador);
+
+            this.Controls.Add(this.lblNombre);
+            this.Controls.Add(this.txtNombre);
+
+            this.Controls.Add(this.lblTipo);
+            this.Controls.Add(this.cboTipoUsuario);
+
+            this.Controls.Add(this.lblEstado);
+            this.Controls.Add(this.cboEstado);
+
+            this.Controls.Add(this.btnCancelar);
+            this.Controls.Add(this.btnGuardar);
+
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
+            this.MaximizeBox = false;
+            this.MinimizeBox = false;
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
+            this.Text = "SGA - Registrar Usuario";
+
+            this.pnlHeader.ResumeLayout(false);
+            this.pnlHeader.PerformLayout();
+            this.ResumeLayout(false);
+            this.PerformLayout();
         }
 
         #endregion
+
+        private System.Windows.Forms.Panel pnlHeader;
+        private System.Windows.Forms.Label lblTitulo;
+
+        private System.Windows.Forms.Label lblIdentificador;
+        private System.Windows.Forms.TextBox txtIdentificador;
+
+        private System.Windows.Forms.Label lblNombre;
+        private System.Windows.Forms.TextBox txtNombre;
+
+        private System.Windows.Forms.Label lblTipo;
+        private System.Windows.Forms.ComboBox cboTipoUsuario;
+
+        private System.Windows.Forms.Label lblEstado;
+        private System.Windows.Forms.ComboBox cboEstado;
+
+        private System.Windows.Forms.Button btnGuardar;
+        private System.Windows.Forms.Button btnCancelar;
     }
 }

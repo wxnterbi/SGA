@@ -52,7 +52,7 @@ namespace SGA.Application.Services
             });
         }
 
-        public async Task AddAsync(UsuarioDto dto)
+        public async Task AddAsync(CreateUsuarioDto dto)
         {
             Console.WriteLine("ENTRANDO A USUARIO SERVICE");
 
@@ -77,19 +77,22 @@ namespace SGA.Application.Services
                 "El usuario fue registrado correctamente en el sistema.");
         }
 
-        public Task UpdateAsync(UsuarioDto dto)
+        public Task UpdateAsync(int id, UpdateUsuarioDto dto)
         {
-            var usuario = _usuarioRepository.GetById(dto.Id);
-
-            var usuarioConMismaMatricula = _usuarioRepository.GetByIdentificador(dto.IdentificadorInstitucional);
-
-            if (usuarioConMismaMatricula != null && usuarioConMismaMatricula.Id != dto.Id)
-            {
-                throw new InvalidOperationException($"La matrícula '{dto.IdentificadorInstitucional}' ya pertenece a otro usuario.");
-            }
+            var usuario = _usuarioRepository.GetById(id);
 
             if (usuario == null)
                 throw new Exception("Usuario no encontrado.");
+
+            var usuarioConMismaMatricula = _usuarioRepository
+                .GetByIdentificador(dto.IdentificadorInstitucional);
+
+            if (usuarioConMismaMatricula != null && usuarioConMismaMatricula.Id != id)
+            {
+                throw new InvalidOperationException(
+                    $"La matrícula '{dto.IdentificadorInstitucional}' ya pertenece a otro usuario."
+                );
+            }
 
             usuario.IdentificadorInstitucional = dto.IdentificadorInstitucional;
             usuario.Nombre = dto.Nombre;

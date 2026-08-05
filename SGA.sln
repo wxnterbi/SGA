@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 18
-VisualStudioVersion = 18.8.12023.21 stable
+VisualStudioVersion = 18.8.12023.21
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "API", "API", "{02EA681E-C7D8-13C7-8484-4AC65E1B71E8}"
 EndProject
@@ -47,8 +47,6 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SGA.MVC.Johan", "SGA.MVC\SGA.MVC.Johan.csproj", "{AE33B94E-29E5-47CD-80E1-2DA385A0F487}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Desktop", "Desktop", "{1F6FB0C8-E060-46BB-87E1-790B4BE2E206}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SGA.Desktop", "SGA.Desktop\SGA.Desktop.csproj", "{4ED7E3CD-58D7-4B33-AB67-3D49A7EC024E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -104,10 +102,6 @@ Global
 		{AE33B94E-29E5-47CD-80E1-2DA385A0F487}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{AE33B94E-29E5-47CD-80E1-2DA385A0F487}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{AE33B94E-29E5-47CD-80E1-2DA385A0F487}.Release|Any CPU.Build.0 = Release|Any CPU
-		{4ED7E3CD-58D7-4B33-AB67-3D49A7EC024E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{4ED7E3CD-58D7-4B33-AB67-3D49A7EC024E}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{4ED7E3CD-58D7-4B33-AB67-3D49A7EC024E}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{4ED7E3CD-58D7-4B33-AB67-3D49A7EC024E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -125,7 +119,6 @@ Global
 		{68E316A3-F12C-4828-839D-07E467981FC0} = {72EB83E4-3469-478B-8C44-5B65B1F04CAA}
 		{1B78AE64-12AA-BF83-BAB1-C1AF1864F0D5} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
 		{AE33B94E-29E5-47CD-80E1-2DA385A0F487} = {1670470B-4B64-725C-D0F7-3206B6B2A88E}
-		{4ED7E3CD-58D7-4B33-AB67-3D49A7EC024E} = {1F6FB0C8-E060-46BB-87E1-790B4BE2E206}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {5FE17353-5A8B-4282-9EA8-782A3499D461}

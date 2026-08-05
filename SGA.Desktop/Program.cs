@@ -3,11 +3,12 @@ using Microsoft.Extensions.DependencyInjection;
 using SGA.Desktop.Interfaces;
 using SGA.Desktop.Interfaces.Autobus;
 using SGA.Desktop.Interfaces.Viaje;
+using SGA.Desktop.Modulos.RutaHorarios;
 using SGA.Desktop.Modulos.Transporte;
 using SGA.Desktop.Modulos.Usuario;
 using SGA.Desktop.Modulos.Viaje;
-using SGA.Desktop.Services;          // <-- Agregado para UsuarioApiService
-using SGA.Desktop.Services.Autobus;     // <-- Agregado por si ViajeApiService está en esta carpeta
+using SGA.Desktop.Services;
+using SGA.Desktop.Services.Autobus;
 using System;
 using System.IO;
 using System.Net.Http;
@@ -24,28 +25,26 @@ namespace SGA.Desktop
         {
             ApplicationConfiguration.Initialize();
 
-            // 1. Configurar el contenedor de dependencias
             var services = new ServiceCollection();
             ConfigureServices(services);
 
-            // 2. Construir el proveedor
             ServiceProvider = services.BuildServiceProvider();
 
-            // 3. Iniciar la aplicación
             System.Windows.Forms.Application.Run(new FrmLogin());
         }
 
         private static void ConfigureServices(IServiceCollection services)
         {
-            // Cargar appsettings.json
             var builder = new ConfigurationBuilder()
                 .SetBasePath(AppDomain.CurrentDomain.BaseDirectory)
                 .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true);
 
             IConfiguration configuration = builder.Build();
 
-            // Leer la URL base de SGA.Api ("https://localhost:7218/")
-            string baseUrl = configuration["ApiSettings:BaseUrl"] ?? "https://localhost:7218/";
+            // Garantizar la barra final en la URL base de la API
+            string rawUrl = configuration["ApiSettings:BaseUrl"] ?? "https://localhost:7218/";
+            if (!rawUrl.EndsWith("/")) rawUrl += "/";
+            string baseUrl = $"{rawUrl}api/";
 
             // =========================================================
             // 1. REGISTRO DE SERVICIOS API (HttpClient)
@@ -63,6 +62,9 @@ namespace SGA.Desktop
                 client.BaseAddress = new Uri(baseUrl);
             });
 
+            // ApiClient Genérico
+            services.AddSingleton<ApiClient>();
+
             // =========================================================
             // 2. REGISTRO DE FORMULARIOS (UI)
             // =========================================================
@@ -71,11 +73,10 @@ namespace SGA.Desktop
             services.AddTransient<FrmViajePrincipal>();
             services.AddTransient<FrmNuevoViajeModal>();
             services.AddTransient<FrmMainDashboard>();
-            services.AddTransient<SGA.Desktop.Modulos.Transporte.FrmGestionTransporte>();
-            services.AddTransient<SGA.Desktop.Modulos.Usuario.FrmGestionUsuario>();
-            services.AddTransient<SGA.Desktop.Modulos.Usuario.FrmDetalleUsuario>();
-            services.AddTransient<SGA.Desktop.Modulos.Usuario.FrmAgregarNuevoUsuario>();
-            services.AddTransient<SGA.Desktop.Modulos.Usuario.FrmRecargarTarjetaModal>();
+            services.AddTransient<FrmGestionUsuario>();
+            services.AddTransient<FrmAgregarNuevoUsuario>();
+            services.AddTransient<FrmRecargarTarjetaModal>();
+            services.AddTransient<FrmGestionRutaHorario>();
         }
     }
 }

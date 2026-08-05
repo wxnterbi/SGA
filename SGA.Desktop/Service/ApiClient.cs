@@ -11,9 +11,9 @@ namespace SGA.Desktop.Services
         private readonly HttpClient _httpClient;
         private readonly JsonSerializerOptions _jsonOptions;
 
-        public ApiClient()
+        public ApiClient(HttpClient httpClient = null)
         {
-            _httpClient = new HttpClient
+            _httpClient = httpClient ?? new HttpClient
             {
                 BaseAddress = new Uri("https://localhost:7218/api/")
             };
@@ -24,9 +24,14 @@ namespace SGA.Desktop.Services
             };
         }
 
+        private string CleanEndpoint(string endpoint)
+        {
+            return endpoint.StartsWith("/") ? endpoint.TrimStart('/') : endpoint;
+        }
+
         public async Task<T?> GetAsync<T>(string endpoint)
         {
-            var response = await _httpClient.GetAsync(endpoint);
+            var response = await _httpClient.GetAsync(CleanEndpoint(endpoint));
             response.EnsureSuccessStatusCode();
 
             var json = await response.Content.ReadAsStringAsync();
@@ -40,7 +45,7 @@ namespace SGA.Desktop.Services
                 Encoding.UTF8,
                 "application/json");
 
-            var response = await _httpClient.PostAsync(endpoint, jsonContent);
+            var response = await _httpClient.PostAsync(CleanEndpoint(endpoint), jsonContent);
             response.EnsureSuccessStatusCode();
 
             var json = await response.Content.ReadAsStringAsync();
