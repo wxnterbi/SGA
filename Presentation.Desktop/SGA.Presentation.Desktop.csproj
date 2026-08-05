@@ -1,0 +1,46 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net10.0-windows</TargetFramework>
+    <Nullable>enable</Nullable>
+    <UseWindowsForms>true</UseWindowsForms>
+    <ImplicitUsings>enable</ImplicitUsings>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Folder Include="Forms\Login\" />
+    <Folder Include="Forms\DashBoard\" />
+    <Folder Include="Forms\Autobus\" />
+    <Folder Include="Forms\Conductor\" />
+    <Folder Include="Forms\Horario\" />
+    <Folder Include="Forms\Incidencia\" />
+    <Folder Include="Forms\Auditoria\" />
+    <Folder Include="Forms\Parada\" />
+    <Folder Include="Forms\Viaje\" />
+    <Folder Include="Forms\Ruta\" />
+    <Folder Include="Forms\Usuario\" />
+    <Folder Include="Models\Autobus\" />
+    <Folder Include="Models\Auditoria\" />
+    <Folder Include="Models\Incidencia\" />
+    <Folder Include="Models\Horario\" />
+    <Folder Include="Models\Conductor\" />
+    <Folder Include="Models\Viaje\" />
+    <Folder Include="Models\Ruta\" />
+    <Folder Include="Models\Parada\" />
+    <Folder Include="Models\Usuario\" />
+    <Folder Include="Resources\Images\" />
+    <Folder Include="Resources\Icons\" />
+    <Folder Include="Resources\Logo\" />
+    <Folder Include="Services\Autobus\" />
+    <Folder Include="Services\Horario\" />
+    <Folder Include="Services\Conductor\" />
+    <Folder Include="Services\Auditoria\" />
+    <Folder Include="Services\Incidencia\" />
+    <Folder Include="Services\Parada\" />
+    <Folder Include="Services\Usuario\" />
+    <Folder Include="Services\Ruta\" />
+    <Folder Include="Services\Viaje\" />
+  </ItemGroup>
+
+</Project>
