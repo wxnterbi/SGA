@@ -6,6 +6,10 @@ using SGA.Presentation.Desktop.Forms.Login;
 using SGA.Presentation.Desktop.Forms.Viaje;
 using SGA.Presentation.Desktop.Interfaces;
 using SGA.Presentation.Desktop.Services.Viaje;
+using SGA.Presentation.Desktop.Services.Ruta;
+using SGA.Presentation.Desktop.Services.Horario;
+using SGA.Presentation.Desktop.Services.Conductor;
+using SGA.Presentation.Desktop.Services.Autobus;
 using System;
 using System.Windows.Forms;
 
@@ -65,10 +69,10 @@ namespace SGA.Presentation.Desktop
 
             #region Autobuses
 
-            //services.AddHttpClient<IAutobusApiService, AutobusApiService>(client =>
-            //{
-            //    client.BaseAddress = new Uri(baseUrl);
-            //});
+            services.AddHttpClient<IAutobusApiService, AutobusApiService>(client =>
+            {
+                client.BaseAddress = new Uri(baseUrl);
+            });
 
             #endregion
 
@@ -83,28 +87,28 @@ namespace SGA.Presentation.Desktop
 
             #region Conductores
 
-            //services.AddHttpClient<IConductorApiService, ConductorApiService>(client =>
-            //{
-            //    client.BaseAddress = new Uri(baseUrl);
-            //});
+            services.AddHttpClient<IConductorApiService, ConductorApiService>(client =>
+            {
+                client.BaseAddress = new Uri(baseUrl);
+            });
 
             #endregion
 
             #region Horarios
 
-            //services.AddHttpClient<IHorarioApiService, HorarioApiService>(client =>
-            //{
-            //    client.BaseAddress = new Uri(baseUrl);
-            //});
+            services.AddHttpClient<IHorarioApiService, HorarioApiService>(client =>
+            {
+                client.BaseAddress = new Uri(baseUrl);
+            });
 
             #endregion
 
             #region Rutas
-
-            //services.AddHttpClient<IRutaApiService, RutaApiService>(client =>
-            //{
-            //    client.BaseAddress = new Uri(baseUrl);
-            //});
+               
+            services.AddHttpClient<IRutaApiService, RutaApiService>(client =>
+            {
+                client.BaseAddress = new Uri(baseUrl);
+            });
 
             #endregion
 

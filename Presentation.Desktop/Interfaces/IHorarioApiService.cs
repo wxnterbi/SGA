@@ -1,10 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using SGA.Application.Dtos.Horario;
 
 namespace SGA.Presentation.Desktop.Interfaces
 {
-    internal interface IHorarioApiService
+    public interface IHorarioApiService
     {
+        Task<List<HorarioDto>> GetAllAsync();
+
+        Task<HorarioDto?> GetByIdAsync(int id);
     }
 }

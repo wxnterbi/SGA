@@ -1,5 +1,6 @@
 ﻿using SGA.Application.Dtos.Viaje;
 using SGA.Presentation.Desktop.Interfaces;
+using SGA.Presentation.Desktop.Models;
 using System.Net.Http.Json;
 
 namespace SGA.Presentation.Desktop.Services.Viaje
@@ -24,11 +25,32 @@ namespace SGA.Presentation.Desktop.Services.Viaje
             return await _httpClient.GetFromJsonAsync<ViajeDto>($"api/Viaje/{id}");
         }
 
-        public async Task<bool> CreateAsync(ViajeDto viaje)
+        public async Task<ApiResponse> CreateAsync(ViajeDto viaje)
         {
-            var response = await _httpClient.PostAsJsonAsync("api/Viaje", viaje);
+            var response = await _httpClient.PostAsJsonAsync(
+                "api/Viaje",
+                viaje);
 
-            return response.IsSuccessStatusCode;
+
+            if (response.IsSuccessStatusCode)
+            {
+                return new ApiResponse
+                {
+                    Success = true,
+                    Message = "Viaje registrado correctamente."
+                };
+            }
+
+
+            var error = await response.Content.ReadFromJsonAsync<ApiResponse>();
+
+
+            return new ApiResponse
+            {
+                Success = false,
+                Message = error?.Message
+                    ?? "No fue posible registrar el viaje."
+            };
         }
 
         public async Task<bool> UpdateAsync(ViajeDto viaje)

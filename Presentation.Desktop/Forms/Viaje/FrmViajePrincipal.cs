@@ -1,5 +1,6 @@
 ﻿using SGA.Application.Dtos.Viaje;
 using SGA.Presentation.Desktop.Interfaces;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace SGA.Presentation.Desktop.Forms.Viaje
 {
@@ -15,6 +16,8 @@ namespace SGA.Presentation.Desktop.Forms.Viaje
             _viajeApiService = viajeApiService;
 
             Load += FrmViajePrincipal_Load;
+
+            btnNuevoViaje.Click += btnNuevo_Click;
         }
 
         private async void FrmViajePrincipal_Load(object sender, EventArgs e)
@@ -71,6 +74,21 @@ namespace SGA.Presentation.Desktop.Forms.Viaje
             dgvViajes.Columns["Conductor"].FillWeight = 30;
 
             dgvViajes.ClearSelection();
+        }
+        private async void btnNuevo_Click(object sender, EventArgs e)
+        {
+            using var formulario =
+                Program.ServiceProvider
+                .GetRequiredService<FrmNuevoViaje>();
+
+
+            var resultado = formulario.ShowDialog();
+
+
+            if (resultado == DialogResult.OK)
+            {
+                await CargarViajes();
+            }
         }
     }
 }

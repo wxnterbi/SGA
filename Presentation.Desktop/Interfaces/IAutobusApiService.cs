@@ -1,10 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using SGA.Application.Dtos.Autobus;
 
 namespace SGA.Presentation.Desktop.Interfaces
 {
-    internal interface IAutobusApiService
+    public interface IAutobusApiService
     {
+        Task<List<AutobusDto>> GetAllAsync();
+
+        Task<AutobusDto?> GetByIdAsync(int id);
     }
 }

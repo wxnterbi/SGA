@@ -31,7 +31,9 @@ namespace SGA.Application.Services
         public async Task<ViajeDto?> GetByIdAsync(int id)
         {
             var viaje = await _viajeRepository.GetByIdAsync(id);
-            if (viaje == null) return null;
+
+            if (viaje == null)
+                return null;
 
             return MapToDto(viaje);
         }
@@ -39,12 +41,13 @@ namespace SGA.Application.Services
         public async Task<IEnumerable<ViajeDto>> GetAllAsync()
         {
             var viajes = await _viajeRepository.GetAllAsync();
+
             return viajes.Select(viaje => MapToDto(viaje));
         }
 
         public async Task AddAsync(ViajeDto dto)
         {
-            _viajeRules.ValidarAsignacionViaje(
+            await _viajeRules.ValidarAsignacionViaje(
                 dto.RutaId,
                 dto.HorarioId,
                 dto.AutobusId,
@@ -56,7 +59,9 @@ namespace SGA.Application.Services
                 HorarioId = dto.HorarioId,
                 AutobusId = dto.AutobusId,
                 ConductorId = dto.ConductorId,
-                Estado = dto.Estado == 0 ? EstadoViaje.Programado : dto.Estado
+                Estado = dto.Estado == 0
+                    ? EstadoViaje.Programado
+                    : dto.Estado
             };
 
             await _viajeRepository.AddAsync(viaje);
@@ -70,6 +75,7 @@ namespace SGA.Application.Services
         public async Task UpdateAsync(ViajeDto dto)
         {
             var viaje = await _viajeRepository.GetByIdAsync(dto.Id);
+
             if (viaje != null)
             {
                 viaje.RutaId = dto.RutaId;
@@ -103,7 +109,8 @@ namespace SGA.Application.Services
                 HoraFinReal = viaje.HoraFinReal,
 
                 HorarioTexto = viaje.Horario != null
-                    ? DateTime.Today.Add(viaje.Horario.HoraSalida).ToString("hh:mm tt")
+                    ? DateTime.Today.Add(viaje.Horario.HoraSalida)
+                        .ToString("hh:mm tt")
                     : "N/A",
 
                 NombreRuta = viaje.Ruta != null

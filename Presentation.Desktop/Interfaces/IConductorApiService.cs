@@ -1,10 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using SGA.Application.Dtos.Conductor;
 
 namespace SGA.Presentation.Desktop.Interfaces
 {
-    internal interface IConductorApiService
+    public interface IConductorApiService
     {
+        Task<List<ConductorDto>> GetAllAsync();
+
+        Task<ConductorDto?> GetByIdAsync(int id);
     }
 }

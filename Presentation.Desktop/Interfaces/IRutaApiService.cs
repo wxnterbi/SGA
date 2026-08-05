@@ -1,10 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using SGA.Application.Dtos.Ruta;
 
 namespace SGA.Presentation.Desktop.Interfaces
 {
-    internal interface IRutaApiService
+    public interface IRutaApiService
     {
+        Task<List<RutaDto>> GetAllAsync();
+
+        Task<RutaDto?> GetByIdAsync(int id);
     }
 }
