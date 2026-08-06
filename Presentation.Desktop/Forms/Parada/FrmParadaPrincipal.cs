@@ -209,5 +209,10 @@ namespace SGA.Presentation.Desktop.Forms.Parada
         {
 
         }
+
+        private void FrmParadaPrincipal_Load_1(object sender, EventArgs e)
+        {
+
+        }
     }
 }

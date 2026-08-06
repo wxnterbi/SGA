@@ -115,6 +115,7 @@
             lblOrden.Name = "lblOrden";
             lblOrden.Size = new Size(220, 23);
             lblOrden.TabIndex = 8;
+            lblOrden.Click += lblOrden_Click;
             // 
             // btnCerrar
             // 

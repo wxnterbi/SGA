@@ -9,8 +9,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Forms\Conductor\" />
-    <Folder Include="Forms\Incidencia\" />
     <Folder Include="Forms\Auditoria\" />
     <Folder Include="Forms\Usuario\" />
     <Folder Include="Models\Autobus\" />
@@ -27,7 +25,6 @@
     <Folder Include="Resources\Icons\" />
     <Folder Include="Resources\Logo\" />
     <Folder Include="Services\Auditoria\" />
-    <Folder Include="Services\Incidencia\" />
     <Folder Include="Services\Usuario\" />
   </ItemGroup>
 

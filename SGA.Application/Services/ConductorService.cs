@@ -1,6 +1,7 @@
 ﻿using SGA.Application.Dtos.Conductor;
 using SGA.Application.Interfaces;
 using SGA.Domain.Entities.Configuration;
+using SGA.Domain.Enums.Configuration;
 using SGA.Infrastructure.Notifications;
 using SGA.Persistence.Interfaces;
 
@@ -23,100 +24,100 @@ namespace SGA.Application.Services
         {
             var conductores = await _conductorRepository.GetAllAsync();
 
-            var dtos = conductores.Select(c => new ConductorDto
+            return conductores.Select(c => new ConductorDto
             {
                 Id = c.Id,
                 Nombre = c.Nombre,
                 Cedula = c.Cedula,
-                Licencia = c.Licencia,  
+                Licencia = c.Licencia,
                 Telefono = c.Telefono,
                 EstadoConductorId = (int)c.EstadoLaboral
             });
-
-            return await Task.FromResult(dtos);
         }
 
         public async Task<ConductorDto?> GetByIdAsync(int id)
         {
-            var c = _conductorRepository.GetById(id);
-            if (c == null) return null;
+            var conductor = await _conductorRepository.GetByIdAsync(id);
 
-            var dto = new ConductorDto
+            if (conductor == null)
+                return null;
+
+            return new ConductorDto
             {
-                Id = c.Id,
-                Nombre = c.Nombre,
-                Cedula = c.Cedula,
-                Licencia = c.Licencia,    
-                Telefono = c.Telefono,
-                EstadoConductorId = (int)c.EstadoLaboral
+                Id = conductor.Id,
+                Nombre = conductor.Nombre,
+                Cedula = conductor.Cedula,
+                Licencia = conductor.Licencia,
+                Telefono = conductor.Telefono,
+                EstadoConductorId = (int)conductor.EstadoLaboral
             };
-
-            return await Task.FromResult(dto);
         }
 
         public async Task AddAsync(ConductorDto dto)
         {
-            var existeCedula = _conductorRepository.GetByCedula(dto.Cedula);
-            if (existeCedula != null)
-            {
-                throw new InvalidOperationException("CEDULA_DUPLICADA");
-            }
+            var existeCedula =
+                await _conductorRepository.GetByCedulaAsync(dto.Cedula);
 
-            var existeTelefono = _conductorRepository.GetByTelefono(dto.Telefono);
+            if (existeCedula != null)
+                throw new InvalidOperationException("CEDULA_DUPLICADA");
+
+            var existeTelefono =
+                await _conductorRepository.GetByTelefonoAsync(dto.Telefono);
+
             if (existeTelefono != null)
-            {
                 throw new InvalidOperationException("TELEFONO_DUPLICADO");
-            }
 
             var conductor = new Conductor
             {
                 Nombre = dto.Nombre,
                 Cedula = dto.Cedula,
-                Licencia = dto.Licencia,   
+                Licencia = dto.Licencia,
                 Telefono = dto.Telefono,
-                EstadoLaboral = (Domain.Enums.Configuration.EstadoLaboral)dto.EstadoConductorId
+                EstadoLaboral = (EstadoLaboral)dto.EstadoConductorId
             };
 
-            _conductorRepository.Add(conductor);
+            await _conductorRepository.AddAsync(conductor);
 
             await _notificationService.SendNotificationAsync(
                 "conductor@itla.edu.do",
                 "Conductor registrado",
-                "El conductor fue registrado correctamente.");
+                $"El conductor '{conductor.Nombre}' fue registrado correctamente.");
         }
 
         public async Task UpdateAsync(ConductorDto dto)
         {
-            var conductorConMismaCedula = _conductorRepository.GetByCedula(dto.Cedula);
-            if (conductorConMismaCedula != null && conductorConMismaCedula.Id != dto.Id)
-            {
+            var conductor = await _conductorRepository.GetByIdAsync(dto.Id);
+
+            if (conductor == null)
+                throw new Exception("Conductor no encontrado.");
+
+            var existeCedula =
+                await _conductorRepository.GetByCedulaAsync(dto.Cedula);
+
+            if (existeCedula != null && existeCedula.Id != dto.Id)
                 throw new InvalidOperationException("CEDULA_DUPLICADA");
-            }
 
-            var conductorConMismoTelefono = _conductorRepository.GetByTelefono(dto.Telefono);
-            if (conductorConMismoTelefono != null && conductorConMismoTelefono.Id != dto.Id)
-            {
+            var existeTelefono =
+                await _conductorRepository.GetByTelefonoAsync(dto.Telefono);
+
+            if (existeTelefono != null && existeTelefono.Id != dto.Id)
                 throw new InvalidOperationException("TELEFONO_DUPLICADO");
-            }
 
-            var conductor = _conductorRepository.GetById(dto.Id);
-            if (conductor != null)
-            {
-                conductor.Nombre = dto.Nombre;
-                conductor.Cedula = dto.Cedula;
-                conductor.Licencia = dto.Licencia;  
-                conductor.Telefono = dto.Telefono;
-                conductor.EstadoLaboral = (Domain.Enums.Configuration.EstadoLaboral)dto.EstadoConductorId;
+            conductor.Nombre = dto.Nombre;
+            conductor.Cedula = dto.Cedula;
+            conductor.Licencia = dto.Licencia;
+            conductor.Telefono = dto.Telefono;
+            conductor.EstadoLaboral = (EstadoLaboral)dto.EstadoConductorId;
 
-                _conductorRepository.Update(conductor);
-            }
-            await Task.CompletedTask;
+            await _conductorRepository.UpdateAsync(conductor);
         }
 
         public async Task DeleteAsync(int id)
         {
-            _conductorRepository.Delete(id);
-            await Task.CompletedTask;
+            var eliminado = await _conductorRepository.DeleteAsync(id);
+
+            if (!eliminado)
+                throw new Exception("Conductor no encontrado.");
         }
     }
 }

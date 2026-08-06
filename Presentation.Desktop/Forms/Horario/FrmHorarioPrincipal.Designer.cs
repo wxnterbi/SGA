@@ -135,6 +135,7 @@
             dgvHorarios.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
             dgvHorarios.Size = new Size(1100, 450);
             dgvHorarios.TabIndex = 2;
+            dgvHorarios.CellContentClick += dgvHorarios_CellContentClick_1;
             // 
             // FrmHorarioPrincipal
             // 

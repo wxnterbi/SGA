@@ -1,10 +1,12 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using SGA.Presentation.Desktop.Forms.Autobus;
+using SGA.Presentation.Desktop.Forms.Conductor;
 using SGA.Presentation.Desktop.Forms.DashBoard;
 using SGA.Presentation.Desktop.Forms.Horario;
 using SGA.Presentation.Desktop.Forms.Parada;
 using SGA.Presentation.Desktop.Forms.Ruta;
 using SGA.Presentation.Desktop.Forms.Viaje;
+using SGA.Presentation.Desktop.Forms.Incidencia;
 using System;
 using System.Drawing;
 using System.Windows.Forms;
@@ -44,6 +46,8 @@ namespace SGA.Presentation.Desktop.Forms.Main
 
             btnViajes.Click += btnViajes_Click;
             btnAutobuses.Click += btnAutobuses_Click;
+            btnConductores.Click += btnConductores_Click;
+            btnIncidencias.Click += btnIncidencias_Click;
 
             btnRutas.Click += btnRutas_Click;
             btnHorarios.Click += btnHorarios_Click;
@@ -119,6 +123,23 @@ namespace SGA.Presentation.Desktop.Forms.Main
 
             formulario.ShowDialog();
         }
+
+        private void btnConductores_Click(object sender, EventArgs e)
+        {
+            var formulario =
+                Program.ServiceProvider
+                .GetRequiredService<FrmConductorPrincipal>();
+
+            formulario.ShowDialog();
+        }
+        private void btnIncidencias_Click(object sender, EventArgs e)
+        {
+            var formulario =
+                Program.ServiceProvider
+                .GetRequiredService<FrmIncidenciaPrincipal>();
+
+            formulario.ShowDialog();
+        }
         private void btnViajes_Click(object sender, EventArgs e)
         {
             var formulario =
@@ -161,5 +182,14 @@ namespace SGA.Presentation.Desktop.Forms.Main
             System.Windows.Forms.Application.Restart();
         }
 
+        private void pnlContent_Paint(object sender, PaintEventArgs e)
+        {
+
+        }
+
+        private void pnlMenu_Paint(object sender, PaintEventArgs e)
+        {
+
+        }
     }
 }

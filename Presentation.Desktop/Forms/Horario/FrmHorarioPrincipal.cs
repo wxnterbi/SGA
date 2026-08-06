@@ -269,5 +269,10 @@ namespace SGA.Presentation.Desktop.Forms.Horario
         {
 
         }
+
+        private void dgvHorarios_CellContentClick_1(object sender, DataGridViewCellEventArgs e)
+        {
+
+        }
     }
 }
