@@ -5,6 +5,7 @@ using SGA.Presentation.Desktop.Forms.Horario;
 using SGA.Presentation.Desktop.Forms.Parada;
 using SGA.Presentation.Desktop.Forms.Ruta;
 using SGA.Presentation.Desktop.Forms.Viaje;
+using SGA.Presentation.Desktop.Forms.Usuario;
 using System;
 using System.Drawing;
 using System.Windows.Forms;
@@ -48,7 +49,7 @@ namespace SGA.Presentation.Desktop.Forms.Main
             btnRutas.Click += btnRutas_Click;
             btnHorarios.Click += btnHorarios_Click;
             btnParadas.Click += btnParadas_Click;
-
+            btnUsuarios.Click += btnUsuarios_Click;
             btnDashboard.Click += btnDashboard_Click;
 
             btnCerrarSesion.Click += btnCerrarSesion_Click;
@@ -110,6 +111,17 @@ namespace SGA.Presentation.Desktop.Forms.Main
         private void btnDashboard_Click(object sender, EventArgs e)
         {
             CargarDashboard();
+        }
+        private void btnUsuarios_Click(
+            object sender,
+            EventArgs e)
+        {
+            var formulario =
+                Program.ServiceProvider
+                .GetRequiredService<FrmUsuarioPrincipal>();
+
+
+            formulario.ShowDialog();
         }
         private void btnAutobuses_Click(object sender, EventArgs e)
         {

@@ -1,6 +1,7 @@
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-
+using SGA.Presentation.Desktop.Services.Usuario;
+using SGA.Presentation.Desktop.Forms.Usuario;
 using SGA.Presentation.Desktop.Services.Autobus;
 using SGA.Presentation.Desktop.Services.Conductor;
 using SGA.Presentation.Desktop.Services.Horario;
@@ -71,6 +72,9 @@ namespace SGA.Presentation.Desktop
             services.AddTransient<FrmAutobusPrincipal>();
             services.AddTransient<FrmNuevoAutobus>();
             services.AddTransient<FrmDetalleAutobus>();
+            services.AddTransient<FrmUsuarioPrincipal>();
+            services.AddTransient<FrmNuevoUsuario>();
+            services.AddTransient<FrmDetalleUsuario>();
 
             #region Viajes
 
@@ -92,10 +96,10 @@ namespace SGA.Presentation.Desktop
 
             #region Usuarios
 
-            //services.AddHttpClient<IUsuarioApiService, UsuarioApiService>(client =>
-            //{
-            //    client.BaseAddress = new Uri(baseUrl);
-            //});
+            services.AddHttpClient<IUsuarioApiService, UsuarioApiService>(client =>
+            {
+                client.BaseAddress = new Uri(baseUrl);
+            });
 
             #endregion
 
@@ -177,8 +181,9 @@ namespace SGA.Presentation.Desktop
 
             #region Usuarios
 
-            //services.AddTransient<FrmUsuarioPrincipal>();
-            //services.AddTransient<FrmNuevoUsuario>();
+            services.AddTransient<FrmUsuarioPrincipal>();
+            services.AddTransient<FrmNuevoUsuario>();
+            services.AddTransient<FrmDetalleUsuario>();
 
             #endregion
 

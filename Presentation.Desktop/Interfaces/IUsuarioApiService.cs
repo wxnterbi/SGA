@@ -1,10 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using SGA.Application.Dtos.Usuario;
 
 namespace SGA.Presentation.Desktop.Interfaces
 {
-    internal interface IUsuarioApiService
+    public interface IUsuarioApiService
     {
+        Task<List<UsuarioDto>> GetAllAsync();
+
+        Task<UsuarioDto?> GetByIdAsync(int id);
+
+        Task<bool> CreateAsync(CreateUsuarioDto usuario);
+
+        Task<bool> UpdateAsync(int id, UpdateUsuarioDto usuario);
+
+        Task<bool> DeleteAsync(int id);
     }
 }
