@@ -22,7 +22,6 @@ namespace SGA.Application.Services
             _notificationService = notificationService;
         }
 
-        // 🟢 LIBERA EL HILO DE LA UI DE VERDAD
         public async Task<IEnumerable<RutaDto>> GetAllAsync()
         {
             var rutas = await _rutaRepository.GetAllAsync();

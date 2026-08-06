@@ -14,5 +14,10 @@ namespace SGA.Presentation.Desktop.Forms.Login
         {
             InitializeComponent();
         }
+
+        private void FrmLogin_Load(object sender, EventArgs e)
+        {
+
+        }
     }
 }

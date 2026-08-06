@@ -15,6 +15,7 @@ namespace SGA.Presentation.Desktop.Services.Horario
         }
 
 
+
         public async Task<List<HorarioDto>> GetAllAsync()
         {
             return await _httpClient.GetFromJsonAsync<List<HorarioDto>>("api/Horario")
@@ -22,9 +23,50 @@ namespace SGA.Presentation.Desktop.Services.Horario
         }
 
 
+
         public async Task<HorarioDto?> GetByIdAsync(int id)
         {
-            return await _httpClient.GetFromJsonAsync<HorarioDto>($"api/Horario/{id}");
+            return await _httpClient.GetFromJsonAsync<HorarioDto>(
+                $"api/Horario/{id}");
         }
+
+
+
+        public async Task<bool> CreateAsync(HorarioDto horario)
+        {
+            var response =
+                await _httpClient.PostAsJsonAsync(
+                    "api/Horario",
+                    horario);
+
+
+            return response.IsSuccessStatusCode;
+        }
+
+
+
+        public async Task<bool> UpdateAsync(HorarioDto horario)
+        {
+            var response =
+                await _httpClient.PutAsJsonAsync(
+                    "api/Horario",
+                    horario);
+
+
+            return response.IsSuccessStatusCode;
+        }
+
+
+
+        public async Task<bool> DeleteAsync(int id)
+        {
+            var response =
+                await _httpClient.DeleteAsync(
+                    $"api/Horario/{id}");
+
+
+            return response.IsSuccessStatusCode;
+        }
+
     }
 }

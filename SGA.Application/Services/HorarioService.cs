@@ -28,7 +28,11 @@ namespace SGA.Application.Services
                 Id = h.Id,
                 DiasOperacion = h.DiasOperacion,
                 HoraSalida = h.HoraSalida,
-                RutaId = h.RutaId
+                RutaId = h.RutaId,
+
+                NombreRuta = h.Ruta != null
+                    ? $"{h.Ruta.Origen} - {h.Ruta.Destino}"
+                    : $"Ruta #{h.RutaId}"
             });
 
             return await Task.FromResult(resultado);
@@ -46,7 +50,11 @@ namespace SGA.Application.Services
                 Id = horario.Id,
                 DiasOperacion = horario.DiasOperacion,
                 HoraSalida = horario.HoraSalida,
-                RutaId = horario.RutaId
+                RutaId = horario.RutaId,
+
+                NombreRuta = horario.Ruta != null
+                    ? $"{horario.Ruta.Origen} - {horario.Ruta.Destino}"
+                    : $"Ruta #{horario.RutaId}"
             });
         }
 
@@ -72,7 +80,7 @@ namespace SGA.Application.Services
             var horario = _horarioRepository.GetById(dto.Id);
 
             if (horario == null)
-                throw new Exception("Horario no encontrado.");
+                throw new InvalidOperationException("Horario no encontrado.");
 
             horario.DiasOperacion = dto.DiasOperacion;
             horario.HoraSalida = dto.HoraSalida;
@@ -88,7 +96,7 @@ namespace SGA.Application.Services
             var eliminado = _horarioRepository.Delete(id);
 
             if (!eliminado)
-                throw new Exception("Horario no encontrado.");
+                throw new InvalidOperationException("Horario no encontrado.");
 
             return Task.CompletedTask;
         }

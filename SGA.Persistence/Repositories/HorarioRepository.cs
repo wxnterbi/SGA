@@ -16,12 +16,16 @@ namespace SGA.Persistence.Repositories
 
         public async Task<List<Horario>> GetAllAsync()
         {
-            return await _context.Horarios.ToListAsync();
+            return await _context.Horarios
+                .Include(h => h.Ruta)
+                .ToListAsync();
         }
 
         public Horario GetById(int id)
         {
-            return _context.Horarios.Find(id);
+            return _context.Horarios
+                .Include(h => h.Ruta)
+                .FirstOrDefault(h => h.Id == id);
         }
 
         public Horario Add(Horario horario)

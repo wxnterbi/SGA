@@ -10,8 +10,12 @@ using SGA.Presentation.Desktop.Services.Ruta;
 using SGA.Presentation.Desktop.Services.Horario;
 using SGA.Presentation.Desktop.Services.Conductor;
 using SGA.Presentation.Desktop.Services.Autobus;
+using SGA.Presentation.Desktop.Forms.Horario;
+using SGA.Presentation.Desktop.Forms.Parada;
+using SGA.Presentation.Desktop.Services.Parada;
 using System;
 using System.Windows.Forms;
+using SGA.Presentation.Desktop.Forms.Ruta;  
 
 namespace SGA.Presentation.Desktop
 {
@@ -30,7 +34,12 @@ namespace SGA.Presentation.Desktop
 
             ServiceProvider = services.BuildServiceProvider();
 
-            System.Windows.Forms.Application.Run(ServiceProvider.GetRequiredService<FrmViajePrincipal>());
+
+            System.Windows.Forms.Application.Run(
+    ServiceProvider.GetRequiredService<FrmViajePrincipal>());
+
+
+
         }
 
         private static void ConfigureServices(IServiceCollection services)
@@ -150,6 +159,7 @@ namespace SGA.Presentation.Desktop
 
             services.AddTransient<FrmViajePrincipal>();
             services.AddTransient<FrmNuevoViaje>();
+            services.AddTransient<FrmDetalleViaje>();
 
             #endregion
 
@@ -175,19 +185,30 @@ namespace SGA.Presentation.Desktop
 
             #region Horarios
 
-            //services.AddTransient<FrmHorarioPrincipal>();
-
+            services.AddTransient<FrmHorarioPrincipal>();
+            services.AddTransient<FrmNuevoHorario>();
+            services.AddTransient<FrmDetalleHorario>();
             #endregion
 
             #region Rutas
 
-            //services.AddTransient<FrmRutaPrincipal>();
 
+            services.AddTransient<FrmRutaPrincipal>();
+            services.AddTransient<FrmNuevaRuta>();
+            services.AddTransient<FrmDetalleRuta>();
             #endregion
 
             #region Paradas
 
             //services.AddTransient<FrmParadaPrincipal>();
+            services.AddHttpClient<IParadaApiService, ParadaApiService>(client =>
+            {
+                client.BaseAddress = new Uri(baseUrl);
+            });
+
+            services.AddTransient<FrmParadaPrincipal>();
+            services.AddTransient<FrmNuevaParada>();
+            services.AddTransient<FrmDetalleParada>();
 
             #endregion
 

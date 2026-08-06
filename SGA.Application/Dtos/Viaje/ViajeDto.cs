@@ -16,5 +16,7 @@ namespace SGA.Application.Dtos.Viaje
         public string? NombreRuta { get; set; }
         public string? PlacaAutobus { get; set; }
         public string? NombreConductor { get; set; }
+         public DateTime Fecha { get; set; }
+
+        }
     }
-}

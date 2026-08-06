@@ -7,29 +7,44 @@ namespace SGA.Presentation.Desktop.Services.Viaje
 {
     public class ViajeApiService : IViajeApiService
     {
+
         private readonly HttpClient _httpClient;
 
-        public ViajeApiService(HttpClient httpClient)
+
+        public ViajeApiService(
+            HttpClient httpClient)
         {
             _httpClient = httpClient;
         }
 
+
         public async Task<List<ViajeDto>> GetAllAsync()
         {
-            return await _httpClient.GetFromJsonAsync<List<ViajeDto>>("api/Viaje")
-                   ?? new List<ViajeDto>();
+            return await _httpClient
+                .GetFromJsonAsync<List<ViajeDto>>(
+                    "api/Viaje")
+                ?? new List<ViajeDto>();
         }
 
-        public async Task<ViajeDto?> GetByIdAsync(int id)
+
+        public async Task<ViajeDto?> GetByIdAsync(
+            int id)
         {
-            return await _httpClient.GetFromJsonAsync<ViajeDto>($"api/Viaje/{id}");
+            return await _httpClient
+                .GetFromJsonAsync<ViajeDto>(
+                    $"api/Viaje/{id}");
         }
 
-        public async Task<ApiResponse> CreateAsync(ViajeDto viaje)
+        public async Task<ApiResponse> CreateAsync(
+            ViajeDto viaje)
         {
-            var response = await _httpClient.PostAsJsonAsync(
-                "api/Viaje",
-                viaje);
+
+            var response =
+                await _httpClient
+                .PostAsJsonAsync(
+                    "api/Viaje",
+                    viaje);
+
 
 
             if (response.IsSuccessStatusCode)
@@ -37,34 +52,53 @@ namespace SGA.Presentation.Desktop.Services.Viaje
                 return new ApiResponse
                 {
                     Success = true,
-                    Message = "Viaje registrado correctamente."
+                    Message =
+                    "Viaje creado correctamente."
                 };
             }
 
-
-            var error = await response.Content.ReadFromJsonAsync<ApiResponse>();
+            var error =
+                await response.Content
+                .ReadFromJsonAsync<ApiResponse>();
 
 
             return new ApiResponse
             {
                 Success = false,
-                Message = error?.Message
-                    ?? "No fue posible registrar el viaje."
+                Message =
+                error?.Message ??
+                "Error creando el viaje."
             };
         }
 
-        public async Task<bool> UpdateAsync(ViajeDto viaje)
+        public async Task<bool> UpdateAsync(
+            ViajeDto viaje)
         {
-            var response = await _httpClient.PutAsJsonAsync("api/Viaje", viaje);
+
+            var response =
+                await _httpClient
+                .PutAsJsonAsync(
+                    "api/Viaje",
+                    viaje);
+
+
 
             return response.IsSuccessStatusCode;
         }
 
-        public async Task<bool> DeleteAsync(int id)
+        public async Task<bool> DeleteAsync(
+            int id)
         {
-            var response = await _httpClient.DeleteAsync($"api/Viaje/{id}");
+
+            var response =
+                await _httpClient
+                .DeleteAsync(
+                    $"api/Viaje/{id}");
+
+
 
             return response.IsSuccessStatusCode;
         }
+
     }
 }

@@ -14,5 +14,10 @@ namespace SGA.Presentation.Desktop.Forms.DashBoard
         {
             InitializeComponent();
         }
+
+        private void FrmDashboard_Load(object sender, EventArgs e)
+        {
+
+        }
     }
 }

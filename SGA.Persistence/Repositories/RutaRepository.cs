@@ -16,7 +16,6 @@ namespace SGA.Persistence.Repositories
             _context = context;
         }
 
-        // 🟢 AHORA SÍ ES ASÍNCRONO REAL
         public async Task<List<Ruta>> GetAllAsync()
         {
             return await _context.Rutas.AsNoTracking().ToListAsync();
