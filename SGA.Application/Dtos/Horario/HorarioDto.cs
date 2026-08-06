@@ -9,5 +9,7 @@
         public TimeSpan HoraSalida { get; set; }
 
         public int RutaId { get; set; }
+
+        public string NombreRuta { get; set; } = string.Empty;
     }
 }

@@ -15,7 +15,6 @@ namespace SGA.Api.Controllers
             _horarioService = horarioService;
         }
 
-
         [HttpGet]
         public async Task<IActionResult> Get()
         {
@@ -23,7 +22,6 @@ namespace SGA.Api.Controllers
 
             return Ok(horarios);
         }
-
 
         [HttpGet("{id}")]
         public async Task<IActionResult> Get(int id)
@@ -39,7 +37,6 @@ namespace SGA.Api.Controllers
             return Ok(horario);
         }
 
-
         [HttpPost]
         public async Task<IActionResult> Post([FromBody] HorarioDto dto)
         {
@@ -47,7 +44,6 @@ namespace SGA.Api.Controllers
 
             return Ok("Horario registrado correctamente.");
         }
-
 
         [HttpPut]
         public async Task<IActionResult> Put([FromBody] HorarioDto dto)
@@ -57,23 +53,15 @@ namespace SGA.Api.Controllers
             return Ok("Horario actualizado correctamente.");
         }
 
-
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(int id)
         {
             if (id <= 0)
                 return BadRequest("El ID del horario debe ser mayor que cero.");
 
-            try
-            {
-                await _horarioService.DeleteAsync(id);
+            await _horarioService.DeleteAsync(id);
 
-                return Ok("Horario eliminado correctamente.");
-            }
-            catch (Exception ex)
-            {
-                return NotFound(ex.Message);
-            }
+            return Ok("Horario eliminado correctamente.");
         }
     }
 }

@@ -8,5 +8,6 @@ namespace SGA.Domain.Entities.Configuration
         public string DiasOperacion { get; set; }
         public TimeSpan HoraSalida { get; set; }
         public int RutaId { get; set; }
+        public Ruta Ruta { get; set; }
     }
 }

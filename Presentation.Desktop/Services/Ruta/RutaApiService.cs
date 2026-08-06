@@ -25,5 +25,37 @@ namespace SGA.Presentation.Desktop.Services.Ruta
         {
             return await _httpClient.GetFromJsonAsync<RutaDto>($"api/Ruta/{id}");
         }
+        public async Task<bool> CreateAsync(RutaDto ruta)
+        {
+            var response =
+                await _httpClient.PostAsJsonAsync(
+                    "api/Ruta",
+                    ruta);
+
+            return response.IsSuccessStatusCode;
+        }
+
+
+
+        public async Task<bool> UpdateAsync(RutaDto ruta)
+        {
+            var response =
+                await _httpClient.PutAsJsonAsync(
+                    "api/Ruta",
+                    ruta);
+
+            return response.IsSuccessStatusCode;
+        }
+
+
+
+        public async Task<bool> DeleteAsync(int id)
+        {
+            var response =
+                await _httpClient.DeleteAsync(
+                    $"api/Ruta/{id}");
+
+            return response.IsSuccessStatusCode;
+        }
     }
 }

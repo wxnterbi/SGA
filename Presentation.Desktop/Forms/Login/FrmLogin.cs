@@ -10,11 +10,16 @@ namespace SGA.Presentation.Desktop.Forms.Login
         public FrmLogin()
         {
             InitializeComponent();
-
-
             btnIngresar.Click += btnIngresar_Click;
 
             btnSalir.Click += btnSalir_Click;
+        }
+
+
+
+        private void FrmLogin_Load(object sender, EventArgs e)
+        {
+
         }
 
 
@@ -53,6 +58,6 @@ namespace SGA.Presentation.Desktop.Forms.Login
         {
             System.Windows.Forms.Application.Exit();
         }
-
+    }
     }
 }
