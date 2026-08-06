@@ -9,7 +9,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Forms\Autobus\" />
     <Folder Include="Forms\Conductor\" />
     <Folder Include="Forms\Horario\" />
     <Folder Include="Forms\Incidencia\" />
@@ -26,6 +25,7 @@
     <Folder Include="Models\Ruta\" />
     <Folder Include="Models\Parada\" />
     <Folder Include="Models\Usuario\" />
+    <Folder Include="Controls\" />
     <Folder Include="Resources\Images\" />
     <Folder Include="Resources\Icons\" />
     <Folder Include="Resources\Logo\" />

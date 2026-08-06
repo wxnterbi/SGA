@@ -1,16 +1,18 @@
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using System.Windows.Forms;
 using SGA.Presentation.Desktop.Forms;
+using SGA.Presentation.Desktop.Forms.Autobus;
 using SGA.Presentation.Desktop.Forms.Login;
+using SGA.Presentation.Desktop.Forms.Main;
 using SGA.Presentation.Desktop.Forms.Viaje;
 using SGA.Presentation.Desktop.Interfaces;
-using SGA.Presentation.Desktop.Services.Viaje;
-using SGA.Presentation.Desktop.Services.Ruta;
-using SGA.Presentation.Desktop.Services.Horario;
-using SGA.Presentation.Desktop.Services.Conductor;
 using SGA.Presentation.Desktop.Services.Autobus;
+using SGA.Presentation.Desktop.Services.Conductor;
+using SGA.Presentation.Desktop.Services.Horario;
+using SGA.Presentation.Desktop.Services.Ruta;
+using SGA.Presentation.Desktop.Services.Viaje;
 using System;
+using System.Windows.Forms;
 using System.Windows.Forms;
 
 namespace SGA.Presentation.Desktop
@@ -30,7 +32,7 @@ namespace SGA.Presentation.Desktop
 
             ServiceProvider = services.BuildServiceProvider();
 
-            System.Windows.Forms.Application.Run(ServiceProvider.GetRequiredService<FrmViajePrincipal>());
+            System.Windows.Forms.Application.Run(ServiceProvider.GetRequiredService<FrmLogin>());
         }
 
         private static void ConfigureServices(IServiceCollection services)
@@ -57,6 +59,11 @@ namespace SGA.Presentation.Desktop
             //---------------------------------------------------------
             // API SERVICES
             //---------------------------------------------------------
+            services.AddTransient<FrmPrincipal>();
+            services.AddTransient<FrmLogin>();
+            services.AddTransient<FrmAutobusPrincipal>();
+            services.AddTransient<FrmNuevoAutobus>();
+            services.AddTransient<FrmDetalleAutobus>();
 
             #region Viajes
 

@@ -59,6 +59,15 @@ namespace SGA.Application.Services
 
         public async Task AddAsync(AutobusDto dto)
         {
+            var existePlaca =
+                await _autobusRepository.ExistePlacaAsync(dto.Placa);
+
+
+            if (existePlaca)
+            {
+                throw new Exception(
+                    "La placa ingresada ya se encuentra registrada.");
+            }
             var autobus = new Autobus
             {
                 Placa = dto.Placa,

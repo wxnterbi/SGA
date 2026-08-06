@@ -1,39 +1,40 @@
-﻿namespace SGA.Presentation.Desktop.Forms.DashBoard
+﻿using System.Drawing;
+using System.Windows.Forms;
+
+namespace SGA.Presentation.Desktop.Forms.DashBoard
 {
     partial class FrmDashboard
     {
-        /// <summary>
-        /// Required designer variable.
-        /// </summary>
-        private System.ComponentModel.IContainer components = null;
 
-        /// <summary>
-        /// Clean up any resources being used.
-        /// </summary>
-        /// <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
-        protected override void Dispose(bool disposing)
-        {
-            if (disposing && (components != null))
-            {
-                components.Dispose();
-            }
-            base.Dispose(disposing);
-        }
+        private Label lblTitulo;
 
-        #region Windows Form Designer generated code
 
-        /// <summary>
-        /// Required method for Designer support - do not modify
-        /// the contents of this method with the code editor.
-        /// </summary>
         private void InitializeComponent()
         {
-            this.components = new System.ComponentModel.Container();
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(800, 450);
-            this.Text = "FrmDashboard";
+            lblTitulo = new Label();
+            SuspendLayout();
+            // 
+            // lblTitulo
+            // 
+            lblTitulo.AutoSize = true;
+            lblTitulo.Font = new Font("Segoe UI", 20F, FontStyle.Bold);
+            lblTitulo.ForeColor = Color.FromArgb(25, 42, 86);
+            lblTitulo.Location = new Point(40, 40);
+            lblTitulo.Name = "lblTitulo";
+            lblTitulo.Size = new Size(624, 37);
+            lblTitulo.TabIndex = 0;
+            lblTitulo.Text = "Bienvenido al Sistema de Gestión de Autobuses";
+            // 
+            // FrmDashboard
+            // 
+            BackColor = Color.FromArgb(240, 242, 245);
+            Controls.Add(lblTitulo);
+            Name = "FrmDashboard";
+            Size = new Size(1093, 501);
+            ResumeLayout(false);
+            PerformLayout();
+
         }
 
-        #endregion
     }
 }

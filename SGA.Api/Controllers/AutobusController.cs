@@ -43,9 +43,22 @@ namespace SGA.Api.Controllers
         [HttpPost]
         public async Task<IActionResult> Post([FromBody] AutobusDto dto)
         {
-            await _autobusService.AddAsync(dto);
+            if (dto == null)
+            {
+                return BadRequest("El objeto AutobusDto llegó vacío.");
+            }
 
-            return Ok("Autobús registrado correctamente.");
+
+            try
+            {
+                await _autobusService.AddAsync(dto);
+
+                return Ok("Autobús registrado correctamente.");
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
 
 

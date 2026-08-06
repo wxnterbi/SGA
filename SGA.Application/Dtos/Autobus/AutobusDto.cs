@@ -8,6 +8,6 @@
     public string Modelo { get; set; }
     public int Capacidad { get; set; }
     public int EstadoAutobusId { get; set; }
-    public string EstadoDescripcion { get; set; }
+    public string? EstadoDescripcion { get; set; }
     }
 }
