@@ -1,11 +1,13 @@
-﻿using System;
-using System.Drawing;
-using System.Windows.Forms;
-
-using Microsoft.Extensions.DependencyInjection;
+﻿using Microsoft.Extensions.DependencyInjection;
 using SGA.Presentation.Desktop.Forms.Autobus;
 using SGA.Presentation.Desktop.Forms.DashBoard;
+using SGA.Presentation.Desktop.Forms.Horario;
+using SGA.Presentation.Desktop.Forms.Parada;
+using SGA.Presentation.Desktop.Forms.Ruta;
 using SGA.Presentation.Desktop.Forms.Viaje;
+using System;
+using System.Drawing;
+using System.Windows.Forms;
 
 namespace SGA.Presentation.Desktop.Forms.Main
 {
@@ -42,6 +44,10 @@ namespace SGA.Presentation.Desktop.Forms.Main
 
             btnViajes.Click += btnViajes_Click;
             btnAutobuses.Click += btnAutobuses_Click;
+
+            btnRutas.Click += btnRutas_Click;
+            btnHorarios.Click += btnHorarios_Click;
+            btnParadas.Click += btnParadas_Click;
 
             btnDashboard.Click += btnDashboard_Click;
 
@@ -122,6 +128,34 @@ namespace SGA.Presentation.Desktop.Forms.Main
             formulario.ShowDialog();
         }
 
+        private void btnRutas_Click(object sender, EventArgs e)
+        {
+            var formulario =
+                Program.ServiceProvider
+                .GetRequiredService<FrmRutaPrincipal>();
+
+            formulario.ShowDialog();
+        }
+
+
+        private void btnHorarios_Click(object sender, EventArgs e)
+        {
+            var formulario =
+                Program.ServiceProvider
+                .GetRequiredService<FrmHorarioPrincipal>();
+
+            formulario.ShowDialog();
+        }
+
+
+        private void btnParadas_Click(object sender, EventArgs e)
+        {
+            var formulario =
+                Program.ServiceProvider
+                .GetRequiredService<FrmParadaPrincipal>();
+
+            formulario.ShowDialog();
+        }
         private void btnCerrarSesion_Click(object sender, EventArgs e)
         {
             System.Windows.Forms.Application.Restart();

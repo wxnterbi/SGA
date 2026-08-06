@@ -59,5 +59,4 @@ namespace SGA.Presentation.Desktop.Forms.Login
             System.Windows.Forms.Application.Exit();
         }
     }
-    }
 }
