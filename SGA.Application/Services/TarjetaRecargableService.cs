@@ -5,6 +5,7 @@ using SGA.Domain.Entities.Reservation;
 using SGA.Infrastructure.Notifications;
 using SGA.Persistence.Interfaces;
 using SGA.Persistence.Repository;
+using SGA.Domain.Enums.Reservation;
 
 namespace SGA.Application.Services
 {
@@ -108,17 +109,22 @@ namespace SGA.Application.Services
         }
 
         public async Task RecargarSaldoAsync(
-            int usuarioId,
-            decimal monto,
-            string tipoPago)
+     int usuarioId,
+     decimal monto,
+     string tipoPago)
         {
             if (monto <= 0)
                 throw new Exception("El monto debe ser mayor que cero.");
 
-            var tarjeta = await _tarjetaRepository.GetByUsuarioIdAsync(usuarioId);
+            if (string.IsNullOrWhiteSpace(tipoPago))
+                throw new Exception("Debe seleccionar un tipo de pago.");
+
+            var tarjeta =
+                await _tarjetaRepository.GetByUsuarioIdAsync(usuarioId);
 
             if (tarjeta == null)
-                throw new Exception("El usuario no tiene una tarjeta recargable.");
+                throw new Exception(
+                    "El usuario no tiene una tarjeta recargable.");
 
             tarjeta.Saldo += monto;
 
@@ -129,8 +135,13 @@ namespace SGA.Application.Services
                 UsuarioId = usuarioId,
                 Monto = monto,
                 FechaPago = DateTime.Now,
+
                 Modalidad = tipoPago,
-                Concepto = ConceptoPago.Recarga
+
+                Concepto = ConceptoPago.Recarga,
+
+
+                TipoTicket = null
             };
 
             await _pagoRepository.AddAsync(pago);
