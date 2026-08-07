@@ -65,7 +65,8 @@ namespace SGA.Application.Services
                 {
                     Id = pago.Id,
                     UsuarioId = pago.UsuarioId,
-                    IdentificadorInstitucional = usuario?.IdentificadorInstitucional ?? "",
+                    IdentificadorInstitucional =
+                        usuario?.IdentificadorInstitucional ?? "",
                     Monto = pago.Monto,
                     FechaPago = pago.FechaPago,
                     Modalidad = pago.Modalidad,
@@ -75,6 +76,35 @@ namespace SGA.Application.Services
             }
 
             return resultado;
+        }
+
+        public async Task<IEnumerable<PagoDto>> GetRecargasAsync()
+        {
+            var pagos = await _pagoRepository.GetAllAsync();
+
+            var resultado = new List<PagoDto>();
+
+            foreach (var pago in pagos.Where(p => p.Concepto == ConceptoPago.Recarga))
+            {
+                var usuario = _usuarioRepository.GetById(pago.UsuarioId);
+
+                resultado.Add(new PagoDto
+                {
+                    Id = pago.Id,
+                    UsuarioId = pago.UsuarioId,
+                    IdentificadorInstitucional =
+                        usuario?.IdentificadorInstitucional ?? "",
+                    Monto = pago.Monto,
+                    FechaPago = pago.FechaPago,
+                    Modalidad = pago.Modalidad,
+                    Concepto = pago.Concepto,
+                    TipoTicket = pago.TipoTicket
+                });
+            }
+
+            return resultado
+                .OrderByDescending(p => p.FechaPago)
+                .ToList();
         }
 
         public async Task<PagoDto?> GetByIdAsync(int id)
@@ -87,7 +117,7 @@ namespace SGA.Application.Services
             var usuario = _usuarioRepository.GetById(pago.UsuarioId);
 
             var rutaEntrada = pago.RutaEntradaId.HasValue
-                ? _rutaRepository.GetById(pago.RutaEntradaId.Value)
+                ? await _rutaRepository.GetByIdAsync(pago.RutaEntradaId.Value)
                 : null;
 
             var horarioEntrada = pago.HorarioEntradaId.HasValue
@@ -99,7 +129,7 @@ namespace SGA.Application.Services
                 : null;
 
             var rutaSalida = pago.RutaSalidaId.HasValue
-                ? _rutaRepository.GetById(pago.RutaSalidaId.Value)
+                ? await _rutaRepository.GetByIdAsync(pago.RutaSalidaId.Value)
                 : null;
 
             var horarioSalida = pago.HorarioSalidaId.HasValue

@@ -98,6 +98,20 @@ namespace SGA.Api.Web.Controllers
                 return BadRequest(e.Message);
             }
         }
+        [HttpGet("Recargas")]
+        public async Task<IActionResult> GetRecargas()
+        {
+            try
+            {
+                var recargas = await _pagoService.GetRecargasAsync();
+
+                return Ok(recargas);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
     }
 }
 

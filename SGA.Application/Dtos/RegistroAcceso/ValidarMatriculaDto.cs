@@ -1,8 +1,9 @@
 ﻿namespace SGA.Application.Dtos.RegistroAcceso
 {
-    public class CreateRegistroAccesoDto
+    public class ValidarMatriculaDto
     {
-        public int UsuarioId { get; set; }
+        public string Matricula { get; set; } = string.Empty;
+
         public int ViajeId { get; set; }
     }
 }

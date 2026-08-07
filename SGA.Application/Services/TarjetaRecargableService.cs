@@ -12,13 +12,19 @@ namespace SGA.Application.Services
     {
         private readonly ITarjetaRecargableRepository _tarjetaRepository;
         private readonly INotificationService _notificationService;
+        private readonly IUsuarioRepository _usuarioRepository;
+        private readonly IPagoRepository _pagoRepository;
 
         public TarjetaRecargableService(
             ITarjetaRecargableRepository tarjetaRepository,
-            INotificationService notificationService)
+            INotificationService notificationService,
+            IUsuarioRepository usuarioRepository,
+            IPagoRepository pagoRepository)
         {
             _tarjetaRepository = tarjetaRepository;
             _notificationService = notificationService;
+            _usuarioRepository = usuarioRepository;
+            _pagoRepository = pagoRepository;
         }
 
         public async Task<IEnumerable<TarjetaRecargableDto>> GetAllAsync()
@@ -101,7 +107,10 @@ namespace SGA.Application.Services
             return tarjeta.Saldo;
         }
 
-        public async Task RecargarSaldoAsync(int usuarioId, decimal monto)
+        public async Task RecargarSaldoAsync(
+            int usuarioId,
+            decimal monto,
+            string tipoPago)
         {
             if (monto <= 0)
                 throw new Exception("El monto debe ser mayor que cero.");
@@ -114,6 +123,17 @@ namespace SGA.Application.Services
             tarjeta.Saldo += monto;
 
             await _tarjetaRepository.UpdateAsync(tarjeta);
+
+            var pago = new Pago
+            {
+                UsuarioId = usuarioId,
+                Monto = monto,
+                FechaPago = DateTime.Now,
+                Modalidad = tipoPago,
+                Concepto = ConceptoPago.Recarga
+            };
+
+            await _pagoRepository.AddAsync(pago);
 
             await _notificationService.SendNotificationAsync(
                 "estudiante@itla.edu.do",
@@ -147,6 +167,27 @@ namespace SGA.Application.Services
                 Id = tarjeta.Id,
                 UsuarioId = tarjeta.UsuarioId,
                 IdentificadorInstitucional = tarjeta.Usuario.IdentificadorInstitucional,
+                Saldo = tarjeta.Saldo
+            };
+        }
+
+        public async Task<TarjetaRecargableDto?> GetByMatriculaAsync(string matricula)
+        {
+            var usuario = _usuarioRepository.GetByIdentificador(matricula);
+
+            if (usuario == null)
+                return null;
+
+            var tarjeta = await _tarjetaRepository.GetByUsuarioIdAsync(usuario.Id);
+
+            if (tarjeta == null)
+                return null;
+
+            return new TarjetaRecargableDto
+            {
+                Id = tarjeta.Id,
+                UsuarioId = tarjeta.UsuarioId,
+                IdentificadorInstitucional = usuario.IdentificadorInstitucional,
                 Saldo = tarjeta.Saldo
             };
         }

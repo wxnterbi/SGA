@@ -6,7 +6,6 @@ using SGA.Domain.Entities.Reservation;
 using SGA.Domain.Enums.Reservation;
 using SGA.Infrastructure.Notifications;
 using SGA.Persistence.Interfaces;
-using SGA.Persistence.Repository;
 
 namespace SGA.Application.Services
 {
@@ -35,6 +34,7 @@ namespace SGA.Application.Services
             _notificacionService = notificacionService;
         }
 
+
         public async Task<IEnumerable<RegistroAccesoDto>> GetAllAsync()
         {
             var registros = await _registroRepository.GetAllAsync();
@@ -56,20 +56,6 @@ namespace SGA.Application.Services
             });
         }
 
-        public async Task<IEnumerable<RegistroAccesoDto>> GetByUsuarioIdAsync(int usuarioId)
-        {
-            var registros = await _registroRepository.GetByUsuarioIdAsync(usuarioId);
-
-            return registros.Select(r => new RegistroAccesoDto
-            {
-                Id = r.Id,
-                UsuarioId = r.UsuarioId,
-                ViajeId = r.ViajeId,
-                Permitido = r.Permitido,
-                Motivo = r.Motivo,
-                FechaHora = r.FechaHora
-            });
-        }
 
         public async Task<RegistroAccesoDto?> GetByIdAsync(int id)
         {
@@ -92,9 +78,153 @@ namespace SGA.Application.Services
             };
         }
 
+
+        public async Task<IEnumerable<RegistroAccesoDto>> GetByUsuarioIdAsync(int usuarioId)
+        {
+            var registros = await _registroRepository
+                .GetByUsuarioIdAsync(usuarioId);
+
+            var usuario = _usuarioRepository.GetById(usuarioId);
+
+            return registros.Select(r => new RegistroAccesoDto
+            {
+                Id = r.Id,
+                UsuarioId = r.UsuarioId,
+                Matricula = usuario?.IdentificadorInstitucional ?? "",
+                ViajeId = r.ViajeId,
+                Permitido = r.Permitido,
+                Motivo = r.Motivo,
+                FechaHora = r.FechaHora
+            });
+        }
+
+
+        public async Task<ResultadoValidacionAccesoDto> ValidarAccesoAsync(
+            ValidarAccesoDto dto)
+        {
+            return await ValidarPorMatriculaAsync(dto.Matricula);
+        }
+
+
+        public async Task<ResultadoValidacionAccesoDto> ValidarPorMatriculaAsync(
+            string matricula)
+        {
+            if (string.IsNullOrWhiteSpace(matricula))
+            {
+                return new ResultadoValidacionAccesoDto
+                {
+                    Permitido = false,
+                    Matricula = "",
+                    Nombre = "",
+                    Mensaje = "Debe ingresar una matrícula."
+                };
+            }
+
+            var usuario = _usuarioRepository.GetByIdentificador(matricula);
+
+            if (usuario == null)
+            {
+                return new ResultadoValidacionAccesoDto
+                {
+                    Permitido = false,
+                    Matricula = matricula,
+                    Nombre = "",
+                    Mensaje = "No se encontró un usuario con esta matrícula."
+                };
+            }
+
+            var ticket = await _ticketRepository
+                .GetActivoByUsuarioAsync(usuario.Id);
+
+            if (ticket == null)
+            {
+                return new ResultadoValidacionAccesoDto
+                {
+                    Permitido = false,
+                    Matricula = usuario.IdentificadorInstitucional,
+                    Nombre = usuario.Nombre,
+                    Mensaje = "Acceso denegado. El usuario no posee un ticket mensual activo."
+                };
+            }
+
+            return new ResultadoValidacionAccesoDto
+            {
+                Permitido = true,
+                Matricula = usuario.IdentificadorInstitucional,
+                Nombre = usuario.Nombre,
+                Mensaje = "Acceso permitido. El usuario posee un ticket mensual activo."
+            };
+        }
+
+
+        public async Task<ResultadoAccesoDto> ValidarMatriculaAsync(
+            string matricula,
+            int viajeId)
+        {
+            if (string.IsNullOrWhiteSpace(matricula))
+            {
+                return new ResultadoAccesoDto
+                {
+                    Permitido = false,
+                    Matricula = "",
+                    Nombre = "",
+                    Mensaje = "Debe ingresar una matrícula."
+                };
+            }
+
+            var usuario = _usuarioRepository.GetByIdentificador(matricula);
+
+            if (usuario == null)
+            {
+                return new ResultadoAccesoDto
+                {
+                    Permitido = false,
+                    Matricula = matricula,
+                    Nombre = "",
+                    Mensaje = "No existe un usuario con esta matrícula."
+                };
+            }
+
+            var ticket = await _ticketRepository
+                .GetActivoByUsuarioAsync(usuario.Id);
+
+            bool permitido = ticket != null;
+
+            string motivo = permitido
+                ? "Ticket mensual activo."
+                : "No posee un ticket mensual activo.";
+
+            var registro = new RegistroAcceso
+            {
+                UsuarioId = usuario.Id,
+                ViajeId = viajeId,
+                Permitido = permitido,
+                Motivo = motivo,
+                FechaHora = DateTime.Now
+            };
+
+            await _registroRepository.AddAsync(registro);
+
+            return new ResultadoAccesoDto
+            {
+                Permitido = permitido,
+                Matricula = usuario.IdentificadorInstitucional,
+                Nombre = usuario.Nombre,
+                Mensaje = permitido
+                    ? "Acceso permitido."
+                    : "Acceso denegado."
+            };
+        }
+
         public async Task AddAsync(RegistroAccesoDto dto)
         {
-            var ticket = await _ticketRepository.GetActivoByUsuarioAsync(dto.UsuarioId);
+            var usuario = _usuarioRepository.GetById(dto.UsuarioId);
+
+            if (usuario == null)
+                throw new Exception("El usuario no existe.");
+
+            var ticket = await _ticketRepository
+                .GetActivoByUsuarioAsync(dto.UsuarioId);
 
             bool permitido = ticket != null;
 
@@ -119,10 +249,56 @@ namespace SGA.Application.Services
                 motivo);
         }
 
+
+        public async Task RegistrarAccesoAsync(int usuarioId, int viajeId)
+        {
+            var usuario = _usuarioRepository.GetById(usuarioId);
+
+            if (usuario == null)
+                throw new Exception("El usuario no existe.");
+
+            var ticket = await _ticketRepository
+                .GetActivoByUsuarioAsync(usuarioId);
+
+            bool permitido = ticket != null;
+
+            string motivo = permitido
+                ? "Ticket válido"
+                : "No posee un ticket mensual activo.";
+
+            var registro = new RegistroAcceso
+            {
+                UsuarioId = usuarioId,
+                ViajeId = viajeId,
+                Permitido = permitido,
+                Motivo = motivo,
+                FechaHora = DateTime.Now
+            };
+
+            await _registroRepository.AddAsync(registro);
+
+            await _notificationService.SendNotificationAsync(
+                "estudiante@itla.edu.do",
+                permitido ? "Acceso permitido" : "Acceso denegado",
+                motivo);
+
+            await _notificacionService.AddAsync(new NotificacionDto
+            {
+                UsuarioId = usuarioId,
+                TipoEvento = permitido
+                    ? (int)TipoEvento.AccesoPermitido
+                    : (int)TipoEvento.AccesoDenegado,
+
+                Mensaje = motivo,
+                FechaHora = DateTime.Now
+            });
+        }
+
+
         public async Task UpdateAsync(RegistroAccesoDto dto)
         {
-
-            var registro = await _registroRepository.GetByIdAsync(dto.Id);
+            var registro = await _registroRepository
+                .GetByIdAsync(dto.Id);
 
             if (registro == null)
                 throw new Exception("Registro de acceso no encontrado.");
@@ -138,48 +314,16 @@ namespace SGA.Application.Services
             await _registroRepository.UpdateAsync(registro);
         }
 
+
         public async Task DeleteAsync(int id)
         {
             var registro = await _registroRepository.GetByIdAsync(id);
 
             if (registro == null)
-                throw new Exception("No se encontró el registro de acceso.");
+                throw new Exception(
+                    "No se encontró el registro de acceso.");
 
             await _registroRepository.DeleteAsync(id);
-        }
-
-        public async Task RegistrarAccesoAsync(int usuarioId, int viajeId)
-        {
-            bool permitido = true;
-            string motivo = "Acceso permitido";
-
-            var registro = new RegistroAcceso
-            {
-                UsuarioId = usuarioId,
-                ViajeId = viajeId,
-                Permitido = permitido,
-                Motivo = motivo,
-                FechaHora = DateTime.Now
-            };
-
-            await _registroRepository.AddAsync(registro);
-
-            await _notificationService.SendNotificationAsync(
-                "estudiante@itla.edu.do",
-                "Acceso registrado",
-                "Se registró un acceso al autobús.");
-
-            await _notificacionService.AddAsync(new NotificacionDto
-            {
-                UsuarioId = usuarioId,
-                TipoEvento = permitido
-                    ? (int)TipoEvento.AccesoPermitido
-                    : (int)TipoEvento.AccesoDenegado,
-                Mensaje = permitido
-                    ? "Acceso registrado correctamente."
-                    : "Acceso denegado.",
-                FechaHora = DateTime.Now
-            });
         }
     }
 }

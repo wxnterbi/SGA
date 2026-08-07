@@ -10,7 +10,7 @@
 
   <ItemGroup>
     <Folder Include="Forms\Auditoria\" />
-    <Folder Include="Forms\RegistroAcceso\" />
+    <Folder Include="Forms\Pago\" />
     <Folder Include="Models\Autobus\" />
     <Folder Include="Models\Auditoria\" />
     <Folder Include="Models\Incidencia\" />
@@ -44,7 +44,7 @@
 
   <ItemGroup>
     <None Update="appsettings.json">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
   </ItemGroup>
 

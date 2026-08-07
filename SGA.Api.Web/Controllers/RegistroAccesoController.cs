@@ -61,6 +61,22 @@ namespace SGA.Api.Web.Controllers
             return Ok("Acceso registrado correctamente.");
         }
 
+        [HttpPost("ValidarMatricula")]
+        public async Task<IActionResult> ValidarMatricula(
+            [FromBody] ValidarMatriculaDto dto)
+        {
+            if (string.IsNullOrWhiteSpace(dto.Matricula))
+                return BadRequest("Debe introducir una matrícula.");
+
+            if (dto.ViajeId <= 0)
+                return BadRequest("Debe seleccionar un viaje.");
+
+            var resultado = await _registroAccesoService
+                .ValidarMatriculaAsync(dto.Matricula, dto.ViajeId);
+
+            return Ok(resultado);
+        }
+
         [HttpPut]
         public async Task<IActionResult> Put([FromBody] RegistroAccesoDto dto)
         {

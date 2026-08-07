@@ -7,10 +7,19 @@ namespace SGA.Application.Interfaces
     {
         Task<decimal> ObtenerSaldoAsync(int usuarioId);
 
-        Task RecargarSaldoAsync(int usuarioId, decimal monto);
+        Task RecargarSaldoAsync(
+            int usuarioId,
+            decimal monto,
+            string tipoPago);
 
-        Task DescontarSaldoAsync(int usuarioId, decimal monto);
+        Task DescontarSaldoAsync(
+            int usuarioId,
+            decimal monto);
 
-        Task<TarjetaRecargableDto?> GetByUsuarioIdAsync(int usuarioId);
+        Task<TarjetaRecargableDto?> GetByUsuarioIdAsync(
+            int usuarioId);
+
+        Task<TarjetaRecargableDto?> GetByMatriculaAsync(
+            string matricula);
     }
 }
