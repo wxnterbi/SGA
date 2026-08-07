@@ -76,6 +76,13 @@ namespace SGA.Presentation.Desktop
             services.AddTransient<FrmNuevoUsuario>();
             services.AddTransient<FrmDetalleUsuario>();
 
+            #region Registro Acceso
+
+            // services.AddTransient<FrmRegistroAccesoPrincipal>();
+            // services.AddTransient<FrmNuevoRegistroAcceso>();
+            // services.AddTransient<FrmDetalleRegistroAcceso>();
+
+            #endregion
             #region Viajes
 
             services.AddHttpClient<IViajeApiService, ViajeApiService>(client =>
@@ -136,6 +143,15 @@ namespace SGA.Presentation.Desktop
             //{
             //    client.BaseAddress = new Uri(baseUrl);
             //});
+
+            #endregion
+
+            #region Registro Acceso
+
+            // services.AddHttpClient<IRegistroAccesoApiService, RegistroAccesoApiService>(client =>
+            // {
+            //     client.BaseAddress = new Uri(baseUrl);
+            // });
 
             #endregion
 
