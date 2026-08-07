@@ -14,10 +14,6 @@ namespace SGA.Application.Validations
             RuleFor(x => x.Saldo)
                 .GreaterThanOrEqualTo(0)
                 .WithMessage("El saldo no puede ser negativo.");
-
-            RuleFor(x => x.Estado)
-                .GreaterThanOrEqualTo(0)
-                .WithMessage("Debe indicar un estado válido.");
         }
     }
 }

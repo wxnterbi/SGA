@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using SGA.Application.Dtos.TarjetaRecargable;
 using SGA.Application.Interfaces;
+using SGA.Application.Dtos.TarjetaRecargable;
 
 namespace SGA.Api.Web.Controllers
 {
@@ -73,6 +74,50 @@ namespace SGA.Api.Web.Controllers
             {
                 return NotFound(ex.Message);
             }
+        }
+
+        [HttpPost("Recargar")]
+        public async Task<IActionResult> Recargar(
+     [FromBody] RecargarSaldoDto dto)
+        {
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            try
+            {
+                await _tarjetaRecargableService.RecargarSaldoAsync(
+                    dto.UsuarioId,
+                    dto.Monto,
+                    dto.TipoPago);
+
+                return Ok("La recarga se realizó correctamente.");
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        [HttpGet("Usuario/{usuarioId}")]
+        public async Task<IActionResult> GetByUsuarioId(int usuarioId)
+        {
+            var tarjeta = await _tarjetaRecargableService.GetByUsuarioIdAsync(usuarioId);
+
+            if (tarjeta == null)
+                return NotFound();
+
+            return Ok(tarjeta);
+        }
+
+        [HttpGet("Matricula/{matricula}")]
+        public async Task<IActionResult> GetByMatricula(string matricula)
+        {
+            var tarjeta = await _tarjetaRecargableService.GetByMatriculaAsync(matricula);
+
+            if (tarjeta == null)
+                return NotFound();
+
+            return Ok(tarjeta);
         }
     }
 }

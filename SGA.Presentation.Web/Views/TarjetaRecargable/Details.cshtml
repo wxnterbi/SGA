@@ -1,0 +1,96 @@
+﻿@model SGA.Web.Models.TarjetaRecargable.TarjetaRecargableViewModel
+
+@{
+    ViewData["Title"] = "Mi Tarjeta";
+}
+
+<div class="container">
+
+    <div class="row justify-content-center">
+
+        <div class="col-lg-8">
+
+            <div class="card shadow-lg border-0 rounded-4">
+
+                <div class="card-header bg-primary text-white text-center py-4">
+
+                    <h2 class="mb-0">
+
+                        <i class="fa-solid fa-credit-card"></i>
+
+                        Mi Tarjeta Recargable
+
+                    </h2>
+
+                </div>
+
+                <div class="card-body p-5">
+
+                    <div class="row">
+
+                        <div class="col-md-6 mb-4">
+
+                            <label class="text-muted">
+
+                                Saldo Disponible
+
+                            </label>
+
+                            <h2 class="text-success fw-bold">
+
+                                RD$ @Model.Saldo.ToString("N2")
+
+                            </h2>
+
+                        </div>
+
+                    <hr />
+
+                    <div class="row">
+
+                        <div class="col-md-6">
+
+                                <label class="text-muted">
+                                    Identificador Institucional
+                                </label>
+
+                                <h5>
+                                    @Model.IdentificadorInstitucional
+                                </h5>
+
+                        </div>
+
+                    </div>
+
+                    <div class="text-center mt-5">
+
+                       <a asp-action="Recargar"
+                        asp-route-id="@Model.Id"
+                          class="btn btn-success btn-lg">
+
+                            <i class="fa-solid fa-wallet"></i>
+
+                             Recargar saldo
+
+                         </a>
+
+                        <a asp-action="Index"
+                           class="btn btn-secondary btn-lg ms-3">
+
+                            <i class="fa-solid fa-arrow-left"></i>
+
+                            Volver
+
+                        </a>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>

@@ -69,10 +69,6 @@ namespace SGA.Persistence.Context
                 .Property(x => x.Estado)
                 .HasConversion<string>();
 
-            modelBuilder.Entity<TarjetaRecargable>()
-                .Property(x => x.Estado)
-                .HasConversion<string>();
-
             modelBuilder.Entity<Incidencia>()
                 .Property(x => x.Tipo)
                 .HasConversion<string>();
@@ -81,7 +77,6 @@ namespace SGA.Persistence.Context
                 .Property(x => x.TipoEvento)
                 .HasConversion<string>();
 
-            // Evitar advertencias de decimales
             modelBuilder.Entity<Pago>()
                 .Property(x => x.Monto)
                 .HasPrecision(18, 2);
@@ -89,6 +84,72 @@ namespace SGA.Persistence.Context
             modelBuilder.Entity<TarjetaRecargable>()
                 .Property(x => x.Saldo)
                 .HasPrecision(18, 2);
+
+            modelBuilder.Entity<TicketMensual>()
+                .Property(x => x.Precio)
+                .HasPrecision(18, 2);
+
+            modelBuilder.Entity<TarjetaRecargable>()
+                .HasOne(t => t.Usuario)
+                .WithMany(u => u.TarjetasRecargables)
+                .HasForeignKey(t => t.UsuarioId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<TicketMensual>()
+                .HasOne<Usuario>()
+                .WithMany()
+                .HasForeignKey(t => t.UsuarioId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<TicketMensual>()
+                .HasOne<Pago>()
+                .WithMany()
+                .HasForeignKey(t => t.PagoId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<TicketMensual>()
+                .HasOne<Ruta>()
+                .WithMany()
+                .HasForeignKey(t => t.RutaEntradaId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<TicketMensual>()
+                .HasOne<Horario>()
+                .WithMany()
+                .HasForeignKey(t => t.HorarioEntradaId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<TicketMensual>()
+                .HasOne<Parada>()
+                .WithMany()
+                .HasForeignKey(t => t.ParadaEntradaId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<TicketMensual>()
+                .HasOne<Ruta>()
+                .WithMany()
+                .HasForeignKey(t => t.RutaSalidaId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<TicketMensual>()
+                .HasOne<Horario>()
+                .WithMany()
+                .HasForeignKey(t => t.HorarioSalidaId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<TicketMensual>()
+                .HasOne<Parada>()
+                .WithMany()
+                .HasForeignKey(t => t.ParadaSalidaId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<Pago>()
+                .Property(x => x.Concepto)
+                .HasConversion<string>();
+
+            modelBuilder.Entity<Pago>()
+                .Property(x => x.TipoTicket)
+                .HasConversion<string>();
 
             base.OnModelCreating(modelBuilder);
         }

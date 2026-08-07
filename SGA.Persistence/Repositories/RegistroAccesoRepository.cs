@@ -13,10 +13,20 @@ namespace SGA.Persistence.Repository
         public async Task<RegistroAcceso> GetByIdAsync(int id) => await _context.RegistrosAcceso.FindAsync(id);
         public async Task<IEnumerable<RegistroAcceso>> GetAllAsync()
         {
-            return await _context.RegistrosAcceso.ToListAsync();
+            return await _context.RegistrosAcceso
+                .OrderByDescending(r => r.FechaHora)
+                .ToListAsync();
         }
         public async Task<IEnumerable<RegistroAcceso>> GetByViajeIdAsync(int viajeId) =>
             await _context.RegistrosAcceso.Where(r => r.ViajeId == viajeId).ToListAsync();
+
+        public async Task<IEnumerable<RegistroAcceso>> GetByUsuarioIdAsync(int usuarioId)
+        {
+            return await _context.RegistrosAcceso
+                .Where(r => r.UsuarioId == usuarioId)
+                .OrderByDescending(r => r.FechaHora)
+                .ToListAsync();
+        }
         public async Task AddAsync(RegistroAcceso registro)
         {
             await _context.RegistrosAcceso.AddAsync(registro);

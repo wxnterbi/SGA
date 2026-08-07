@@ -38,7 +38,6 @@ namespace SGA.Web.Controllers
             if (!ModelState.IsValid)
                 return View(dto);
 
-            // Validar que el usuario exista
             bool existeUsuario = await _context.Usuarios
                 .AnyAsync(x => x.Id == dto.UsuarioId);
 

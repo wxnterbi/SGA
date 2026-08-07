@@ -1,0 +1,86 @@
+﻿@model IEnumerable<SGA.Web.Models.Notificacion.NotificacionViewModel>
+
+@{
+    ViewData["Title"] = "Mis Notificaciones";
+}
+
+<h2 class="mb-4">
+    <i class="fa-solid fa-bell text-primary"></i>
+    Mis Notificaciones
+</h2>
+
+@if (!Model.Any())
+{
+    <div class="alert alert-info">
+        No tienes notificaciones.
+    </div>
+}
+else
+{
+    <div class="row">
+
+        @foreach (var item in Model.OrderByDescending(x => x.FechaHora))
+        {
+            <div class="col-lg-6 mb-4">
+
+                <div class="card shadow border-0">
+
+                    <div class="card-header bg-primary text-white">
+
+                        <h5 class="mb-0">
+
+                            <i class="fa-solid fa-bell"></i>
+
+                            Notificación
+
+                        </h5>
+
+                    </div>
+
+                    <div class="card-body">
+
+                        <p>
+
+                            <strong>Mensaje</strong>
+
+                            <br />
+
+                            @item.Mensaje
+
+                        </p>
+
+                        <hr />
+
+                        <p>
+
+                            <strong>Fecha</strong>
+
+                            <br />
+
+                            @item.FechaHora.ToString("dd/MM/yyyy HH:mm")
+
+                        </p>
+
+                    </div>
+
+                    <div class="card-footer text-end">
+
+                        <a asp-action="Details"
+                           asp-route-id="@item.Id"
+                           class="btn btn-outline-primary">
+
+                            <i class="fa-solid fa-eye"></i>
+
+                            Ver
+
+                        </a>
+
+                    </div>
+
+                </div>
+
+            </div>
+        }
+
+    </div>
+}

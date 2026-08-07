@@ -36,6 +36,14 @@ namespace SGA.Api.Web.Controllers
             return Ok(registro);
         }
 
+        [HttpGet("Usuario/{usuarioId}")]
+        public async Task<IActionResult> GetByUsuario(int usuarioId)
+        {
+            var registros = await _registroAccesoService.GetByUsuarioIdAsync(usuarioId);
+
+            return Ok(registros);
+        }
+
         [HttpPost]
         public async Task<IActionResult> Post([FromBody] RegistroAccesoDto dto)
         {
@@ -43,6 +51,30 @@ namespace SGA.Api.Web.Controllers
             await _registroAccesoService.AddAsync(dto);
 
             return Ok("Registro de acceso creado correctamente.");
+        }
+
+        [HttpPost("RegistrarAcceso")]
+        public async Task<IActionResult> RegistrarAcceso([FromBody] RegistroAccesoDto dto)
+        {
+            await _registroAccesoService.AddAsync(dto);
+
+            return Ok("Acceso registrado correctamente.");
+        }
+
+        [HttpPost("ValidarMatricula")]
+        public async Task<IActionResult> ValidarMatricula(
+            [FromBody] ValidarMatriculaDto dto)
+        {
+            if (string.IsNullOrWhiteSpace(dto.Matricula))
+                return BadRequest("Debe introducir una matrícula.");
+
+            if (dto.ViajeId <= 0)
+                return BadRequest("Debe seleccionar un viaje.");
+
+            var resultado = await _registroAccesoService
+                .ValidarMatriculaAsync(dto.Matricula, dto.ViajeId);
+
+            return Ok(resultado);
         }
 
         [HttpPut]

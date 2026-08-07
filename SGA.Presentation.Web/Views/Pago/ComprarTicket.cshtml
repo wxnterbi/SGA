@@ -1,0 +1,687 @@
+﻿@model SGA.Web.Models.Pago.ComprarTicketViewModel
+
+@{
+    ViewData["Title"] = "Comprar Ticket";
+}
+
+@if (ViewBag.Error != null)
+{
+    <div class="alert alert-warning alert-dismissible fade show" role="alert">
+        <i class="fa-solid fa-circle-exclamation me-2"></i>
+        @ViewBag.Error
+
+        <button type="button"
+                class="btn-close"
+                data-bs-dismiss="alert">
+        </button>
+    </div>
+}
+
+<div class="container py-5">
+
+    <div class="row justify-content-center">
+
+        <div class="col-lg-10">
+
+            <div class="text-center mb-4">
+
+                <i class="fa-solid fa-ticket fa-3x text-primary mb-3"></i>
+
+                <h2 class="fw-bold">
+                    Comprar Ticket
+                </h2>
+
+                <p class="text-muted">
+                    Selecciona el tipo de compra y completa la información del viaje.
+                </p>
+
+            </div>
+
+            <form asp-action="ComprarTicket" method="post">
+
+                @Html.AntiForgeryToken()
+
+                <partial name="_ValidationScriptsPartial" />
+
+                @if (!ViewData.ModelState.IsValid)
+                {
+                    <div asp-validation-summary="All" class="alert alert-danger"></div>
+                }
+
+                <input asp-for="UsuarioId" type="hidden" />
+                <input asp-for="IdentificadorInstitucional" type="hidden" />
+                <input asp-for="Saldo" type="hidden" />
+                <input asp-for="Precio" id="Precio" type="hidden" />
+
+                <div class="card shadow-sm border-0 mb-4">
+
+                    <div class="card-header bg-dark text-white">
+
+                        <h5 class="mb-0">
+                            <i class="fa-solid fa-user me-2"></i>
+                            Información del Usuario
+                        </h5>
+
+                    </div>
+
+                    <div class="card-body">
+
+                        <div class="row">
+
+                            <div class="col-md-6 mb-3">
+
+                                <label class="form-label fw-semibold">
+                                    Matrícula
+                                </label>
+
+                                <input class="form-control"
+                                       value="@Model.IdentificadorInstitucional"
+                                       readonly />
+
+                            </div>
+
+                            <div class="col-md-6 mb-3">
+
+                                <label class="form-label fw-semibold">
+                                    Saldo Disponible
+                                </label>
+
+                                <div class="alert alert-success mb-0">
+
+                                    <i class="fa-solid fa-wallet me-2"></i>
+
+                                    <strong>
+                                        RD$ @Model.Saldo.ToString("N2")
+                                    </strong>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <div class="card shadow-sm border-0 mb-4">
+
+                    <div class="card-header bg-primary text-white">
+
+                        <h5 class="mb-0">
+
+                            <i class="fa-solid fa-cart-shopping me-2"></i>
+
+                            Tipo de Compra
+
+                        </h5>
+
+                    </div>
+
+                    <div class="card-body">
+
+                        <label asp-for="EsMensual"
+                               class="form-label fw-semibold">
+
+                            Seleccione una opción
+
+                        </label>
+
+                        <select asp-for="EsMensual"
+                                class="form-select"
+                                id="EsMensual">
+
+                            <option value="false">
+                                Ticket Individual
+                            </option>
+
+                            <option value="true">
+                                Ticket Mensual (RD$850.00)
+                            </option>
+
+                        </select>
+
+                    </div>
+
+                </div>
+                <div class="card shadow-sm border-0 mb-4" id="cardTipoTicket">
+
+                    <div class="card-header bg-dark text-white">
+
+                        <h5 class="mb-0">
+                            <i class="fa-solid fa-ticket me-2"></i>
+                            Tipo de Ticket
+                        </h5>
+
+                    </div>
+
+                    <div class="card-body">
+
+                        <div class="row g-3">
+
+                            <div class="col-md-4">
+
+                                <input asp-for="TipoTicket"
+                                       class="btn-check"
+                                       type="radio"
+                                       value="1"
+                                       id="ticketEntrada"
+                                       autocomplete="off" />
+
+                                <label class="btn btn-outline-primary w-100 py-4"
+                                       for="ticketEntrada">
+
+                                    <i class="fa-solid fa-arrow-right fa-2x mb-2"></i>
+
+                                    <h6 class="mb-1">
+                                        Entrada
+                                    </h6>
+
+                                    <small class="text-muted">
+                                        Solo ida
+                                    </small>
+
+                                    <hr />
+
+                                    <strong>
+                                        RD$25.00
+                                    </strong>
+
+                                </label>
+
+                            </div>
+
+                            <div class="col-md-4">
+
+                                <input asp-for="TipoTicket"
+                                       class="btn-check"
+                                       type="radio"
+                                       value="2"
+                                       id="ticketSalida"
+                                       autocomplete="off" />
+
+                                <label class="btn btn-outline-success w-100 py-4"
+                                       for="ticketSalida">
+
+                                    <i class="fa-solid fa-arrow-left fa-2x mb-2"></i>
+
+                                    <h6 class="mb-1">
+                                        Salida
+                                    </h6>
+
+                                    <small class="text-muted">
+                                        Solo regreso
+                                    </small>
+
+                                    <hr />
+
+                                    <strong>
+                                        RD$25.00
+                                    </strong>
+
+                                </label>
+
+                            </div>
+
+                            <div class="col-md-4">
+
+                                <input asp-for="TipoTicket"
+                                       class="btn-check"
+                                       type="radio"
+                                       value="3"
+                                       id="ticketCompleto"
+                                       autocomplete="off" />
+
+                                <label class="btn btn-outline-warning w-100 py-4"
+                                       for="ticketCompleto">
+
+                                    <i class="fa-solid fa-right-left fa-2x mb-2"></i>
+
+                                    <h6 class="mb-1">
+                                        Entrada + Salida
+                                    </h6>
+
+                                    <small class="text-muted">
+                                        Ida y regreso
+                                    </small>
+
+                                    <hr />
+
+                                    <strong>
+                                        RD$50.00
+                                    </strong>
+
+                                </label>
+
+                            </div>
+
+                        </div>
+
+                        <span asp-validation-for="TipoTicket"
+                              class="text-danger">
+                        </span>
+
+                    </div>
+
+                </div>
+
+                <div class="card shadow-sm border-0 mb-4"
+                     id="seccionEntrada"
+                     style="display:none;">
+
+                    <div class="card-header bg-primary text-white">
+
+                        <h5 class="mb-0">
+                            <i class="fa-solid fa-arrow-right me-2"></i>
+                            Datos de Entrada
+                        </h5>
+
+                    </div>
+
+                    <div class="card-body">
+
+                        <div class="row g-3">
+
+                            <div class="col-md-4">
+
+                                <label class="form-label fw-semibold">
+                                    <i class="fa-solid fa-route text-primary me-1"></i>
+                                    Ruta
+                                </label>
+
+                                <select asp-for="RutaEntradaId"
+                                        class="form-select"
+                                        id="RutaEntradaId">
+
+                                    <span asp-validation-for="RutaEntradaId" class="text-danger"></span>
+
+                                    <option value="">Seleccionar ruta</option>
+
+                                    @foreach (var ruta in Model.Rutas)
+                                    {
+                                        <option value="@ruta.Id">
+                                            @ruta.Nombre (@ruta.Origen → @ruta.Destino)
+                                        </option>
+                                    }
+
+                                </select>
+
+                            </div>
+
+                            <div class="col-md-4">
+
+                                <label class="form-label fw-semibold">
+                                    <i class="fa-solid fa-clock text-primary me-1"></i>
+                                    Horario
+                                </label>
+
+                                <select asp-for="HorarioEntradaId"
+                                        class="form-select"
+                                        id="HorarioEntradaId">
+
+                                    <span asp-validation-for="HorarioEntradaId" class="text-danger"></span>
+
+                                    <option value="">Seleccionar horario</option>
+
+                                    @foreach (var horario in Model.Horarios)
+                                    {
+                                        <option value="@horario.Id"
+                                                data-ruta="@horario.RutaId">
+
+                                            @horario.HoraSalida.ToString(@"hh\:mm")
+
+                                        </option>
+                                    }
+
+                                </select>
+
+                            </div>
+
+                            <div class="col-md-4">
+
+                                <label class="form-label fw-semibold">
+                                    <i class="fa-solid fa-location-dot text-primary me-1"></i>
+                                    Parada
+                                </label>
+
+                                <select asp-for="ParadaEntradaId"
+                                        class="form-select">
+
+                                    <span asp-validation-for="ParadaEntradaId" class="text-danger"></span>
+
+                                    <option value="">Seleccionar parada</option>
+
+                                    @foreach (var parada in Model.Paradas.OrderBy(x => x.Orden))
+                                    {
+                                        <option value="@parada.Id">
+                                            @parada.Nombre
+                                            @if (!string.IsNullOrWhiteSpace(parada.Ubicacion))
+                                            {
+                                                <text> - @parada.Ubicacion</text>
+                                            }
+                                        </option>
+                                    }
+
+                                </select>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <div class="card shadow-sm border-0 mb-4"
+                     id="seccionSalida"
+                     style="display:none;">
+
+                    <div class="card-header bg-success text-white">
+
+                        <h5 class="mb-0">
+                            <i class="fa-solid fa-arrow-left me-2"></i>
+                            Datos de Salida
+                        </h5>
+
+                    </div>
+
+                    <div class="card-body">
+
+                        <div class="row g-3">
+
+                            <div class="col-md-4">
+
+                                <label class="form-label fw-semibold">
+                                    <i class="fa-solid fa-route text-success me-1"></i>
+                                    Ruta
+                                </label>
+
+                                <select asp-for="RutaSalidaId"
+                                        class="form-select"
+                                        id="RutaSalidaId">
+
+                                    <span asp-validation-for="RutaSalidaId" class="text-danger"></span>
+
+                                    <option value="">Seleccionar ruta</option>
+
+                                    @foreach (var ruta in Model.Rutas)
+                                    {
+                                        <option value="@ruta.Id">
+                                            @ruta.Nombre (@ruta.Origen → @ruta.Destino)
+                                        </option>
+                                    }
+
+                                </select>
+
+                            </div>
+
+                            <div class="col-md-4">
+
+                                <label class="form-label fw-semibold">
+                                    <i class="fa-solid fa-clock text-success me-1"></i>
+                                    Horario
+                                </label>
+
+                                <select asp-for="HorarioSalidaId"
+                                        class="form-select"
+                                        id="HorarioSalidaId">
+
+                                    <span asp-validation-for="HorarioSalidaId" class="text-danger"></span>
+
+                                    <option value="">Seleccionar horario</option>
+
+                                    @foreach (var horario in Model.Horarios)
+                                    {
+                                        <option value="@horario.Id"
+                                                data-ruta="@horario.RutaId">
+
+                                            @horario.HoraSalida.ToString(@"hh\:mm")
+
+                                        </option>
+                                    }
+
+                                </select>
+
+                            </div>
+
+                            <div class="col-md-4">
+
+                                <label class="form-label fw-semibold">
+                                    <i class="fa-solid fa-location-dot text-success me-1"></i>
+                                    Parada
+                                </label>
+
+                                <select asp-for="ParadaSalidaId"
+                                        class="form-select">
+
+                                    <span asp-validation-for="ParadaSalidaId" class="text-danger"></span>
+
+                                    <option value="">Seleccionar parada</option>
+
+                                    @foreach (var parada in Model.Paradas.OrderBy(x => x.Orden))
+                                    {
+                                        <option value="@parada.Id">
+                                            @parada.Nombre
+                                            @if (!string.IsNullOrWhiteSpace(parada.Ubicacion))
+                                            {
+                                                <text> - @parada.Ubicacion</text>
+                                            }
+                                        </option>
+                                    }
+
+                                </select>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+                <div class="card shadow-sm border-0 mb-4">
+
+                    <div class="card-header bg-light">
+
+                        <h5 class="mb-0">
+                            <i class="fa-solid fa-receipt me-2"></i>
+                            Resumen de Compra
+                        </h5>
+
+                    </div>
+
+                    <div class="card-body">
+
+                        <div class="d-flex justify-content-between mb-2">
+
+                            <span>Precio del ticket</span>
+
+                            <strong>
+                                RD$
+                                <span id="precioTexto">0.00</span>
+                            </strong>
+
+                        </div>
+
+                        <hr />
+
+                        <div class="d-flex justify-content-between">
+
+                            <span class="fw-bold">
+                                Total
+                            </span>
+
+                            <strong class="fs-4 text-success">
+
+                                RD$
+                                <span id="totalTexto">0.00</span>
+
+                            </strong>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <div class="d-flex justify-content-between">
+
+                    <a asp-action="Index"
+                       class="btn btn-outline-secondary">
+
+                        <i class="fa-solid fa-arrow-left me-2"></i>
+
+                        Cancelar
+
+                    </a>
+
+                    <button type="submit"
+                            id="btnComprar"
+                            class="btn btn-success btn-lg px-5">
+
+                        <i class="fa-solid fa-credit-card me-2"></i>
+
+                        Comprar Ticket
+
+                    </button>
+
+                </div>
+
+            </form>
+
+        </div>
+
+    </div>
+
+</div>
+@section Scripts {
+
+    <partial name="_ValidationScriptsPartial" />
+
+    <script>
+
+        document.addEventListener("DOMContentLoaded",function(){
+
+        const ticketEntrada=document.getElementById("ticketEntrada");
+        const ticketSalida=document.getElementById("ticketSalida");
+        const ticketCompleto=document.getElementById("ticketCompleto");
+
+        const cardTipoTicket=document.getElementById("cardTipoTicket");
+
+        const seccionEntrada=document.getElementById("seccionEntrada");
+        const seccionSalida=document.getElementById("seccionSalida");
+
+        const precioTexto=document.getElementById("precioTexto");
+        const totalTexto=document.getElementById("totalTexto");
+        const precioInput=document.getElementById("Precio");
+
+        function actualizarCompra(){
+
+            let precio=0;
+
+            const esMensual=document.getElementById("EsMensual").value==="true";
+
+            seccionEntrada.style.display="none";
+            seccionSalida.style.display="none";
+
+            if(esMensual){
+
+                cardTipoTicket.style.display="none";
+
+                seccionEntrada.style.display="block";
+                seccionSalida.style.display="block";
+
+                precio=850;
+            }
+            else{
+
+                cardTipoTicket.style.display="block";
+
+                if(ticketEntrada.checked){
+
+                    seccionEntrada.style.display="block";
+                    precio=25;
+                }
+
+                if(ticketSalida.checked){
+
+                    seccionSalida.style.display="block";
+                    precio=25;
+                }
+
+                if(ticketCompleto.checked){
+
+                    seccionEntrada.style.display="block";
+                    seccionSalida.style.display="block";
+                    precio=50;
+                }
+            }
+
+            precioTexto.textContent=precio.toFixed(2);
+            totalTexto.textContent=precio.toFixed(2);
+            precioInput.value=precio;
+
+            validarSaldo(precio);
+        }
+
+        function validarSaldo(precio){
+
+            const saldo=@Model.Saldo.ToString(System.Globalization.CultureInfo.InvariantCulture);
+
+            const boton=document.getElementById("btnComprar");
+
+            if(precio>saldo){
+
+                boton.disabled=true;
+                boton.innerHTML='<i class="fa-solid fa-ban me-2"></i>Saldo insuficiente';
+            }
+            else{
+
+                boton.disabled=false;
+                boton.innerHTML='<i class="fa-solid fa-credit-card me-2"></i>Comprar Ticket';
+            }
+        }
+
+        function filtrarHorarios(rutaId,horarioId){
+
+            const ruta=document.getElementById(rutaId);
+            const horario=document.getElementById(horarioId);
+
+            if(!ruta||!horario)
+                return;
+
+            function actualizar(){
+
+                const id=ruta.value;
+
+                horario.value="";
+
+                horario.querySelectorAll("option[data-ruta]").forEach(function(op){
+
+                    op.style.display=op.dataset.ruta===id?"":"none";
+
+                });
+
+            }
+
+            ruta.addEventListener("change",actualizar);
+
+            actualizar();
+        }
+
+        filtrarHorarios("RutaEntradaId","HorarioEntradaId");
+        filtrarHorarios("RutaSalidaId","HorarioSalidaId");
+
+        ticketEntrada.addEventListener("change",actualizarCompra);
+        ticketSalida.addEventListener("change",actualizarCompra);
+        ticketCompleto.addEventListener("change",actualizarCompra);
+
+        document.getElementById("EsMensual")
+        .addEventListener("change",actualizarCompra);
+
+        actualizarCompra();
+
+        });
+
+    </script>
+
+}

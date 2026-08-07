@@ -1,0 +1,119 @@
+﻿@model SGA.Web.Models.RegistroAcceso.RegistroAccesoViewModel
+
+@{
+    ViewData["Title"] = "Detalle del Acceso";
+}
+
+<div class="container mt-4">
+
+    <div class="card shadow-lg border-0">
+
+        <div class="card-header bg-primary text-white">
+
+            <h3 class="mb-0">
+                <i class="fa-solid fa-bus"></i>
+                Detalle del Registro de Acceso
+            </h3>
+
+        </div>
+
+        <div class="card-body">
+
+            <div class="row">
+
+                <div class="col-md-8">
+
+                    <div class="mb-4">
+
+                        <h5 class="text-primary">
+                            <i class="fa-solid fa-user"></i>
+                            Información
+                        </h5>
+
+                        <hr />
+
+                        <p>
+                            <strong>Matrícula:</strong>
+                            @Model.Matricula
+                        </p>
+
+                        <p>
+                            <strong>Viaje:</strong>
+                            #@Model.ViajeId
+                        </p>
+
+                        <p>
+                            <strong>Fecha:</strong>
+                            @Model.FechaHora.ToString("dd/MM/yyyy")
+                        </p>
+
+                        <p>
+                            <strong>Hora:</strong>
+                            @Model.FechaHora.ToString("hh:mm tt")
+                        </p>
+
+                        <p>
+                            <strong>Motivo:</strong>
+                            @Model.Motivo
+                        </p>
+
+                        <p>
+
+                            <strong>Estado:</strong>
+
+                            @if (Model.Permitido)
+                            {
+                                <span class="badge bg-success fs-6">
+                                    Acceso Permitido
+                                </span>
+                            }
+                            else
+                            {
+                                <span class="badge bg-danger fs-6">
+                                    Acceso Denegado
+                                </span>
+                            }
+
+                        </p>
+
+                    </div>
+
+                </div>
+
+                <div class="col-md-4 text-center">
+
+                    <h5 class="text-primary">
+                        Código QR
+                    </h5>
+
+                    <img src="https://api.qrserver.com/v1/create-qr-code/?size=220x220&data=ACCESO-@Model.Id-@Model.UsuarioId-@Model.FechaHora.Ticks"
+                         class="img-fluid border rounded shadow-sm" />
+
+                    <p class="text-muted mt-3">
+
+                        Escanee este código para validar el registro del acceso.
+
+                    </p>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="card-footer text-end">
+
+            <a asp-action="Index"
+               class="btn btn-outline-primary">
+
+                <i class="fa-solid fa-arrow-left"></i>
+
+                Volver
+
+            </a>
+
+        </div>
+
+    </div>
+
+</div>

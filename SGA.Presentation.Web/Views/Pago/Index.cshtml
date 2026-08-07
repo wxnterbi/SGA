@@ -1,0 +1,140 @@
+﻿@model IEnumerable<SGA.Web.Models.Pago.PagoViewModel>
+
+@{
+    ViewData["Title"] = "Mis Pagos";
+}
+
+<div class="payments-page">
+
+    <div class="payments-header">
+        <div>
+            <h1>
+                <i class="fa-solid fa-receipt"></i>
+                Mis pagos
+            </h1>
+
+            <p>
+                Consulta el historial de pagos realizados en el Sistema de Gestión de Autobuses.
+            </p>
+        </div>
+
+        <a asp-action="ComprarTicket" class="btn-buy-ticket">
+            <i class="fa-solid fa-ticket"></i>
+            Reservar Ticket
+        </a>
+    </div>
+
+
+    @if (Model == null || !Model.Any())
+    {
+        <div class="empty-payments">
+
+            <div class="empty-icon">
+                <i class="fa-solid fa-receipt"></i>
+            </div>
+
+            <h3>No tienes pagos registrados</h3>
+
+            <p>
+                Cuando realices una compra o recarga, aparecerá aquí.
+            </p>
+
+            <a asp-action="ComprarTicket" class="btn-buy-ticket">
+                <i class="fa-solid fa-ticket"></i>
+                Reservar mi primer ticket
+            </a>
+
+        </div>
+    }
+    else
+    {
+        <div class="payments-grid">
+
+            @foreach (var item in Model)
+            {
+                <div class="payment-card">
+
+                    <div class="payment-card-header">
+
+                        <div class="payment-icon">
+                            <i class="fa-solid fa-credit-card"></i>
+                        </div>
+
+                        <div>
+                            <span class="payment-label">
+                                Pago #@item.Id
+                            </span>
+
+                            <h3>
+                                @item.Modalidad
+                            </h3>
+                        </div>
+
+                    </div>
+
+
+                    <div class="payment-info">
+
+                        <div class="info-item">
+                            <span>
+                                <i class="fa-solid fa-money-bill-wave"></i>
+                                Monto
+                            </span>
+
+                            <strong>
+                                RD$ @item.Monto.ToString("N2")
+                            </strong>
+                        </div>
+
+
+                        <div class="info-item">
+                            <span>
+                                <i class="fa-solid fa-calendar"></i>
+                                Fecha
+                            </span>
+
+                            <strong>
+                                @item.FechaPago.ToString("dd/MM/yyyy")
+                            </strong>
+                        </div>
+
+
+                        <div class="info-item">
+                            <span>
+                                <i class="fa-solid fa-clock"></i>
+                                Hora
+                            </span>
+
+                            <strong>
+                                @item.FechaPago.ToString("hh:mm tt")
+                            </strong>
+                        </div>
+
+                    </div>
+
+
+                    <div class="payment-card-footer">
+
+                        <span class="payment-status">
+                            <i class="fa-solid fa-circle-check"></i>
+                            Pago registrado
+                        </span>
+
+                        <a asp-action="Details"
+                           asp-route-id="@item.Id"
+                           class="btn-details">
+
+                            Ver detalles
+                            <i class="fa-solid fa-arrow-right"></i>
+
+                        </a>
+
+                    </div>
+
+                </div>
+            }
+
+        </div>
+    }
+
+</div>
