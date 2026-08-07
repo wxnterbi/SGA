@@ -3,203 +3,604 @@
 @{
     ViewData["Title"] = "Detalle del Pago";
 
-    bool esMensual = Model.Monto >= 850;
+
+    bool esRecarga = Model.Concepto == 1;
+    bool esTicket = Model.Concepto == 2;
+
+
+    bool esMensual = esTicket && Model.Monto >= 850;
 }
 
-<div class="container mt-4">
+<div class="container py-5">
 
     <div class="row justify-content-center">
 
-        <div class="col-lg-8">
+        <div class="col-lg-8 col-xl-8">
 
-            <div class="card shadow-lg border-0">
+            <div class="card shadow-lg border-0 rounded-4 overflow-hidden">
 
-                <div class="card-header bg-primary text-white text-center">
 
-                    <h3 class="mb-1">
-                        <i class="fa-solid fa-bus"></i>
+                <div class="card-header bg-primary text-white text-center py-4">
+
+                    <div class="mb-2">
+
+                        <i class="fa-solid fa-bus fa-2x"></i>
+
+                    </div>
+
+                    <h3 class="fw-bold mb-1">
                         Sistema de Transporte Universitario
                     </h3>
 
-                    <h5 class="mb-0">
-                        @(esMensual ? "Ticket Mensual" : "Ticket Individual")
-                    </h5>
+                    @if (esRecarga)
+                    {
+                        <p class="mb-0 opacity-75">
+                            Detalle de recarga de saldo
+                        </p>
+                    }
+                    else if (esTicket)
+                    {
+                        <p class="mb-0 opacity-75">
+                            @(esMensual
+                                ? "Detalle del ticket mensual"
+                                : "Detalle del ticket individual")
+                        </p>
+                    }
 
                 </div>
 
-                <div class="card-body">
+                <div class="card-body p-4 p-md-5">
 
-                    <div class="text-center mb-4">
 
-                        <img src="https://api.qrserver.com/v1/create-qr-code/?size=220x220&data=PAGO-@Model.Id"
-                             class="img-fluid shadow rounded" />
+                    @if (esRecarga)
+                    {
+                        <div class="text-center mb-4">
 
-                        <div class="mt-3">
+                            <div class="mb-3">
 
-                            <span class="badge bg-dark fs-6">
+                                <div class="rounded-circle bg-primary bg-opacity-10 d-inline-flex align-items-center justify-content-center"
+                                     style="width: 100px; height: 100px;">
+
+                                    <i class="fa-solid fa-wallet fa-3x text-primary"></i>
+
+                                </div>
+
+                            </div>
+
+                            <h2 class="fw-bold text-primary mb-2">
+                                Recarga de saldo
+                            </h2>
+
+                            <p class="text-muted mb-0">
+                                El saldo fue agregado correctamente a la tarjeta recargable.
+                            </p>
+
+                        </div>
+                    }
+
+
+                    @if (esTicket)
+                    {
+                        <div class="text-center mb-4">
+
+                            <div class="mb-3">
+
+                                <img src="https://api.qrserver.com/v1/create-qr-code/?size=220x220&data=PAGO-@Model.Id"
+                                     class="img-fluid shadow rounded-3"
+                                     width="220"
+                                     height="220"
+                                     alt="Código QR del Ticket" />
+
+                            </div>
+
+                            <span class="badge bg-dark fs-6 px-3 py-2">
+
+                                <i class="fa-solid fa-ticket me-1"></i>
+
                                 Ticket #@Model.Id
+
                             </span>
 
                         </div>
-
-                    </div>
-
-                    <hr />
-
-                    <div class="row">
-
-                        <div class="col-md-6">
-
-                            <p>
-                                <strong>
-                                    <i class="fa-solid fa-id-card"></i>
-                                    Matrícula
-                                </strong>
-                                <br />
-                                @Model.IdentificadorInstitucional
-                            </p>
-
-                            <p>
-                                <strong>
-                                    <i class="fa-solid fa-money-bill-wave"></i>
-                                    Monto Pagado
-                                </strong>
-                                <br />
-                                <span class="text-success fw-bold fs-5">
-                                    RD$ @Model.Monto.ToString("N2")
-                                </span>
-                            </p>
-
-                            <p>
-                                <strong>
-                                    <i class="fa-solid fa-ticket"></i>
-                                    Tipo
-                                </strong>
-                                <br />
-                                @(esMensual ? "Ticket Mensual" : "Ticket Individual")
-                            </p>
-
-                        </div>
-
-                        <div class="col-md-6">
-
-                            <p>
-                                <strong>
-                                    <i class="fa-solid fa-calendar-days"></i>
-                                    Fecha de Compra
-                                </strong>
-                                <br />
-                                @Model.FechaPago.ToString("dd/MM/yyyy hh:mm tt")
-                            </p>
-
-                            <p>
-                                <strong>
-                                    <i class="fa-solid fa-credit-card"></i>
-                                    Modalidad
-                                </strong>
-                                <br />
-                                @Model.Modalidad
-                            </p>
-
-                            <p>
-                                <strong>
-                                    Estado
-                                </strong>
-                                <br />
-                                <span class="badge bg-success fs-6">
-                                    PAGADO
-                                </span>
-                            </p>
-
-                        </div>
-
-                    </div>
-
-                    <hr />
-
-                    @if (Model.NombreRutaEntrada != null || Model.NombreRutaSalida != null)
-                    {
-                        <hr />
-
-                        <h5 class="mb-3">
-                            <i class="fa-solid fa-route"></i>
-                            Información del recorrido
-                        </h5>
-
-                        @if (Model.NombreRutaEntrada != null)
-                        {
-                            <div class="mb-3">
-                                <h6 class="text-primary">Entrada</h6>
-
-                                <p>
-                                    <strong>Ruta:</strong> @Model.NombreRutaEntrada
-                                </p>
-
-                                <p>
-                                    <strong>Horario:</strong> @Model.NombreHorarioEntrada
-                                </p>
-
-                                <p>
-                                    <strong>Parada:</strong> @Model.NombreParadaEntrada
-                                </p>
-                            </div>
-                        }
-
-                        @if (Model.NombreRutaSalida != null)
-                        {
-                            <div class="mb-3">
-                                <h6 class="text-success">Salida</h6>
-
-                                <p>
-                                    <strong>Ruta:</strong> @Model.NombreRutaSalida
-                                </p>
-
-                                <p>
-                                    <strong>Horario:</strong> @Model.NombreHorarioSalida
-                                </p>
-
-                                <p>
-                                    <strong>Parada:</strong> @Model.NombreParadaSalida
-                                </p>
-                            </div>
-                        }
                     }
 
-                    <div class="alert alert-primary text-center">
 
-                        <i class="fa-solid fa-qrcode fa-2x mb-2"></i>
+                    <hr class="my-4" />
 
-                        <h5>
-                            Código QR del Ticket
-                        </h5>
 
-                        <p class="mb-0">
-                            Muestre este código al abordar el autobús para validar su viaje.
-                        </p>
+                    <h5 class="fw-bold mb-4">
+
+                        <i class="fa-solid fa-user text-primary me-2"></i>
+
+                        Información del usuario
+
+                    </h5>
+
+
+                    <div class="row g-4">
+
+
+                        <div class="col-md-6">
+
+                            <div class="p-3 bg-light rounded-3">
+
+                                <small class="text-muted d-block mb-1">
+
+                                    <i class="fa-solid fa-id-card me-1"></i>
+
+                                    Matrícula
+
+                                </small>
+
+                                <span class="fw-bold fs-5">
+
+                                    @Model.IdentificadorInstitucional
+
+                                </span>
+
+                            </div>
+
+                        </div>
+
+
+                        <div class="col-md-6">
+
+                            <div class="p-3 bg-light rounded-3">
+
+                                <small class="text-muted d-block mb-1">
+
+                                    <i class="fa-solid fa-user me-1"></i>
+
+                                    Usuario
+
+                                </small>
+
+                                <span class="fw-bold fs-5">
+
+                                    #@Model.UsuarioId
+
+                                </span>
+
+                            </div>
+
+                        </div>
 
                     </div>
+
+
+                    <hr class="my-4" />
+
+
+                    <h5 class="fw-bold mb-4">
+
+                        <i class="fa-solid fa-money-check-dollar text-primary me-2"></i>
+
+                        Información del pago
+
+                    </h5>
+
+
+                    <div class="row g-4">
+
+             
+
+                        <div class="col-md-6">
+
+                            <div class="p-3 border rounded-3">
+
+                                <small class="text-muted d-block mb-1">
+
+                                    <i class="fa-solid fa-money-bill-wave me-1"></i>
+
+                                    @(esRecarga ? "Monto recargado" : "Monto pagado")
+
+                                </small>
+
+                                <span class="text-success fw-bold fs-4">
+
+                                    RD$ @Model.Monto.ToString("N2")
+
+                                </span>
+
+                            </div>
+
+                        </div>
+
+
+
+                        <div class="col-md-6">
+
+                            <div class="p-3 border rounded-3">
+
+                                <small class="text-muted d-block mb-1">
+
+                                    <i class="fa-solid fa-calendar-days me-1"></i>
+
+                                    @(esRecarga ? "Fecha de recarga" : "Fecha de compra")
+
+                                </small>
+
+                                <span class="fw-bold">
+
+                                    @Model.FechaPago.ToString("dd/MM/yyyy")
+
+                                </span>
+
+                                <small class="text-muted d-block">
+
+                                    @Model.FechaPago.ToString("hh:mm tt")
+
+                                </small>
+
+                            </div>
+
+                        </div>
+
+
+                        <div class="col-md-6">
+
+                            <div class="p-3 border rounded-3">
+
+                                <small class="text-muted d-block mb-1">
+
+                                    <i class="fa-solid fa-credit-card me-1"></i>
+
+                                    @(esRecarga ? "Método de pago" : "Modalidad")
+
+                                </small>
+
+                                <span class="fw-bold">
+
+                                    @if (esRecarga)
+                                    {
+                                        @if (Model.Modalidad == "Efectivo")
+                                        {
+                                            <span>
+                                                <i class="fa-solid fa-money-bill text-success me-1"></i>
+                                                Efectivo
+                                            </span>
+                                        }
+                                        else if (Model.Modalidad == "Tarjeta")
+                                        {
+                                            <span>
+                                                <i class="fa-solid fa-credit-card text-primary me-1"></i>
+                                                Tarjeta
+                                            </span>
+                                        }
+                                        else if (Model.Modalidad == "Transferencia")
+                                        {
+                                            <span>
+                                                <i class="fa-solid fa-building-columns text-info me-1"></i>
+                                                Transferencia
+                                            </span>
+                                        }
+                                        else
+                                        {
+                                            @Model.Modalidad
+                                        }
+                                    }
+                                    else
+                                    {
+                                        @Model.Modalidad
+                                    }
+
+                                </span>
+
+                            </div>
+
+                        </div>
+
+
+
+                        <div class="col-md-6">
+
+                            <div class="p-3 border rounded-3">
+
+                                <small class="text-muted d-block mb-1">
+
+                                    <i class="fa-solid fa-circle-check me-1"></i>
+
+                                    Estado
+
+                                </small>
+
+                                <span class="badge bg-success fs-6 px-3 py-2">
+
+                                    PAGADO
+
+                                </span>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    @if (esRecarga)
+                    {
+                        <div class="alert alert-info border-0 rounded-3 mt-5 mb-0">
+
+                            <div class="d-flex align-items-center">
+
+                                <div class="me-3">
+
+                                    <i class="fa-solid fa-circle-info fa-2x"></i>
+
+                                </div>
+
+                                <div>
+
+                                    <h5 class="fw-bold mb-1">
+                                        Recarga realizada correctamente
+                                    </h5>
+
+                                    <p class="mb-0">
+
+                                        Se agregaron
+
+                                        <strong>
+                                            RD$ @Model.Monto.ToString("N2")
+                                        </strong>
+
+                                        al saldo de la tarjeta recargable.
+
+                                    </p>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+                    }
+
+
+                    @if (esTicket)
+                    {
+                        <hr class="my-5" />
+
+                        <h5 class="fw-bold mb-4">
+
+                            <i class="fa-solid fa-ticket text-primary me-2"></i>
+
+                            Información del ticket
+
+                        </h5>
+
+
+                        <!-- TIPO DE TICKET -->
+
+                        <div class="mb-4">
+
+                            <div class="p-3 bg-light rounded-3">
+
+                                <small class="text-muted d-block mb-1">
+
+                                    Tipo de ticket
+
+                                </small>
+
+                                @if (esMensual)
+                                {
+                                    <span class="badge bg-primary fs-6 px-3 py-2">
+
+                                        <i class="fa-solid fa-calendar-check me-1"></i>
+
+                                        Ticket Mensual
+
+                                    </span>
+                                }
+                                else
+                                {
+                                    <span class="badge bg-primary fs-6 px-3 py-2">
+
+                                        <i class="fa-solid fa-ticket me-1"></i>
+
+                                        Ticket Individual
+
+                                    </span>
+                                }
+
+                            </div>
+
+                        </div>
+
+
+                        @if (Model.NombreRutaEntrada != null ||
+                             Model.NombreRutaSalida != null)
+                        {
+                            <h6 class="fw-bold mb-3">
+
+                                <i class="fa-solid fa-route me-2"></i>
+
+                                Información del recorrido
+
+                            </h6>
+
+
+                            <div class="row g-4">
+
+
+                                <!-- ENTRADA -->
+
+                                @if (Model.NombreRutaEntrada != null)
+                                {
+                                    <div class="col-md-6">
+
+                                        <div class="card border-0 bg-light h-100">
+
+                                            <div class="card-body">
+
+                                                <h6 class="text-primary fw-bold mb-3">
+
+                                                    <i class="fa-solid fa-arrow-right-to-bracket me-1"></i>
+
+                                                    Entrada
+
+                                                </h6>
+
+
+                                                <p class="mb-2">
+
+                                                    <strong>
+                                                        Ruta:
+                                                    </strong>
+
+                                                    <br />
+
+                                                    @Model.NombreRutaEntrada
+
+                                                </p>
+
+
+                                                <p class="mb-2">
+
+                                                    <strong>
+                                                        Horario:
+                                                    </strong>
+
+                                                    <br />
+
+                                                    @Model.NombreHorarioEntrada
+
+                                                </p>
+
+
+                                                <p class="mb-0">
+
+                                                    <strong>
+                                                        Parada:
+                                                    </strong>
+
+                                                    <br />
+
+                                                    @Model.NombreParadaEntrada
+
+                                                </p>
+
+                                            </div>
+
+                                        </div>
+
+                                    </div>
+                                }
+
+
+                                <!-- SALIDA -->
+
+                                @if (Model.NombreRutaSalida != null)
+                                {
+                                    <div class="col-md-6">
+
+                                        <div class="card border-0 bg-light h-100">
+
+                                            <div class="card-body">
+
+                                                <h6 class="text-success fw-bold mb-3">
+
+                                                    <i class="fa-solid fa-arrow-right-from-bracket me-1"></i>
+
+                                                    Salida
+
+                                                </h6>
+
+
+                                                <p class="mb-2">
+
+                                                    <strong>
+                                                        Ruta:
+                                                    </strong>
+
+                                                    <br />
+
+                                                    @Model.NombreRutaSalida
+
+                                                </p>
+
+
+                                                <p class="mb-2">
+
+                                                    <strong>
+                                                        Horario:
+                                                    </strong>
+
+                                                    <br />
+
+                                                    @Model.NombreHorarioSalida
+
+                                                </p>
+
+
+                                                <p class="mb-0">
+
+                                                    <strong>
+                                                        Parada:
+                                                    </strong>
+
+                                                    <br />
+
+                                                    @Model.NombreParadaSalida
+
+                                                </p>
+
+                                            </div>
+
+                                        </div>
+
+                                    </div>
+                                }
+
+                            </div>
+                        }
+
+
+                        <div class="alert alert-primary border-0 rounded-3 text-center mt-5">
+
+                            <i class="fa-solid fa-qrcode fa-2x mb-3"></i>
+
+                            <h5 class="fw-bold">
+                                Código QR del Ticket
+                            </h5>
+
+                            <p class="mb-0">
+
+                                Muestre este código al abordar el autobús
+                                para validar su viaje.
+
+                            </p>
+
+                        </div>
+
+                    }
+
 
                 </div>
 
-                <div class="card-footer d-flex justify-content-between">
+                <div class="card-footer bg-light border-0 p-4">
 
-                    <a asp-action="Index"
-                       class="btn btn-secondary">
+                    <div class="d-flex justify-content-between align-items-center">
 
-                        <i class="fa-solid fa-arrow-left"></i>
+                        <a asp-action="Index"
+                           class="btn btn-secondary">
 
-                        Volver
+                            <i class="fa-solid fa-arrow-left me-1"></i>
 
-                    </a>
+                            Volver
 
-                    <button class="btn btn-primary"
-                            onclick="window.print()">
+                        </a>
 
-                        <i class="fa-solid fa-print"></i>
 
-                        Imprimir
+                        <button type="button"
+                                class="btn btn-primary"
+                                onclick="window.print()">
 
-                    </button>
+                            <i class="fa-solid fa-print me-1"></i>
+
+                            Imprimir
+
+                        </button>
+
+                    </div>
 
                 </div>
 
@@ -210,3 +611,34 @@
     </div>
 
 </div>
+
+
+<style>
+
+    .card {
+        transition: transform 0.2s ease;
+    }
+
+    .card:hover {
+        transform: translateY(-2px);
+    }
+
+    @@media print {
+
+        .btn,
+        .card-footer {
+            display: none !important;
+        }
+
+        .card {
+            box-shadow: none !important;
+            border: 1px solid #ddd !important;
+        }
+
+        body {
+            background: white !important;
+        }
+
+    }
+
+</style>

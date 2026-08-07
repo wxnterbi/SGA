@@ -10,7 +10,6 @@
 
   <ItemGroup>
     <Folder Include="Forms\Auditoria\" />
-    <Folder Include="Forms\Pago\" />
     <Folder Include="Models\Autobus\" />
     <Folder Include="Models\Auditoria\" />
     <Folder Include="Models\Incidencia\" />

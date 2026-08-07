@@ -8,10 +8,11 @@ namespace SGA.Application.Dtos.TarjetaRecargable
         public int UsuarioId { get; set; }
 
         [Required(ErrorMessage = "El monto es obligatorio.")]
-        [Range(1, 100000, ErrorMessage = "El monto debe ser mayor que cero.")]
+        [Range(1, 100000,
+            ErrorMessage = "El monto debe ser mayor que cero.")]
         public decimal Monto { get; set; }
 
-        [Required(ErrorMessage = "Debe seleccionar un tipo de pago.")]
+        [Required(ErrorMessage = "El tipo de pago es obligatorio.")]
         public string TipoPago { get; set; } = string.Empty;
     }
 }
