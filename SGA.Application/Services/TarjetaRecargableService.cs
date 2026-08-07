@@ -2,7 +2,6 @@
 using SGA.Application.Dtos.TarjetaRecargable;
 using SGA.Application.Interfaces;
 using SGA.Domain.Entities.Reservation;
-using SGA.Domain.Enums.Reservation;
 using SGA.Infrastructure.Notifications;
 using SGA.Persistence.Interfaces;
 using SGA.Persistence.Repository;
@@ -30,8 +29,8 @@ namespace SGA.Application.Services
             {
                 Id = t.Id,
                 UsuarioId = t.UsuarioId,
-                Saldo = t.Saldo,
-                Estado = (int)t.Estado
+                IdentificadorInstitucional = t.Usuario.IdentificadorInstitucional,
+                Saldo = t.Saldo
             });
         }
 
@@ -46,8 +45,8 @@ namespace SGA.Application.Services
             {
                 Id = tarjeta.Id,
                 UsuarioId = tarjeta.UsuarioId,
-                Saldo = tarjeta.Saldo,
-                Estado = (int)tarjeta.Estado
+                IdentificadorInstitucional = tarjeta.Usuario.IdentificadorInstitucional,
+                Saldo = tarjeta.Saldo
             };
         }
 
@@ -58,7 +57,6 @@ namespace SGA.Application.Services
             {
                 UsuarioId = dto.UsuarioId,
                 Saldo = dto.Saldo,
-                Estado = (EstadoTarjeta)dto.Estado
             };
 
             await _tarjetaRepository.AddAsync(tarjeta);
@@ -79,7 +77,6 @@ namespace SGA.Application.Services
 
             tarjeta.UsuarioId = dto.UsuarioId;
             tarjeta.Saldo = dto.Saldo;
-            tarjeta.Estado = (EstadoTarjeta)dto.Estado;
 
             await _tarjetaRepository.UpdateAsync(tarjeta);
         }
@@ -92,6 +89,66 @@ namespace SGA.Application.Services
                 throw new Exception("No se encontró la tarjeta.");
 
             await _tarjetaRepository.DeleteAsync(id);
+        }
+
+        public async Task<decimal> ObtenerSaldoAsync(int usuarioId)
+        {
+            var tarjeta = await _tarjetaRepository.GetByUsuarioIdAsync(usuarioId);
+
+            if (tarjeta == null)
+                throw new Exception("El usuario no tiene una tarjeta recargable.");
+
+            return tarjeta.Saldo;
+        }
+
+        public async Task RecargarSaldoAsync(int usuarioId, decimal monto)
+        {
+            if (monto <= 0)
+                throw new Exception("El monto debe ser mayor que cero.");
+
+            var tarjeta = await _tarjetaRepository.GetByUsuarioIdAsync(usuarioId);
+
+            if (tarjeta == null)
+                throw new Exception("El usuario no tiene una tarjeta recargable.");
+
+            tarjeta.Saldo += monto;
+
+            await _tarjetaRepository.UpdateAsync(tarjeta);
+
+            await _notificationService.SendNotificationAsync(
+                "estudiante@itla.edu.do",
+                "Recarga realizada",
+                $"Tu tarjeta fue recargada con RD$ {monto:N2}.");
+        }
+
+        public async Task DescontarSaldoAsync(int usuarioId, decimal monto)
+        {
+            var tarjeta = await _tarjetaRepository.GetByUsuarioIdAsync(usuarioId);
+
+            if (tarjeta == null)
+                throw new Exception("El usuario no tiene una tarjeta recargable.");
+
+            if (tarjeta.Saldo < monto)
+                throw new Exception("Saldo insuficiente.");
+
+            tarjeta.Saldo -= monto;
+
+            await _tarjetaRepository.UpdateAsync(tarjeta);
+        }
+        public async Task<TarjetaRecargableDto?> GetByUsuarioIdAsync(int usuarioId)
+        {
+            var tarjeta = await _tarjetaRepository.GetByUsuarioIdAsync(usuarioId);
+
+            if (tarjeta == null)
+                return null;
+
+            return new TarjetaRecargableDto
+            {
+                Id = tarjeta.Id,
+                UsuarioId = tarjeta.UsuarioId,
+                IdentificadorInstitucional = tarjeta.Usuario.IdentificadorInstitucional,
+                Saldo = tarjeta.Saldo
+            };
         }
     }
 }

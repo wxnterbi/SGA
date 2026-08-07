@@ -36,7 +36,6 @@ namespace SGA.Web.Controllers
             if (!ModelState.IsValid)
                 return View(dto);
 
-            // Validar que el usuario exista
             var usuario = await _usuarioService.GetByIdAsync(dto.UsuarioId);
 
             if (usuario == null)
@@ -85,7 +84,6 @@ namespace SGA.Web.Controllers
             if (!ModelState.IsValid)
                 return View(dto);
 
-            // Validar que el usuario exista
             var usuario = await _usuarioService.GetByIdAsync(dto.UsuarioId);
 
             if (usuario == null)

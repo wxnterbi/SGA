@@ -5,5 +5,12 @@ namespace SGA.Application.Interfaces
 {
     public interface ITarjetaRecargableService : IBaseService<TarjetaRecargableDto>
     {
+        Task<decimal> ObtenerSaldoAsync(int usuarioId);
+
+        Task RecargarSaldoAsync(int usuarioId, decimal monto);
+
+        Task DescontarSaldoAsync(int usuarioId, decimal monto);
+
+        Task<TarjetaRecargableDto?> GetByUsuarioIdAsync(int usuarioId);
     }
 }

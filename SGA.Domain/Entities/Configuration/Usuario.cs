@@ -1,4 +1,5 @@
 ﻿using SGA.Domain.Base;
+using SGA.Domain.Entities.Reservation;
 using SGA.Domain.Enums.Configuration;
 
 namespace SGA.Domain.Entities.Configuration
@@ -10,5 +11,7 @@ namespace SGA.Domain.Entities.Configuration
         public string Nombre { get; set; }
         public TipoUsuario TipoUsuario { get; set; }
         public EstadoUsuario Estado { get; set; }
+        public ICollection<TarjetaRecargable> TarjetasRecargables { get; set; }
+    = new List<TarjetaRecargable>();
     }
 }

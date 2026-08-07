@@ -37,15 +37,6 @@
                class="form-control" />
     </div>
 
-    <div class="mb-3">
-        <label>Estado</label>
-        <select name="Estado" class="form-control">
-            <option value="1" @(Model.Estado == 1 ? "selected" : "")>Activa</option>
-            <option value="2" @(Model.Estado == 2 ? "selected" : "")>Bloqueada</option>
-            <option value="3" @(Model.Estado == 3 ? "selected" : "")>Vencida</option>
-        </select>
-    </div>
-
     <button type="submit" class="btn btn-primary">
         Guardar Cambios
     </button>

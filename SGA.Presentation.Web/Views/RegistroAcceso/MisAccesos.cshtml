@@ -1,0 +1,120 @@
+﻿@model IEnumerable<SGA.Web.Models.RegistroAcceso.RegistroAccesoViewModel>
+
+@{
+    ViewData["Title"] = "Mis Accesos";
+}
+
+<h2 class="mb-4">
+    <i class="fa-solid fa-door-open text-primary"></i>
+    Mis Accesos
+</h2>
+
+@if (!Model.Any())
+{
+    <div class="alert alert-info shadow-sm">
+        <i class="fa-solid fa-circle-info"></i>
+        Aún no tienes accesos registrados.
+    </div>
+}
+else
+{
+    <div class="row">
+
+        @foreach (var item in Model)
+        {
+            <div class="col-lg-6 mb-4">
+
+                <div class="card shadow border-0">
+
+                    <div class="card-header @(item.Permitido ? "bg-primary" : "bg-danger") text-white">
+
+                        <h5 class="mb-0">
+                            <i class="fa-solid fa-bus"></i>
+                            Registro de Acceso
+                        </h5>
+
+                    </div>
+
+                    <div class="card-body">
+
+                        <p>
+                            <strong>
+                                <i class="fa-solid fa-calendar"></i>
+                                Fecha
+                            </strong>
+                            <br />
+                            @item.FechaHora.ToString("dd/MM/yyyy")
+                        </p>
+
+                        <hr />
+
+                        <p>
+                            <strong>
+                                <i class="fa-solid fa-clock"></i>
+                                Hora
+                            </strong>
+                            <br />
+                            @item.FechaHora.ToString("hh:mm tt")
+                        </p>
+
+                        <hr />
+
+                        <p>
+                            <strong>
+                                <i class="fa-solid fa-bus"></i>
+                                Viaje
+                            </strong>
+                            <br />
+                            #@item.ViajeId
+                        </p>
+
+                        <hr />
+
+                        <p>
+                            <strong>
+                                <i class="fa-solid fa-comment"></i>
+                                Motivo
+                            </strong>
+                            <br />
+                            @item.Motivo
+                        </p>
+
+                        <hr />
+
+                        @if (item.Permitido)
+                        {
+                            <span class="badge bg-success fs-6">
+                                <i class="fa-solid fa-circle-check"></i>
+                                ACCESO PERMITIDO
+                            </span>
+                        }
+                        else
+                        {
+                            <span class="badge bg-danger fs-6">
+                                <i class="fa-solid fa-circle-xmark"></i>
+                                ACCESO DENEGADO
+                            </span>
+                        }
+
+                    </div>
+
+                    <div class="card-footer text-end">
+
+                        <a asp-action="Details"
+                           asp-route-id="@item.Id"
+                           class="btn btn-outline-primary">
+
+                            <i class="fa-solid fa-eye"></i>
+                            Ver detalles
+
+                        </a>
+
+                    </div>
+
+                </div>
+
+            </div>
+        }
+
+    </div>
+}

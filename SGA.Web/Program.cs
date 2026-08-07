@@ -1,7 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using SGA.IOC;
 using SGA.Persistence.Context;
-using FluentValidation;
 using FluentValidation.AspNetCore;
 using SGA.Application.Validations;
 
