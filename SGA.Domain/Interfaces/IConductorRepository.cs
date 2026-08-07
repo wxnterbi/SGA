@@ -5,11 +5,17 @@ namespace SGA.Persistence.Interfaces
     public interface IConductorRepository
     {
         Task<List<Conductor>> GetAllAsync();
-        Conductor GetById(int id);
-        Conductor GetByCedula(string cedula);
-        Conductor GetByTelefono(string telefono);
-        Conductor Add(Conductor conductor);
-        Conductor Update(Conductor conductor);
-        bool Delete(int id);
+
+        Task<Conductor?> GetByIdAsync(int id);
+
+        Task<Conductor?> GetByCedulaAsync(string cedula);
+
+        Task<Conductor?> GetByTelefonoAsync(string telefono);
+
+        Task<Conductor> AddAsync(Conductor conductor);
+
+        Task<Conductor> UpdateAsync(Conductor conductor);
+
+        Task<bool> DeleteAsync(int id);
     }
 }

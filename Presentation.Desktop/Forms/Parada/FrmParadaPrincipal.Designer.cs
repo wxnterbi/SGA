@@ -137,6 +137,7 @@
             Name = "FrmParadaPrincipal";
             StartPosition = FormStartPosition.CenterScreen;
             Text = "Gestión de Paradas";
+            Load += FrmParadaPrincipal_Load_1;
             ((System.ComponentModel.ISupportInitialize)dgvParadas).EndInit();
             ResumeLayout(false);
             PerformLayout();

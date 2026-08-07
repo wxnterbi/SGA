@@ -2,6 +2,8 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using SGA.Presentation.Desktop.Services.Usuario;
 using SGA.Presentation.Desktop.Forms.Usuario;
+using SGA.Presentation.Desktop.Services.Incidencia;
+using SGA.Presentation.Desktop.Forms.Incidencia;
 using SGA.Presentation.Desktop.Services.Autobus;
 using SGA.Presentation.Desktop.Services.Conductor;
 using SGA.Presentation.Desktop.Services.Horario;
@@ -16,9 +18,7 @@ using SGA.Presentation.Desktop.Forms.Ruta;
 using SGA.Presentation.Desktop.Forms.Login;
 using SGA.Presentation.Desktop.Forms.Main;
 using SGA.Presentation.Desktop.Forms.Viaje;
-using SGA.Presentation.Desktop.Services.Horario;
-using SGA.Presentation.Desktop.Services.Ruta;
-using SGA.Presentation.Desktop.Services.Viaje;
+using SGA.Presentation.Desktop.Forms.Conductor;
 using System;
 using System.Windows.Forms;
 using System.Windows.Forms;
@@ -141,12 +141,13 @@ namespace SGA.Presentation.Desktop
 
             #region Incidencias
 
-            //services.AddHttpClient<IIncidenciaApiService, IncidenciaApiService>(client =>
-            //{
-            //    client.BaseAddress = new Uri(baseUrl);
-            //});
+            services.AddHttpClient<IIncidenciaApiService, IncidenciaApiService>(client =>
+            {
+                client.BaseAddress = new Uri(baseUrl);
+            });
 
             #endregion
+
 
             //---------------------------------------------------------
             // FORMS
@@ -189,7 +190,9 @@ namespace SGA.Presentation.Desktop
 
             #region Conductores
 
-            //services.AddTransient<FrmConductorPrincipal>();
+            services.AddTransient<FrmConductorPrincipal>();
+            services.AddTransient<FrmNuevoConductor>();
+            services.AddTransient<FrmDetalleConductor>();
 
             #endregion
 
@@ -224,7 +227,9 @@ namespace SGA.Presentation.Desktop
 
             #region Incidencias
 
-            //services.AddTransient<FrmIncidenciaPrincipal>();
+            services.AddTransient<FrmIncidenciaPrincipal>();
+            services.AddTransient<FrmNuevaIncidencia>();
+            services.AddTransient<FrmDetalleIncidencia>();
 
             #endregion
         }

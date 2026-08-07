@@ -7,5 +7,11 @@ namespace SGA.Presentation.Desktop.Interfaces
         Task<List<ConductorDto>> GetAllAsync();
 
         Task<ConductorDto?> GetByIdAsync(int id);
+
+        Task<bool> CreateAsync(ConductorDto conductor);
+
+        Task<bool> UpdateAsync(ConductorDto conductor);
+
+        Task<bool> DeleteAsync(int id);
     }
 }

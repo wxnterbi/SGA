@@ -40,157 +40,205 @@
 
         private void InitializeComponent()
         {
-            this.components = new System.ComponentModel.Container();
-
-
-            this.pnlMenu = new Panel();
-            this.pnlTop = new Panel();
-            this.pnlContent = new Panel();
-
-
-            this.picLogo = new PictureBox();
-
-
-            this.lblTitulo = new Label();
-            this.lblUsuario = new Label();
-            this.lblRol = new Label();
-
-
-            this.btnDashboard = new Button();
-            this.btnViajes = new Button();
-            this.btnAutobuses = new Button();
-            this.btnConductores = new Button();
-            this.btnRutas = new Button();
-            this.btnHorarios = new Button();
-            this.btnParadas = new Button();
-            this.btnUsuarios = new Button();
-            this.btnIncidencias = new Button();
-            this.btnAuditoria = new Button();
-            this.btnCerrarSesion = new Button();
-
-
-
-            // FORMULARIO
-
-            this.SuspendLayout();
-
-            this.ClientSize = new Size(1400, 800);
-
-            this.Text = "Sistema de Gestión de Autobuses";
-
-            this.StartPosition = FormStartPosition.CenterScreen;
-
-            this.WindowState = FormWindowState.Maximized;
-
-
-
-            // PANEL MENU
-
-            this.pnlMenu.Dock = DockStyle.Left;
-
-            this.pnlMenu.Width = 250;
-
-            this.pnlMenu.BackColor = Color.FromArgb(25, 42, 86);
-
-
-
-            // PANEL SUPERIOR
-
-            this.pnlTop.Dock = DockStyle.Top;
-
-            this.pnlTop.Height = 70;
-
-            this.pnlTop.BackColor = Color.White;
-
-
-
-            // PANEL CONTENIDO
-
-            this.pnlContent.Dock = DockStyle.Fill;
-
-            this.pnlContent.BackColor = Color.FromArgb(240, 242, 245);
-
-
-
-            // LOGO
-
-            this.picLogo.Size = new Size(80, 80);
-
-            this.picLogo.Location = new Point(85, 20);
-
-            this.picLogo.SizeMode = PictureBoxSizeMode.Zoom;
-
-
-
-            // TITULO
-
-            this.lblTitulo.Text = "SGA";
-
-            this.lblTitulo.ForeColor = Color.White;
-
-            this.lblTitulo.Font = new Font(
-                "Segoe UI",
-                18,
-                FontStyle.Bold
-            );
-
-            this.lblTitulo.AutoSize = true;
-
-            this.lblTitulo.Location = new Point(95, 110);
-
-
-
-            // USUARIO
-
-            this.lblUsuario.Text = "Usuario: Admin";
-
-            this.lblUsuario.AutoSize = true;
-
-            this.lblUsuario.Location = new Point(1050, 20);
-
-
-
-            // ROL
-
-            this.lblRol.Text = "Administrador";
-
-            this.lblRol.AutoSize = true;
-
-            this.lblRol.ForeColor = Color.Gray;
-
-            this.lblRol.Location = new Point(1050, 45);
-
-
-            // AGREGAR CONTROLES
-
-            this.pnlMenu.Controls.Add(this.picLogo);
-            this.pnlMenu.Controls.Add(this.lblTitulo);
-
-            this.pnlMenu.Controls.Add(this.btnDashboard);
-            this.pnlMenu.Controls.Add(this.btnViajes);
-            this.pnlMenu.Controls.Add(this.btnAutobuses);
-            this.pnlMenu.Controls.Add(this.btnConductores);
-            this.pnlMenu.Controls.Add(this.btnRutas);
-            this.pnlMenu.Controls.Add(this.btnHorarios);
-            this.pnlMenu.Controls.Add(this.btnParadas);
-            this.pnlMenu.Controls.Add(this.btnUsuarios);
-            this.pnlMenu.Controls.Add(this.btnIncidencias);
-            this.pnlMenu.Controls.Add(this.btnAuditoria);
-            this.pnlMenu.Controls.Add(this.btnCerrarSesion);
-
-
-            this.pnlTop.Controls.Add(this.lblUsuario);
-            this.pnlTop.Controls.Add(this.lblRol);
-
-
-
-            this.Controls.Add(this.pnlContent);
-            this.Controls.Add(this.pnlTop);
-            this.Controls.Add(this.pnlMenu);
-
-
-
-            this.ResumeLayout(false);
+            pnlMenu = new Panel();
+            picLogo = new PictureBox();
+            lblTitulo = new Label();
+            btnDashboard = new Button();
+            btnViajes = new Button();
+            btnAutobuses = new Button();
+            btnConductores = new Button();
+            btnRutas = new Button();
+            btnHorarios = new Button();
+            btnParadas = new Button();
+            btnUsuarios = new Button();
+            btnIncidencias = new Button();
+            btnAuditoria = new Button();
+            btnCerrarSesion = new Button();
+            pnlTop = new Panel();
+            lblUsuario = new Label();
+            lblRol = new Label();
+            pnlContent = new Panel();
+            pnlMenu.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)picLogo).BeginInit();
+            pnlTop.SuspendLayout();
+            SuspendLayout();
+            // 
+            // pnlMenu
+            // 
+            pnlMenu.BackColor = Color.FromArgb(25, 42, 86);
+            pnlMenu.Controls.Add(picLogo);
+            pnlMenu.Controls.Add(lblTitulo);
+            pnlMenu.Controls.Add(btnDashboard);
+            pnlMenu.Controls.Add(btnViajes);
+            pnlMenu.Controls.Add(btnAutobuses);
+            pnlMenu.Controls.Add(btnConductores);
+            pnlMenu.Controls.Add(btnRutas);
+            pnlMenu.Controls.Add(btnHorarios);
+            pnlMenu.Controls.Add(btnParadas);
+            pnlMenu.Controls.Add(btnUsuarios);
+            pnlMenu.Controls.Add(btnIncidencias);
+            pnlMenu.Controls.Add(btnAuditoria);
+            pnlMenu.Controls.Add(btnCerrarSesion);
+            pnlMenu.Dock = DockStyle.Left;
+            pnlMenu.Location = new Point(0, 0);
+            pnlMenu.Name = "pnlMenu";
+            pnlMenu.Size = new Size(250, 800);
+            pnlMenu.TabIndex = 2;
+            pnlMenu.Paint += pnlMenu_Paint;
+            // 
+            // picLogo
+            // 
+            picLogo.Location = new Point(85, 20);
+            picLogo.Name = "picLogo";
+            picLogo.Size = new Size(80, 80);
+            picLogo.SizeMode = PictureBoxSizeMode.Zoom;
+            picLogo.TabIndex = 0;
+            picLogo.TabStop = false;
+            // 
+            // lblTitulo
+            // 
+            lblTitulo.AutoSize = true;
+            lblTitulo.Font = new Font("Segoe UI", 18F, FontStyle.Bold);
+            lblTitulo.ForeColor = Color.White;
+            lblTitulo.Location = new Point(95, 110);
+            lblTitulo.Name = "lblTitulo";
+            lblTitulo.Size = new Size(77, 41);
+            lblTitulo.TabIndex = 1;
+            lblTitulo.Text = "SGA";
+            // 
+            // btnDashboard
+            // 
+            btnDashboard.Location = new Point(0, 0);
+            btnDashboard.Name = "btnDashboard";
+            btnDashboard.Size = new Size(75, 23);
+            btnDashboard.TabIndex = 2;
+            // 
+            // btnViajes
+            // 
+            btnViajes.Location = new Point(0, 0);
+            btnViajes.Name = "btnViajes";
+            btnViajes.Size = new Size(75, 23);
+            btnViajes.TabIndex = 3;
+            // 
+            // btnAutobuses
+            // 
+            btnAutobuses.Location = new Point(0, 0);
+            btnAutobuses.Name = "btnAutobuses";
+            btnAutobuses.Size = new Size(75, 23);
+            btnAutobuses.TabIndex = 4;
+            // 
+            // btnConductores
+            // 
+            btnConductores.Location = new Point(0, 0);
+            btnConductores.Name = "btnConductores";
+            btnConductores.Size = new Size(75, 23);
+            btnConductores.TabIndex = 5;
+            // 
+            // btnRutas
+            // 
+            btnRutas.Location = new Point(0, 0);
+            btnRutas.Name = "btnRutas";
+            btnRutas.Size = new Size(75, 23);
+            btnRutas.TabIndex = 6;
+            // 
+            // btnHorarios
+            // 
+            btnHorarios.Location = new Point(0, 0);
+            btnHorarios.Name = "btnHorarios";
+            btnHorarios.Size = new Size(75, 23);
+            btnHorarios.TabIndex = 7;
+            // 
+            // btnParadas
+            // 
+            btnParadas.Location = new Point(0, 0);
+            btnParadas.Name = "btnParadas";
+            btnParadas.Size = new Size(75, 23);
+            btnParadas.TabIndex = 8;
+            // 
+            // btnUsuarios
+            // 
+            btnUsuarios.Location = new Point(0, 0);
+            btnUsuarios.Name = "btnUsuarios";
+            btnUsuarios.Size = new Size(75, 23);
+            btnUsuarios.TabIndex = 9;
+            // 
+            // btnIncidencias
+            // 
+            btnIncidencias.Location = new Point(0, 0);
+            btnIncidencias.Name = "btnIncidencias";
+            btnIncidencias.Size = new Size(75, 23);
+            btnIncidencias.TabIndex = 10;
+            // 
+            // btnAuditoria
+            // 
+            btnAuditoria.Location = new Point(0, 0);
+            btnAuditoria.Name = "btnAuditoria";
+            btnAuditoria.Size = new Size(75, 23);
+            btnAuditoria.TabIndex = 11;
+            // 
+            // btnCerrarSesion
+            // 
+            btnCerrarSesion.Location = new Point(0, 0);
+            btnCerrarSesion.Name = "btnCerrarSesion";
+            btnCerrarSesion.Size = new Size(75, 23);
+            btnCerrarSesion.TabIndex = 12;
+            // 
+            // pnlTop
+            // 
+            pnlTop.BackColor = Color.White;
+            pnlTop.Controls.Add(lblUsuario);
+            pnlTop.Controls.Add(lblRol);
+            pnlTop.Dock = DockStyle.Top;
+            pnlTop.Location = new Point(250, 0);
+            pnlTop.Name = "pnlTop";
+            pnlTop.Size = new Size(1150, 70);
+            pnlTop.TabIndex = 1;
+            // 
+            // lblUsuario
+            // 
+            lblUsuario.AutoSize = true;
+            lblUsuario.Location = new Point(1050, 20);
+            lblUsuario.Name = "lblUsuario";
+            lblUsuario.Size = new Size(110, 20);
+            lblUsuario.TabIndex = 0;
+            lblUsuario.Text = "Usuario: Admin";
+            // 
+            // lblRol
+            // 
+            lblRol.AutoSize = true;
+            lblRol.ForeColor = Color.Gray;
+            lblRol.Location = new Point(1050, 45);
+            lblRol.Name = "lblRol";
+            lblRol.Size = new Size(104, 20);
+            lblRol.TabIndex = 1;
+            lblRol.Text = "Administrador";
+            // 
+            // pnlContent
+            // 
+            pnlContent.BackColor = Color.FromArgb(240, 242, 245);
+            pnlContent.Dock = DockStyle.Fill;
+            pnlContent.Location = new Point(250, 70);
+            pnlContent.Name = "pnlContent";
+            pnlContent.Size = new Size(1150, 730);
+            pnlContent.TabIndex = 0;
+            pnlContent.Paint += pnlContent_Paint;
+            // 
+            // FrmPrincipal
+            // 
+            ClientSize = new Size(1400, 800);
+            Controls.Add(pnlContent);
+            Controls.Add(pnlTop);
+            Controls.Add(pnlMenu);
+            Name = "FrmPrincipal";
+            StartPosition = FormStartPosition.CenterScreen;
+            Text = "Sistema de Gestión de Autobuses";
+            WindowState = FormWindowState.Maximized;
+            pnlMenu.ResumeLayout(false);
+            pnlMenu.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)picLogo).EndInit();
+            pnlTop.ResumeLayout(false);
+            pnlTop.PerformLayout();
+            ResumeLayout(false);
         }
     }
 }

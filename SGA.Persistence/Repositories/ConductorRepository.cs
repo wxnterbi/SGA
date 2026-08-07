@@ -1,7 +1,7 @@
-﻿using SGA.Domain.Entities.Configuration;
+﻿using Microsoft.EntityFrameworkCore;
+using SGA.Domain.Entities.Configuration;
 using SGA.Persistence.Context;
 using SGA.Persistence.Interfaces;
-using Microsoft.EntityFrameworkCore;
 
 namespace SGA.Persistence.Repositories
 {
@@ -16,62 +16,71 @@ namespace SGA.Persistence.Repositories
 
         public async Task<List<Conductor>> GetAllAsync()
         {
-            return await _context.Conductores.AsNoTracking().ToListAsync();
+            return await _context.Conductores
+                .AsNoTracking()
+                .ToListAsync();
         }
 
-        public Conductor GetById(int id)
+        public async Task<Conductor?> GetByIdAsync(int id)
         {
-            return _context.Conductores.Find(id);
+            return await _context.Conductores
+                .FindAsync(id);
         }
 
-        public Conductor GetByCedula(string cedula)
+        public async Task<Conductor?> GetByCedulaAsync(string cedula)
         {
-            return _context.Conductores.FirstOrDefault(c => c.Cedula == cedula);
+            return await _context.Conductores
+                .FirstOrDefaultAsync(c => c.Cedula == cedula);
         }
 
-        public Conductor GetByTelefono(string telefono)
+        public async Task<Conductor?> GetByTelefonoAsync(string telefono)
         {
-            return _context.Conductores.FirstOrDefault(c => c.Telefono == telefono);
+            return await _context.Conductores
+                .FirstOrDefaultAsync(c => c.Telefono == telefono);
         }
 
-        public Conductor Add(Conductor conductor)
+        public async Task<Conductor> AddAsync(Conductor conductor)
         {
             conductor.FechaCreacion = DateTime.Now;
 
             _context.Conductores.Add(conductor);
-            _context.SaveChanges();
+
+            await _context.SaveChangesAsync();
 
             return conductor;
         }
 
-        public Conductor Update(Conductor conductor)
+        public async Task<Conductor> UpdateAsync(Conductor conductor)
         {
-            var conductorExistente = _context.Conductores.Find(conductor.Id);
+            var existente = await _context.Conductores
+                .FindAsync(conductor.Id);
 
-            if (conductorExistente == null)
+            if (existente == null)
                 throw new Exception("Conductor no encontrado.");
 
-            conductorExistente.Nombre = conductor.Nombre;
-            conductorExistente.Cedula = conductor.Cedula; 
-            conductorExistente.Licencia = conductor.Licencia;
-            conductorExistente.Telefono = conductor.Telefono;
-            conductorExistente.EstadoLaboral = conductor.EstadoLaboral;
-            conductorExistente.FechaModificacion = DateTime.Now;
+            existente.Nombre = conductor.Nombre;
+            existente.Cedula = conductor.Cedula;
+            existente.Licencia = conductor.Licencia;
+            existente.Telefono = conductor.Telefono;
+            existente.EstadoLaboral = conductor.EstadoLaboral;
+            existente.FechaModificacion = DateTime.Now;
 
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
 
-            return conductorExistente;
+            return existente;
         }
 
-        public bool Delete(int id)
+        public async Task<bool> DeleteAsync(int id)
         {
-            var conductor = _context.Conductores.Find(id);
+            var conductor = await _context.Conductores
+                .FindAsync(id);
 
             if (conductor == null)
                 return false;
 
             _context.Conductores.Remove(conductor);
-            _context.SaveChanges();
+
+            await _context.SaveChangesAsync();
 
             return true;
         }
