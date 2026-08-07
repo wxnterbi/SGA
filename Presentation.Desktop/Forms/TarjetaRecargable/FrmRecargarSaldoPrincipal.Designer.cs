@@ -1,4 +1,4 @@
-﻿namespace SGA.Presentation.Desktop.Forms
+﻿namespace SGA.Presentation.Desktop.Forms.TarjetaRecargable
 {
     partial class FrmRecargarSaldoPrincipal
     {

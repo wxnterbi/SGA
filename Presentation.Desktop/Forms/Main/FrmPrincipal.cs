@@ -8,6 +8,8 @@ using SGA.Presentation.Desktop.Forms.Ruta;
 using SGA.Presentation.Desktop.Forms.Viaje;
 using SGA.Presentation.Desktop.Forms.Usuario;
 using SGA.Presentation.Desktop.Forms.Incidencia;
+using SGA.Presentation.Desktop.Forms.RegistroAcceso;
+using SGA.Presentation.Desktop.Forms.TarjetaRecargable;
 
 using System;
 using System.Drawing;
@@ -41,9 +43,11 @@ namespace SGA.Presentation.Desktop.Forms.Main
             ConfigurarBoton(btnHorarios, "Horarios", 430);
             ConfigurarBoton(btnParadas, "Paradas", 480);
             ConfigurarBoton(btnUsuarios, "Usuarios", 530);
-            ConfigurarBoton(btnIncidencias, "Incidencias", 580);
-            ConfigurarBoton(btnAuditoria, "Auditoria", 630);
-            ConfigurarBoton(btnCerrarSesion, "Cerrar Sesión", 700);
+            ConfigurarBoton(btnRegistroAcceso, "Registro Acceso", 580);
+            ConfigurarBoton(btnRecargarSaldo, "Recargar Saldo", 630);
+            ConfigurarBoton(btnIncidencias, "Incidencias", 680);
+            ConfigurarBoton(btnAuditoria, "Auditoria", 730);
+            ConfigurarBoton(btnCerrarSesion, "Cerrar Sesión", 800);
 
 
             btnViajes.Click += btnViajes_Click;
@@ -55,6 +59,8 @@ namespace SGA.Presentation.Desktop.Forms.Main
             btnHorarios.Click += btnHorarios_Click;
             btnParadas.Click += btnParadas_Click;
             btnUsuarios.Click += btnUsuarios_Click;
+            btnRegistroAcceso.Click += btnRegistroAcceso_Click;
+            btnRecargarSaldo.Click += btnRecargarSaldo_Click;
             btnDashboard.Click += btnDashboard_Click;
 
             btnCerrarSesion.Click += btnCerrarSesion_Click;
@@ -126,6 +132,23 @@ namespace SGA.Presentation.Desktop.Forms.Main
                 .GetRequiredService<FrmUsuarioPrincipal>();
 
 
+            formulario.ShowDialog();
+        }
+
+        private void btnRegistroAcceso_Click(object sender, EventArgs e)
+        {
+            var formulario =
+                Program.ServiceProvider
+                .GetRequiredService<FrmRegistroAccesoPrincipal>();
+
+            formulario.ShowDialog();
+        }
+
+        private void btnRecargarSaldo_Click(object sender, EventArgs e)
+        {
+            var formulario =
+                Program.ServiceProvider
+                .GetRequiredService<FrmRecargarSaldoPrincipal>();
             formulario.ShowDialog();
         }
         private void btnAutobuses_Click(object sender, EventArgs e)

@@ -9,8 +9,13 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Forms\Pago\**" />
+    <EmbeddedResource Remove="Forms\Pago\**" />
+    <None Remove="Forms\Pago\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Folder Include="Forms\Auditoria\" />
-    <Folder Include="Forms\Pago\" />
     <Folder Include="Models\Autobus\" />
     <Folder Include="Models\Auditoria\" />
     <Folder Include="Models\Incidencia\" />

@@ -1,3 +1,4 @@
+
 using FluentValidation;
 using FluentValidation.AspNetCore;
 using SGA.Application.Validations;

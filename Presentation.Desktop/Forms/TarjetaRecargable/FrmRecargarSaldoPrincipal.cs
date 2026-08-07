@@ -2,7 +2,7 @@
 using SGA.Application.Dtos.TarjetaRecargable;
 using SGA.Presentation.Desktop.Interfaces;
 
-namespace SGA.Presentation.Desktop.Forms
+namespace SGA.Presentation.Desktop.Forms.TarjetaRecargable
 {
     public partial class FrmRecargarSaldoPrincipal : Form
     {

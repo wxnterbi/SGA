@@ -22,6 +22,8 @@
         private Button btnHorarios;
         private Button btnParadas;
         private Button btnUsuarios;
+        private Button btnRegistroAcceso;
+        private Button btnRecargarSaldo;
         private Button btnIncidencias;
         private Button btnAuditoria;
         private Button btnCerrarSesion;
@@ -52,6 +54,8 @@
             btnHorarios = new Button();
             btnParadas = new Button();
             btnUsuarios = new Button();
+            btnRegistroAcceso = new Button();
+            btnRecargarSaldo = new Button();
             btnIncidencias = new Button();
             btnAuditoria = new Button();
             btnCerrarSesion = new Button();
@@ -79,6 +83,8 @@
             pnlMenu.Controls.Add(btnHorarios);
             pnlMenu.Controls.Add(btnParadas);
             pnlMenu.Controls.Add(btnUsuarios);
+            pnlMenu.Controls.Add(btnRegistroAcceso);
+            pnlMenu.Controls.Add(btnRecargarSaldo);
             pnlMenu.Controls.Add(btnIncidencias);
             pnlMenu.Controls.Add(btnAuditoria);
             pnlMenu.Controls.Add(btnCerrarSesion);
@@ -166,6 +172,23 @@
             btnUsuarios.Name = "btnUsuarios";
             btnUsuarios.Size = new Size(75, 23);
             btnUsuarios.TabIndex = 9;
+
+            //
+            // btnRegistroAcceso
+            //
+            btnRegistroAcceso.Location = new Point(0, 0); 
+            btnRegistroAcceso.Name = "btnRegistroAcceso"; 
+            btnRegistroAcceso.Size = new Size(75, 23); 
+            btnRegistroAcceso.TabIndex = 10;
+
+            //
+            // btnRecargarSaldo
+            //
+            btnRecargarSaldo.Location = new Point(0, 0); 
+            btnRecargarSaldo.Name = "btnRecargarSaldo"; 
+            btnRecargarSaldo.Size = new Size(75, 23); 
+            btnRecargarSaldo.TabIndex = 11;
+
             // 
             // btnIncidencias
             // 
