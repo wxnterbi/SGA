@@ -204,5 +204,15 @@ namespace SGA.Presentation.Desktop.Forms.Main
         {
 
         }
+
+        private void lblTitulo_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void label1_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 }

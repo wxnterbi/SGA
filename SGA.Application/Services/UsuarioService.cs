@@ -1,6 +1,7 @@
 ﻿using SGA.Application.Dtos.Usuario;
 using SGA.Application.Interfaces;
 using SGA.Domain.Entities.Configuration;
+using SGA.Domain.Enums.Configuration;
 using SGA.Infrastructure.Notifications;
 using SGA.Persistence.Interfaces;
 
@@ -35,6 +36,31 @@ namespace SGA.Application.Services
             return Task.FromResult(resultado);
         }
 
+        public Task<LoginResponseDto?> LoginAsync(LoginUsuarioDto dto)
+        {
+            var usuario =
+                _usuarioRepository.GetByIdentificador(
+                    dto.IdentificadorInstitucional);
+
+            if (usuario == null)
+                return Task.FromResult<LoginResponseDto?>(null);
+
+            if (usuario.Contrasena?.Trim() != dto.Contrasena.Trim())
+                return Task.FromResult<LoginResponseDto?>(null);
+
+            if (usuario.Estado != EstadoUsuario.Activo)
+                return Task.FromResult<LoginResponseDto?>(null);
+
+            return Task.FromResult<LoginResponseDto?>(
+                new LoginResponseDto
+                {
+                    Id = usuario.Id,
+                    Nombre = usuario.Nombre,
+                    TipoUsuario = usuario.TipoUsuario,
+                    Estado = usuario.Estado
+                });
+        }
+
         public Task<UsuarioDto?> GetByIdAsync(int id)
         {
             var usuario = _usuarioRepository.GetById(id);
@@ -65,6 +91,7 @@ namespace SGA.Application.Services
             {
                 IdentificadorInstitucional = dto.IdentificadorInstitucional,
                 Nombre = dto.Nombre,
+                Contrasena = dto.Contrasena?.Trim(),
                 TipoUsuario = dto.TipoUsuario,
                 Estado = dto.Estado
             };
@@ -96,6 +123,12 @@ namespace SGA.Application.Services
 
             usuario.IdentificadorInstitucional = dto.IdentificadorInstitucional;
             usuario.Nombre = dto.Nombre;
+
+            if (!string.IsNullOrWhiteSpace(dto.Contrasena))
+            {
+                usuario.Contrasena = dto.Contrasena.Trim();
+            }
+
             usuario.TipoUsuario = dto.TipoUsuario;
             usuario.Estado = dto.Estado;
 
@@ -113,5 +146,6 @@ namespace SGA.Application.Services
 
             return Task.CompletedTask;
         }
+
     }
 }

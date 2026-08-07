@@ -49,5 +49,13 @@ namespace SGA.Presentation.Desktop.Services.Usuario
 
             return response.IsSuccessStatusCode;
         }
+        public async Task<LoginResponseDto?> LoginAsync(LoginUsuarioDto login)
+        {
+            var response =
+                await _httpClient.PostAsJsonAsync("api/Usuario/login", login);
+            if (!response.IsSuccessStatusCode)
+                return null;
+            return await response.Content.ReadFromJsonAsync<LoginResponseDto>();
+        }
     }
 }

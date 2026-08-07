@@ -93,25 +93,18 @@ namespace SGA.Presentation.Desktop.Forms.Usuario
 
         }
         private async void btnEditar_Click(
-    object sender,
-    EventArgs e)
+            object sender,
+            EventArgs e)
         {
-
             var formulario =
                 Program.ServiceProvider
                 .GetRequiredService<FrmNuevoUsuario>();
 
-
             await formulario.CargarUsuario(_usuarioId);
 
+            formulario.ShowDialog();
 
-
-            if (formulario.ShowDialog()
-                == DialogResult.OK)
-            {
-                CargarUsuario(_usuarioId);
-            }
-
+            CargarUsuario(_usuarioId);
         }
 
 

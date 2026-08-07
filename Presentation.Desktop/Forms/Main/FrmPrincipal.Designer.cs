@@ -40,6 +40,7 @@
 
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FrmPrincipal));
             pnlMenu = new Panel();
             picLogo = new PictureBox();
             lblTitulo = new Label();
@@ -58,6 +59,7 @@
             lblUsuario = new Label();
             lblRol = new Label();
             pnlContent = new Panel();
+            label1 = new Label();
             pnlMenu.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)picLogo).BeginInit();
             pnlTop.SuspendLayout();
@@ -66,6 +68,7 @@
             // pnlMenu
             // 
             pnlMenu.BackColor = Color.FromArgb(25, 42, 86);
+            pnlMenu.Controls.Add(label1);
             pnlMenu.Controls.Add(picLogo);
             pnlMenu.Controls.Add(lblTitulo);
             pnlMenu.Controls.Add(btnDashboard);
@@ -88,9 +91,10 @@
             // 
             // picLogo
             // 
-            picLogo.Location = new Point(85, 20);
+            picLogo.Image = (Image)resources.GetObject("picLogo.Image");
+            picLogo.Location = new Point(81, 23);
             picLogo.Name = "picLogo";
-            picLogo.Size = new Size(80, 80);
+            picLogo.Size = new Size(68, 69);
             picLogo.SizeMode = PictureBoxSizeMode.Zoom;
             picLogo.TabIndex = 0;
             picLogo.TabStop = false;
@@ -100,11 +104,12 @@
             lblTitulo.AutoSize = true;
             lblTitulo.Font = new Font("Segoe UI", 18F, FontStyle.Bold);
             lblTitulo.ForeColor = Color.White;
-            lblTitulo.Location = new Point(95, 110);
+            lblTitulo.Location = new Point(53, 95);
             lblTitulo.Name = "lblTitulo";
-            lblTitulo.Size = new Size(77, 41);
+            lblTitulo.Size = new Size(123, 32);
             lblTitulo.TabIndex = 1;
-            lblTitulo.Text = "SGA";
+            lblTitulo.Text = "SGA-ITLA";
+            lblTitulo.Click += lblTitulo_Click;
             // 
             // btnDashboard
             // 
@@ -199,7 +204,7 @@
             lblUsuario.AutoSize = true;
             lblUsuario.Location = new Point(1050, 20);
             lblUsuario.Name = "lblUsuario";
-            lblUsuario.Size = new Size(110, 20);
+            lblUsuario.Size = new Size(89, 15);
             lblUsuario.TabIndex = 0;
             lblUsuario.Text = "Usuario: Admin";
             // 
@@ -209,7 +214,7 @@
             lblRol.ForeColor = Color.Gray;
             lblRol.Location = new Point(1050, 45);
             lblRol.Name = "lblRol";
-            lblRol.Size = new Size(104, 20);
+            lblRol.Size = new Size(83, 15);
             lblRol.TabIndex = 1;
             lblRol.Text = "Administrador";
             // 
@@ -222,6 +227,18 @@
             pnlContent.Size = new Size(1150, 730);
             pnlContent.TabIndex = 0;
             pnlContent.Paint += pnlContent_Paint;
+            // 
+            // label1
+            // 
+            label1.AutoSize = true;
+            label1.FlatStyle = FlatStyle.Flat;
+            label1.ForeColor = SystemColors.ControlDark;
+            label1.Location = new Point(29, 127);
+            label1.Name = "label1";
+            label1.Size = new Size(181, 15);
+            label1.TabIndex = 13;
+            label1.Text = "Sistema de gestion de Autobuses";
+            label1.Click += label1_Click;
             // 
             // FrmPrincipal
             // 
@@ -240,5 +257,7 @@
             pnlTop.PerformLayout();
             ResumeLayout(false);
         }
+
+        private Label label1;
     }
 }

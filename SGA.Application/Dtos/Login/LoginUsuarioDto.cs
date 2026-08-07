@@ -2,13 +2,11 @@
 
 namespace SGA.Application.Dtos.Usuario
 {
-    public class CreateUsuarioDto
+    public class LoginResponseDto
     {
-        public string IdentificadorInstitucional { get; set; } = string.Empty;
+        public int Id { get; set; }
 
         public string Nombre { get; set; } = string.Empty;
-
-        public string Contrasena { get; set; } = string.Empty;
 
         public TipoUsuario TipoUsuario { get; set; }
 

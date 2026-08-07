@@ -14,5 +14,7 @@ namespace SGA.Application.Interfaces
         Task UpdateAsync(int id, UpdateUsuarioDto dto);
 
         Task DeleteAsync(int id);
+
+        Task<LoginResponseDto?> LoginAsync(LoginUsuarioDto dto);
     }
 }

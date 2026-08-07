@@ -77,5 +77,28 @@ namespace SGA.Api.Desktop.Controllers
 
             return Ok("Usuario eliminado correctamente.");
         }
+
+        [HttpPost("login")]
+        public async Task<IActionResult> Login([FromBody] LoginUsuarioDto dto)
+        {
+            try
+            {
+                var usuario =
+                    await _usuarioService.LoginAsync(dto);
+
+                if (usuario == null)
+                {
+                    return Unauthorized(
+                        "Identificador o contraseña incorrectos.");
+                }
+
+                return Ok(usuario);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
     }
+    
 }

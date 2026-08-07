@@ -13,5 +13,7 @@ namespace SGA.Presentation.Desktop.Interfaces
         Task<bool> UpdateAsync(int id, UpdateUsuarioDto usuario);
 
         Task<bool> DeleteAsync(int id);
+
+        Task<LoginResponseDto?> LoginAsync(LoginUsuarioDto login);
     }
 }

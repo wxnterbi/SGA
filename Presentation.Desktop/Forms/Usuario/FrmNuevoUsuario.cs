@@ -94,6 +94,8 @@ namespace SGA.Presentation.Desktop.Forms.Usuario
                 lblTitulo.Text =
                     "Editar Usuario";
 
+                txtContrasena.Clear();
+                lblMensajeContrasena.Visible = true;
 
                 txtIdentificador.Text =
                     usuario.IdentificadorInstitucional;
@@ -121,8 +123,8 @@ namespace SGA.Presentation.Desktop.Forms.Usuario
             }
         }
         private async void btnGuardar_Click(
-    object sender,
-    EventArgs e)
+            object sender,
+            EventArgs e)
         {
             try
             {
@@ -138,6 +140,18 @@ namespace SGA.Presentation.Desktop.Forms.Usuario
                     return;
                 }
 
+                if (!_modoEdicion &&
+                    string.IsNullOrWhiteSpace(txtContrasena.Text))
+                {
+                    MessageBox.Show(
+                        "Debe ingresar una contraseña.",
+                        "Validación",
+                        MessageBoxButtons.OK,
+                        MessageBoxIcon.Warning);
+
+                    return;
+                }
+
 
 
                 if (!_modoEdicion)
@@ -145,16 +159,19 @@ namespace SGA.Presentation.Desktop.Forms.Usuario
                     var usuario = new CreateUsuarioDto
                     {
                         IdentificadorInstitucional =
-                            txtIdentificador.Text.Trim(),
+                        txtIdentificador.Text.Trim(),
 
                         Nombre =
-                            txtNombre.Text.Trim(),
+                        txtNombre.Text.Trim(),
+
+                        Contrasena =
+                        txtContrasena.Text.Trim(),
 
                         TipoUsuario =
-                            (TipoUsuario)cmbTipoUsuario.SelectedItem,
+                        (TipoUsuario)cmbTipoUsuario.SelectedItem,
 
                         Estado =
-                            (EstadoUsuario)cmbEstado.SelectedItem
+                        (EstadoUsuario)cmbEstado.SelectedItem
                     };
 
 
@@ -197,16 +214,19 @@ namespace SGA.Presentation.Desktop.Forms.Usuario
                         Id = _usuarioId,
 
                         IdentificadorInstitucional =
-                            txtIdentificador.Text.Trim(),
+                        txtIdentificador.Text.Trim(),
 
                         Nombre =
-                            txtNombre.Text.Trim(),
+                        txtNombre.Text.Trim(),
+
+                        Contrasena =
+                        txtContrasena.Text.Trim(),
 
                         TipoUsuario =
-                            (TipoUsuario)cmbTipoUsuario.SelectedItem,
+                        (TipoUsuario)cmbTipoUsuario.SelectedItem,
 
                         Estado =
-                            (EstadoUsuario)cmbEstado.SelectedItem
+                        (EstadoUsuario)cmbEstado.SelectedItem
                     };
 
 
@@ -265,5 +285,9 @@ namespace SGA.Presentation.Desktop.Forms.Usuario
             Close();
         }
 
+        private void btnCancelar_Click_1(object sender, EventArgs e)
+        {
+
+        }
     }
 }

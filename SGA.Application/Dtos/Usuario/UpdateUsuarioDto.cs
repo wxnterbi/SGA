@@ -10,6 +10,8 @@ namespace SGA.Application.Dtos.Usuario
 
         public string Nombre { get; set; } = string.Empty;
 
+        public string Contrasena { get; set; } = string.Empty;
+
         public TipoUsuario TipoUsuario { get; set; }
 
         public EstadoUsuario Estado { get; set; }

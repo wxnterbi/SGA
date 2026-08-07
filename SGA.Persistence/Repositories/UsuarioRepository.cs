@@ -49,6 +49,7 @@ namespace SGA.Persistence.Repositories
 
             usuarioExistente.IdentificadorInstitucional = usuario.IdentificadorInstitucional;
             usuarioExistente.Nombre = usuario.Nombre;
+            usuarioExistente.Contrasena = usuario.Contrasena;
             usuarioExistente.TipoUsuario = usuario.TipoUsuario;
             usuarioExistente.Estado = usuario.Estado;
             usuarioExistente.FechaModificacion = DateTime.Now;

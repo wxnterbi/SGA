@@ -4,7 +4,9 @@
     {
         Estudiante = 1,
         Profesor = 2,
-        Administrativo = 3,
-        Visitante = 4
+        AdministradorTransporte = 3,
+        AdministradorAutorizaciones = 4,
+        Conductor = 5,
+        Auditor = 6
     }
 }
