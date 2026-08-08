@@ -15,7 +15,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\SG.IOC\SG.IOC.csproj" />
     <ProjectReference Include="..\SGA.Application\SGA.Application.csproj" />
     <ProjectReference Include="..\SGA.Domain\SGA.Domain.csproj" />
     <ProjectReference Include="..\SGA.Infrastructure\SGA.Infrastructure.csproj" />
