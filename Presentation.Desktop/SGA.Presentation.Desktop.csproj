@@ -15,7 +15,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Forms\Auditoria\" />
     <Folder Include="Models\Autobus\" />
     <Folder Include="Models\Auditoria\" />
     <Folder Include="Models\Incidencia\" />
@@ -28,7 +27,6 @@
     <Folder Include="Resources\Images\" />
     <Folder Include="Resources\Icons\" />
     <Folder Include="Resources\Logo\" />
-    <Folder Include="Services\Auditoria\" />
     <Folder Include="Services\Incidencia\" />
     <Folder Include="Services\Usuario\" />
   </ItemGroup>

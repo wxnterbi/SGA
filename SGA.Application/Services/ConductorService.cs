@@ -1,5 +1,7 @@
 ﻿using SGA.Application.Dtos.Conductor;
+using SGA.Application.Dtos.Auditoria;
 using SGA.Application.Interfaces;
+using SGA.Application.Helpers;
 using SGA.Domain.Entities.Configuration;
 using SGA.Domain.Enums.Configuration;
 using SGA.Infrastructure.Notifications;
@@ -11,13 +13,16 @@ namespace SGA.Application.Services
     {
         private readonly IConductorRepository _conductorRepository;
         private readonly INotificationService _notificationService;
+        private readonly IAuditoriaService _auditoriaService;
 
         public ConductorService(
             IConductorRepository conductorRepository,
-            INotificationService notificationService)
+            INotificationService notificationService,
+            IAuditoriaService auditoriaService)
         {
             _conductorRepository = conductorRepository;
             _notificationService = notificationService;
+            _auditoriaService = auditoriaService;
         }
 
         public async Task<IEnumerable<ConductorDto>> GetAllAsync()
@@ -82,6 +87,18 @@ namespace SGA.Application.Services
                 "conductor@itla.edu.do",
                 "Conductor registrado",
                 $"El conductor '{conductor.Nombre}' fue registrado correctamente.");
+
+
+            await _auditoriaService.AddAsync(new CreateAuditoriaDto
+            {
+                Actor = string.IsNullOrEmpty(SessionManager.Usuario)
+                    ? "Sistema"
+                    : SessionManager.Usuario,
+
+                TipoAccion = "Crear Conductor",
+
+                Descripcion = $"Se creó el conductor {conductor.Nombre} (Cédula: {conductor.Cedula})"
+            });
         }
 
         public async Task UpdateAsync(ConductorDto dto)
@@ -110,6 +127,18 @@ namespace SGA.Application.Services
             conductor.EstadoLaboral = (EstadoLaboral)dto.EstadoConductorId;
 
             await _conductorRepository.UpdateAsync(conductor);
+
+
+            await _auditoriaService.AddAsync(new CreateAuditoriaDto
+            {
+                Actor = string.IsNullOrEmpty(SessionManager.Usuario)
+                    ? "Sistema"
+                    : SessionManager.Usuario,
+
+                TipoAccion = "Actualizar Conductor",
+
+                Descripcion = $"Se actualizó el conductor ID {dto.Id}"
+            });
         }
 
         public async Task DeleteAsync(int id)
@@ -118,6 +147,18 @@ namespace SGA.Application.Services
 
             if (!eliminado)
                 throw new Exception("Conductor no encontrado.");
+
+
+            await _auditoriaService.AddAsync(new CreateAuditoriaDto
+            {
+                Actor = string.IsNullOrEmpty(SessionManager.Usuario)
+                    ? "Sistema"
+                    : SessionManager.Usuario,
+
+                TipoAccion = "Eliminar Conductor",
+
+                Descripcion = $"Se eliminó el conductor ID {id}"
+            });
         }
     }
 }

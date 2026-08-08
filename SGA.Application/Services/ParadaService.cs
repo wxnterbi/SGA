@@ -1,5 +1,7 @@
 ﻿using SGA.Application.Dtos.Parada;
+using SGA.Application.Dtos.Auditoria;
 using SGA.Application.Interfaces;
+using SGA.Application.Helpers;
 using SGA.Domain.Entities.Configuration;
 using SGA.Infrastructure.Notifications;
 using SGA.Persistence.Interfaces;
@@ -10,15 +12,17 @@ namespace SGA.Application.Services
     {
         private readonly IParadaRepository _paradaRepository;
         private readonly INotificationService _notificationService;
+        private readonly IAuditoriaService _auditoriaService;
 
         public ParadaService(
             IParadaRepository paradaRepository,
-            INotificationService notificationService)
+            INotificationService notificationService,
+            IAuditoriaService auditoriaService)
         {
             _paradaRepository = paradaRepository;
             _notificationService = notificationService;
+            _auditoriaService = auditoriaService;
         }
-
 
         public Task<IEnumerable<ParadaDto>> GetAllAsync()
         {
@@ -35,14 +39,12 @@ namespace SGA.Application.Services
             return Task.FromResult(resultado);
         }
 
-
         public Task<ParadaDto?> GetByIdAsync(int id)
         {
             var parada = _paradaRepository.GetById(id);
 
             if (parada == null)
                 return Task.FromResult<ParadaDto?>(null);
-
 
             return Task.FromResult<ParadaDto?>(new ParadaDto
             {
@@ -52,7 +54,6 @@ namespace SGA.Application.Services
                 Orden = parada.Orden
             });
         }
-
 
         public async Task AddAsync(CreateParadaDto dto)
         {
@@ -65,33 +66,36 @@ namespace SGA.Application.Services
 
             _paradaRepository.Add(parada);
 
-
             await _notificationService.SendNotificationAsync(
                 "usuario@itla.edu.do",
                 "Parada registrada",
                 $"La parada '{parada.Nombre}' fue registrada correctamente en el sistema."
             );
+
+
+            await RegistrarAuditoria("Crear Parada",
+                $"Se creó la parada '{parada.Nombre}'");
         }
 
-
-        public Task UpdateAsync(UpdateParadaDto dto)
+        public async Task UpdateAsync(UpdateParadaDto dto)
         {
-            var parada = new Parada
-            {
-                Id = dto.Id,
-                Nombre = dto.Nombre,
-                Ubicacion = dto.Ubicacion,
-                Orden = dto.Orden
-            };
+            var parada = _paradaRepository.GetById(dto.Id);
 
+            if (parada == null)
+                throw new Exception("Parada no encontrada.");
+
+            parada.Nombre = dto.Nombre;
+            parada.Ubicacion = dto.Ubicacion;
+            parada.Orden = dto.Orden;
 
             _paradaRepository.Update(parada);
 
-            return Task.CompletedTask;
+
+            await RegistrarAuditoria("Actualizar Parada",
+                $"Se actualizó la parada ID {dto.Id}");
         }
 
-
-        public Task DeleteAsync(int id)
+        public async Task DeleteAsync(int id)
         {
             var eliminado = _paradaRepository.Delete(id);
 
@@ -99,7 +103,22 @@ namespace SGA.Application.Services
                 throw new Exception("Parada no encontrada.");
 
 
-            return Task.CompletedTask;
+            await RegistrarAuditoria("Eliminar Parada",
+                $"Se eliminó la parada ID {id}");
+        }
+
+
+        private async Task RegistrarAuditoria(string accion, string descripcion)
+        {
+            await _auditoriaService.AddAsync(new CreateAuditoriaDto
+            {
+                Actor = string.IsNullOrEmpty(SessionManager.Usuario)
+                    ? "Sistema"
+                    : SessionManager.Usuario,
+
+                TipoAccion = accion,
+                Descripcion = descripcion
+            });
         }
     }
 }

@@ -58,4 +58,5 @@ namespace SGA.Presentation.Desktop.Services.Usuario
             return await response.Content.ReadFromJsonAsync<LoginResponseDto>();
         }
     }
+
 }

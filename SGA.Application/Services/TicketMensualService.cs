@@ -6,7 +6,6 @@ using SGA.Domain.Entities.Reservation;
 using SGA.Domain.Enums.Reservation;
 using SGA.Infrastructure.Notifications;
 using SGA.Persistence.Interfaces;
-using SGA.Persistence.Repository;
 
 namespace SGA.Application.Services
 {
@@ -16,17 +15,20 @@ namespace SGA.Application.Services
         private readonly INotificationService _notificationService;
         private readonly IUsuarioRepository _usuarioRepository;
         private readonly UsuarioRules _usuarioRules;
+        private readonly IAuditoriaService _auditoriaService;
 
         public TicketMensualService(
             ITicketMensualRepository ticketRepository,
             INotificationService notificationService,
             IUsuarioRepository usuarioRepository,
-            UsuarioRules usuarioRules)
+            UsuarioRules usuarioRules,
+            IAuditoriaService auditoriaService)
         {
             _ticketRepository = ticketRepository;
             _notificationService = notificationService;
             _usuarioRepository = usuarioRepository;
             _usuarioRules = usuarioRules;
+            _auditoriaService = auditoriaService;
         }
 
         public async Task<IEnumerable<TicketMensualDto>> GetAllAsync()
@@ -41,15 +43,19 @@ namespace SGA.Application.Services
                     ticket.Estado = EstadoTicket.Vencido;
 
                     await _ticketRepository.UpdateAsync(ticket);
+
+                    await _auditoriaService.RegistrarAsync(
+                        "ACTUALIZAR",
+                        $"El ticket mensual ID {ticket.Id} pasó a estado Vencido.");
                 }
             }
+
             return tickets.Select(t => new TicketMensualDto
             {
                 Id = t.Id,
                 UsuarioId = t.UsuarioId,
                 PagoId = t.PagoId,
                 Precio = t.Precio,
-
                 FechaInicio = t.FechaInicio,
                 FechaFin = t.FechaFin,
                 Estado = (int)t.Estado,
@@ -94,7 +100,8 @@ namespace SGA.Application.Services
 
         public async Task AddAsync(TicketMensualDto dto)
         {
-            var usuario = _usuarioRepository.GetById(dto.UsuarioId);
+            var usuario =
+                _usuarioRepository.GetById(dto.UsuarioId);
 
             _usuarioRules.ValidarUsuarioRegistrado(usuario != null);
 
@@ -118,6 +125,10 @@ namespace SGA.Application.Services
 
             await _ticketRepository.AddAsync(ticket);
 
+            await _auditoriaService.RegistrarAsync(
+                "CREAR",
+                $"Se creó el ticket mensual ID {ticket.Id} para el usuario {dto.UsuarioId}.");
+
             await _notificationService.SendNotificationAsync(
                 "estudiante@itla.edu.do",
                 "Ticket mensual generado",
@@ -126,11 +137,12 @@ namespace SGA.Application.Services
 
         public async Task UpdateAsync(TicketMensualDto dto)
         {
-
-            var ticket = await _ticketRepository.GetByIdAsync(dto.Id);
+            var ticket =
+                await _ticketRepository.GetByIdAsync(dto.Id);
 
             if (ticket == null)
-                throw new Exception("Ticket mensual no encontrado.");
+                throw new Exception(
+                    "Ticket mensual no encontrado.");
 
             ticket.UsuarioId = dto.UsuarioId;
             ticket.PagoId = dto.PagoId;
@@ -148,25 +160,36 @@ namespace SGA.Application.Services
             ticket.HorarioSalidaId = dto.HorarioSalidaId;
             ticket.ParadaSalidaId = dto.ParadaSalidaId;
 
-
             await _ticketRepository.UpdateAsync(ticket);
+
+            await _auditoriaService.RegistrarAsync(
+                "ACTUALIZAR",
+                $"Se actualizó el ticket mensual ID {dto.Id}.");
         }
 
         public async Task DeleteAsync(int id)
         {
-            var ticket = await _ticketRepository.GetByIdAsync(id);
+            var ticket =
+                await _ticketRepository.GetByIdAsync(id);
 
             if (ticket == null)
-                throw new Exception("No se encontró el ticket mensual.");
+                throw new Exception(
+                    "No se encontró el ticket mensual.");
 
             await _ticketRepository.DeleteAsync(id);
+
+            await _auditoriaService.RegistrarAsync(
+                "ELIMINAR",
+                $"Se eliminó el ticket mensual ID {id}.");
         }
+
         public async Task CrearDesdeCompraAsync(
             int usuarioId,
             int pagoId,
             ComprarTicketDto dto)
         {
-            var usuario = _usuarioRepository.GetById(usuarioId);
+            var usuario =
+                _usuarioRepository.GetById(usuarioId);
 
             _usuarioRules.ValidarUsuarioRegistrado(usuario != null);
 
@@ -189,6 +212,10 @@ namespace SGA.Application.Services
             };
 
             await _ticketRepository.AddAsync(ticket);
+
+            await _auditoriaService.RegistrarAsync(
+                "CREAR",
+                $"Se creó el ticket mensual ID {ticket.Id} mediante una compra.");
 
             await _notificationService.SendNotificationAsync(
                 "estudiante@itla.edu.do",

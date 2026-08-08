@@ -1,5 +1,7 @@
 ﻿using SGA.Application.Dtos.Horario;
+using SGA.Application.Dtos.Auditoria;
 using SGA.Application.Interfaces;
+using SGA.Application.Helpers;
 using SGA.Domain.Entities.Configuration;
 using SGA.Infrastructure.Notifications;
 using SGA.Persistence.Interfaces;
@@ -10,13 +12,16 @@ namespace SGA.Application.Services
     {
         private readonly IHorarioRepository _horarioRepository;
         private readonly INotificationService _notificationService;
+        private readonly IAuditoriaService _auditoriaService;
 
         public HorarioService(
             IHorarioRepository horarioRepository,
-            INotificationService notificationService)
+            INotificationService notificationService,
+            IAuditoriaService auditoriaService)
         {
             _horarioRepository = horarioRepository;
             _notificationService = notificationService;
+            _auditoriaService = auditoriaService;
         }
 
         public async Task<IEnumerable<HorarioDto>> GetAllAsync()
@@ -35,7 +40,7 @@ namespace SGA.Application.Services
                     : $"Ruta #{h.RutaId}"
             });
 
-            return await Task.FromResult(resultado);
+            return resultado;
         }
 
         public Task<HorarioDto?> GetByIdAsync(int id)
@@ -73,9 +78,20 @@ namespace SGA.Application.Services
                 "estudiante@itla.edu.do",
                 "Horario registrado",
                 "Se registró un nuevo horario correctamente.");
+
+            await _auditoriaService.AddAsync(new CreateAuditoriaDto
+            {
+                Actor = string.IsNullOrEmpty(SessionManager.Usuario)
+                    ? "Sistema"
+                    : SessionManager.Usuario,
+
+                TipoAccion = "Crear Horario",
+
+                Descripcion = $"Se creó un horario para la ruta ID {dto.RutaId} a las {dto.HoraSalida}"
+            });
         }
 
-        public Task UpdateAsync(HorarioDto dto)
+        public async Task UpdateAsync(HorarioDto dto)
         {
             var horario = _horarioRepository.GetById(dto.Id);
 
@@ -88,17 +104,35 @@ namespace SGA.Application.Services
 
             _horarioRepository.Update(horario);
 
-            return Task.CompletedTask;
+            await _auditoriaService.AddAsync(new CreateAuditoriaDto
+            {
+                Actor = string.IsNullOrEmpty(SessionManager.Usuario)
+                    ? "Sistema"
+                    : SessionManager.Usuario,
+
+                TipoAccion = "Actualizar Horario",
+
+                Descripcion = $"Se actualizó el horario ID {dto.Id}"
+            });
         }
 
-        public Task DeleteAsync(int id)
+        public async Task DeleteAsync(int id)
         {
             var eliminado = _horarioRepository.Delete(id);
 
             if (!eliminado)
                 throw new InvalidOperationException("Horario no encontrado.");
 
-            return Task.CompletedTask;
+            await _auditoriaService.AddAsync(new CreateAuditoriaDto
+            {
+                Actor = string.IsNullOrEmpty(SessionManager.Usuario)
+                    ? "Sistema"
+                    : SessionManager.Usuario,
+
+                TipoAccion = "Eliminar Horario",
+
+                Descripcion = $"Se eliminó el horario ID {id}"
+            });
         }
     }
 }

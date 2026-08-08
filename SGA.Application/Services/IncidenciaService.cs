@@ -1,6 +1,8 @@
 ﻿using SGA.Application.BusinessRules;
 using SGA.Application.Dtos.Incidencia;
+using SGA.Application.Dtos.Auditoria;
 using SGA.Application.Interfaces;
+using SGA.Application.Helpers;
 using SGA.Domain.Entities.Reservation;
 using SGA.Domain.Enums.Reservation;
 using SGA.Infrastructure.Notifications;
@@ -13,11 +15,13 @@ namespace SGA.Application.Services
         private readonly IIncidenciaRepository _incidenciaRepository;
         private readonly INotificationService _notificationService;
         private readonly IncidenciaRules _incidenciaRules;
+        private readonly IAuditoriaService _auditoriaService;
 
         public IncidenciaService(
             IIncidenciaRepository incidenciaRepository,
             INotificationService notificationService,
-            IncidenciaRules incidenciaRules)
+            IncidenciaRules incidenciaRules,
+            IAuditoriaService auditoriaService)
         {
             _incidenciaRepository = incidenciaRepository
                 ?? throw new ArgumentNullException(nameof(incidenciaRepository));
@@ -27,6 +31,9 @@ namespace SGA.Application.Services
 
             _incidenciaRules = incidenciaRules
                 ?? throw new ArgumentNullException(nameof(incidenciaRules));
+
+            _auditoriaService = auditoriaService
+                ?? throw new ArgumentNullException(nameof(auditoriaService));
         }
 
         public async Task<IEnumerable<IncidenciaDto>> GetAllAsync()
@@ -64,30 +71,33 @@ namespace SGA.Application.Services
             };
         }
 
-public async Task AddAsync(IncidenciaDto dto)
-{
-    _incidenciaRules.ValidarRegistroIncidencia(
-        dto.ViajeId,
-        dto.ConductorId);
+        public async Task AddAsync(IncidenciaDto dto)
+        {
+            _incidenciaRules.ValidarRegistroIncidencia(
+                dto.ViajeId,
+                dto.ConductorId);
 
-    var incidencia = new Incidencia
-    {
-        ViajeId = dto.ViajeId,
-        ConductorId = dto.ConductorId,
-        Tipo = (TipoIncidencia)dto.Tipo,
-        Descripcion = dto.Descripcion,
-        FechaHora = dto.FechaHora == default
-            ? DateTime.Now
-            : dto.FechaHora
-    };
+            var incidencia = new Incidencia
+            {
+                ViajeId = dto.ViajeId,
+                ConductorId = dto.ConductorId,
+                Tipo = (TipoIncidencia)dto.Tipo,
+                Descripcion = dto.Descripcion,
+                FechaHora = dto.FechaHora == default
+                    ? DateTime.Now
+                    : dto.FechaHora
+            };
 
-    await _incidenciaRepository.AddAsync(incidencia);
+            await _incidenciaRepository.AddAsync(incidencia);
 
-    await _notificationService.SendNotificationAsync(
-        "transporte@itla.edu.do",
-        "Nueva Incidencia Reportada",
-        "Incidencia registrada correctamente.");
-}
+            await _notificationService.SendNotificationAsync(
+                "transporte@itla.edu.do",
+                "Nueva Incidencia Reportada",
+                "Incidencia registrada correctamente.");
+
+            await RegistrarAuditoria("Crear Incidencia",
+                $"Se registró una incidencia para el viaje {dto.ViajeId}");
+        }
 
         public async Task UpdateAsync(IncidenciaDto dto)
         {
@@ -108,6 +118,9 @@ public async Task AddAsync(IncidenciaDto dto)
             incidencia.FechaHora = dto.FechaHora;
 
             await _incidenciaRepository.UpdateAsync(incidencia);
+
+            await RegistrarAuditoria("Actualizar Incidencia",
+                $"Se actualizó la incidencia ID {dto.Id}");
         }
 
         public async Task DeleteAsync(int id)
@@ -122,6 +135,22 @@ public async Task AddAsync(IncidenciaDto dto)
             }
 
             await _incidenciaRepository.DeleteAsync(incidencia);
+
+            await RegistrarAuditoria("Eliminar Incidencia",
+                $"Se eliminó la incidencia ID {id}");
+        }
+
+        private async Task RegistrarAuditoria(string accion, string descripcion)
+        {
+            await _auditoriaService.AddAsync(new CreateAuditoriaDto
+            {
+                Actor = string.IsNullOrEmpty(SessionManager.Usuario)
+                    ? "Sistema"
+                    : SessionManager.Usuario,
+
+                TipoAccion = accion,
+                Descripcion = descripcion
+            });
         }
     }
 }

@@ -151,6 +151,34 @@ namespace SGA.Persistence.Context
                 .Property(x => x.TipoTicket)
                 .HasConversion<string>();
 
+            modelBuilder.Entity<Auditoria>(entity =>
+            {
+                entity.ToTable("Auditoria");
+
+                entity.HasKey(a => a.Id);
+
+                entity.Property(a => a.Actor)
+                    .IsRequired()
+                    .HasMaxLength(60);
+
+                entity.Property(a => a.TipoAccion)
+                    .IsRequired()
+                    .HasMaxLength(50);
+
+                entity.Property(a => a.Descripcion)
+                    .IsRequired()
+                    .HasMaxLength(500);
+
+                entity.Property(a => a.FechaHora)
+                    .IsRequired();
+
+                entity.Property(a => a.FechaCreacion)
+                    .IsRequired();
+
+                entity.Property(a => a.FechaModificacion)
+                    .IsRequired(false);
+            });
+
             base.OnModelCreating(modelBuilder);
         }
     }

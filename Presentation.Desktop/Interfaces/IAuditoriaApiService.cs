@@ -1,10 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using SGA.Application.Dtos.Auditoria;
 
 namespace SGA.Presentation.Desktop.Interfaces
 {
-    internal interface IAuditoriaApiService
+    public interface IAuditoriaApiService
     {
+        Task<List<AuditoriaDto>> GetAllAsync();
+
+        Task<AuditoriaDto?> GetByIdAsync(int id);
     }
 }

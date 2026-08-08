@@ -1,5 +1,7 @@
 ﻿using SGA.Application.Dtos.Ruta;
+using SGA.Application.Dtos.Auditoria;
 using SGA.Application.Interfaces;
+using SGA.Application.Helpers;
 using SGA.Domain.Entities.Configuration;
 using SGA.Infrastructure.Notifications;
 using SGA.Persistence.Interfaces;
@@ -13,13 +15,16 @@ namespace SGA.Application.Services
     {
         private readonly IRutaRepository _rutaRepository;
         private readonly INotificationService _notificationService;
+        private readonly IAuditoriaService _auditoriaService;
 
         public RutaService(
             IRutaRepository rutaRepository,
-            INotificationService notificationService)
+            INotificationService notificationService,
+            IAuditoriaService auditoriaService)
         {
             _rutaRepository = rutaRepository;
             _notificationService = notificationService;
+            _auditoriaService = auditoriaService;
         }
 
         public async Task<IEnumerable<RutaDto>> GetAllAsync()
@@ -64,11 +69,23 @@ namespace SGA.Application.Services
                 "estudiante@itla.edu.do",
                 "Nueva ruta",
                 "Se registró una nueva ruta correctamente.");
+
+            await _auditoriaService.AddAsync(new CreateAuditoriaDto
+            {
+                Actor = string.IsNullOrEmpty(SessionManager.Usuario)
+                    ? "Sistema"
+                    : SessionManager.Usuario,
+
+                TipoAccion = "Crear Ruta",
+
+                Descripcion = $"Se creó la ruta {ruta.Nombre} ({ruta.Origen} → {ruta.Destino})"
+            });
         }
 
         public async Task UpdateAsync(RutaDto dto)
         {
             var ruta = await _rutaRepository.GetByIdAsync(dto.Id);
+
             if (ruta == null)
                 throw new Exception("Ruta no encontrada.");
 
@@ -77,13 +94,36 @@ namespace SGA.Application.Services
             ruta.Destino = dto.Destino;
 
             await _rutaRepository.UpdateAsync(ruta);
+
+            await _auditoriaService.AddAsync(new CreateAuditoriaDto
+            {
+                Actor = string.IsNullOrEmpty(SessionManager.Usuario)
+                    ? "Sistema"
+                    : SessionManager.Usuario,
+
+                TipoAccion = "Actualizar Ruta",
+
+                Descripcion = $"Se actualizó la ruta ID {dto.Id}"
+            });
         }
 
         public async Task DeleteAsync(int id)
         {
             var eliminado = await _rutaRepository.DeleteAsync(id);
+
             if (!eliminado)
                 throw new Exception("Ruta no encontrada.");
+
+            await _auditoriaService.AddAsync(new CreateAuditoriaDto
+            {
+                Actor = string.IsNullOrEmpty(SessionManager.Usuario)
+                    ? "Sistema"
+                    : SessionManager.Usuario,
+
+                TipoAccion = "Eliminar Ruta",
+
+                Descripcion = $"Se eliminó la ruta ID {id}"
+            });
         }
     }
 }

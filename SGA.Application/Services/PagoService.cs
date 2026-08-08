@@ -1,4 +1,7 @@
-﻿using SGA.Application.BusinessRules;
+﻿using Microsoft.AspNetCore.Http;
+using SGA.Application.BusinessRules;
+using SGA.Application.Dtos.Auditoria;
+using SGA.Application.Dtos.Notificacion;
 using SGA.Application.Dtos.Pago;
 using SGA.Application.Dtos.TicketMensual;
 using SGA.Application.Interfaces;
@@ -6,7 +9,7 @@ using SGA.Domain.Entities.Reservation;
 using SGA.Domain.Enums.Reservation;
 using SGA.Infrastructure.Notifications;
 using SGA.Persistence.Interfaces;
-using SGA.Application.Dtos.Notificacion;
+using System.Security.Claims;
 
 namespace SGA.Application.Services
 {
@@ -20,9 +23,9 @@ namespace SGA.Application.Services
         private readonly ITicketMensualService _ticketMensualService;
         private readonly ITicketMensualRepository _ticketRepository;
         private readonly INotificacionService _notificacionService;
-        private readonly IRutaRepository _rutaRepository;
-        private readonly IHorarioRepository _horarioRepository;
-        private readonly IParadaRepository _paradaRepository;
+        private readonly IAuditoriaService _auditoriaService;
+
+        private readonly IHttpContextAccessor _httpContextAccessor;
 
         public PagoService(
             IPagoRepository pagoRepository,
@@ -33,10 +36,8 @@ namespace SGA.Application.Services
             ITicketMensualService ticketMensualService,
             ITicketMensualRepository ticketRepository,
             INotificacionService notificacionService,
-            IRutaRepository rutaRepository,
-            IHorarioRepository horarioRepository,
-            IParadaRepository paradaRepository
-            )
+            IAuditoriaService auditoriaService,
+            IHttpContextAccessor httpContextAccessor)
         {
             _pagoRepository = pagoRepository;
             _usuarioRepository = usuarioRepository;
@@ -46,9 +47,8 @@ namespace SGA.Application.Services
             _ticketMensualService = ticketMensualService;
             _ticketRepository = ticketRepository;
             _notificacionService = notificacionService;
-            _rutaRepository = rutaRepository;
-            _horarioRepository = horarioRepository;
-            _paradaRepository = paradaRepository;
+            _auditoriaService = auditoriaService;
+            _httpContextAccessor = httpContextAccessor;
         }
 
         public async Task<IEnumerable<PagoDto>> GetAllAsync()
@@ -84,7 +84,8 @@ namespace SGA.Application.Services
 
             var resultado = new List<PagoDto>();
 
-            foreach (var pago in pagos.Where(p => p.Concepto == ConceptoPago.Recarga))
+            foreach (var pago in pagos.Where(
+                p => p.Concepto == ConceptoPago.Recarga))
             {
                 var usuario = _usuarioRepository.GetById(pago.UsuarioId);
 
@@ -116,38 +117,12 @@ namespace SGA.Application.Services
 
             var usuario = _usuarioRepository.GetById(pago.UsuarioId);
 
-            var rutaEntrada = pago.RutaEntradaId.HasValue
-                ? await _rutaRepository.GetByIdAsync(pago.RutaEntradaId.Value)
-                : null;
-
-            var horarioEntrada = pago.HorarioEntradaId.HasValue
-                ? _horarioRepository.GetById(pago.HorarioEntradaId.Value)
-                : null;
-
-            var paradaEntrada = pago.ParadaEntradaId.HasValue
-                ? _paradaRepository.GetById(pago.ParadaEntradaId.Value)
-                : null;
-
-            var rutaSalida = pago.RutaSalidaId.HasValue
-                ? await _rutaRepository.GetByIdAsync(pago.RutaSalidaId.Value)
-                : null;
-
-            var horarioSalida = pago.HorarioSalidaId.HasValue
-                ? _horarioRepository.GetById(pago.HorarioSalidaId.Value)
-                : null;
-
-            var paradaSalida = pago.ParadaSalidaId.HasValue
-                ? _paradaRepository.GetById(pago.ParadaSalidaId.Value)
-                : null;
-
             return new PagoDto
-
-
-
             {
                 Id = pago.Id,
                 UsuarioId = pago.UsuarioId,
-                IdentificadorInstitucional = usuario?.IdentificadorInstitucional ?? "",
+                IdentificadorInstitucional =
+                    usuario?.IdentificadorInstitucional ?? "",
                 Monto = pago.Monto,
                 FechaPago = pago.FechaPago,
                 Modalidad = pago.Modalidad,
@@ -160,21 +135,12 @@ namespace SGA.Application.Services
 
                 RutaSalidaId = pago.RutaSalidaId,
                 HorarioSalidaId = pago.HorarioSalidaId,
-                ParadaSalidaId = pago.ParadaSalidaId,
-
-                NombreRutaEntrada = rutaEntrada?.Nombre,
-                NombreHorarioEntrada = horarioEntrada?.HoraSalida.ToString(@"hh\:mm"),
-                NombreParadaEntrada = paradaEntrada?.Nombre,
-
-                NombreRutaSalida = rutaSalida?.Nombre,
-                NombreHorarioSalida = horarioSalida?.HoraSalida.ToString(@"hh\:mm"),
-                NombreParadaSalida = paradaSalida?.Nombre,
+                ParadaSalidaId = pago.ParadaSalidaId
             };
         }
 
         public async Task AddAsync(PagoDto dto)
         {
-
             var usuario = _usuarioRepository.GetById(dto.UsuarioId);
 
             _usuarioRules.ValidarUsuarioRegistrado(usuario != null);
@@ -192,14 +158,18 @@ namespace SGA.Application.Services
             await _pagoRepository.AddAsync(pago);
 
             await _notificationService.SendNotificationAsync(
-               "estudiante@itla.edu.do",
-               "Pago registrado",
-               "Su pago fue registrado correctamente.");
+                "estudiante@itla.edu.do",
+                "Pago registrado",
+                "Su pago fue registrado correctamente.");
+
+            await RegistrarAuditoria(
+                "Registrar Pago",
+                $"Se registró un pago de RD${dto.Monto:N2} " +
+                $"para el usuario {dto.UsuarioId}.");
         }
 
         public async Task UpdateAsync(PagoDto dto)
         {
-
             var pago = await _pagoRepository.GetByIdAsync(dto.Id);
 
             if (pago == null)
@@ -217,7 +187,12 @@ namespace SGA.Application.Services
             pago.TipoTicket = dto.TipoTicket;
 
             await _pagoRepository.UpdateAsync(pago);
+
+            await RegistrarAuditoria(
+                "Actualizar Pago",
+                $"Se actualizó el pago ID {dto.Id}.");
         }
+
         public async Task DeleteAsync(int id)
         {
             var pago = await _pagoRepository.GetByIdAsync(id);
@@ -226,18 +201,24 @@ namespace SGA.Application.Services
                 throw new Exception("Pago no encontrado.");
 
             await _pagoRepository.DeleteAsync(id);
+
+            await RegistrarAuditoria(
+                "Eliminar Pago",
+                $"Se eliminó el pago ID {id}.");
         }
+
         public async Task ComprarTicketAsync(ComprarTicketDto dto)
         {
-
-            var ticketActivo = await _ticketRepository.GetActivoByUsuarioAsync(dto.UsuarioId);
+            var ticketActivo =
+                await _ticketRepository.GetActivoByUsuarioAsync(dto.UsuarioId);
 
             if (ticketActivo != null)
             {
                 if (dto.EsMensual)
                 {
                     throw new Exception(
-                        $"Ya tienes un ticket mensual activo hasta {ticketActivo.FechaFin:dd/MM/yyyy}.");
+                        $"Ya tienes un ticket mensual activo hasta " +
+                        $"{ticketActivo.FechaFin:dd/MM/yyyy}.");
                 }
 
                 bool mismaRuta =
@@ -267,16 +248,20 @@ namespace SGA.Application.Services
                     TipoTicket.Entrada => 25,
                     TipoTicket.Salida => 25,
                     TipoTicket.EntradaYSalida => 50,
-                    _ => throw new Exception("Tipo de ticket inválido.")
+                    _ => throw new Exception(
+                        "Tipo de ticket inválido.")
                 };
-            }        
+            }
 
-            var saldo = await _tarjetaService.ObtenerSaldoAsync(dto.UsuarioId);
+            var saldo =
+                await _tarjetaService.ObtenerSaldoAsync(dto.UsuarioId);
 
             if (saldo < monto)
                 throw new Exception("Saldo insuficiente.");
 
-            await _tarjetaService.DescontarSaldoAsync(dto.UsuarioId, monto);
+            await _tarjetaService.DescontarSaldoAsync(
+                dto.UsuarioId,
+                monto);
 
             var pago = new Pago
             {
@@ -300,24 +285,25 @@ namespace SGA.Application.Services
 
             if (dto.EsMensual)
             {
-                await _ticketMensualService.AddAsync(new TicketMensualDto
-                {
-                    UsuarioId = dto.UsuarioId,
-                    PagoId = pago.Id,
+                await _ticketMensualService.AddAsync(
+                    new TicketMensualDto
+                    {
+                        UsuarioId = dto.UsuarioId,
+                        PagoId = pago.Id,
 
-                    FechaInicio = DateTime.Today,
-                    FechaFin = DateTime.Today.AddMonths(1),
+                        FechaInicio = DateTime.Today,
+                        FechaFin = DateTime.Today.AddMonths(1),
 
-                    Estado = (int)EstadoTicket.Activo,
+                        Estado = (int)EstadoTicket.Activo,
 
-                    RutaEntradaId = dto.RutaEntradaId,
-                    HorarioEntradaId = dto.HorarioEntradaId,
-                    ParadaEntradaId = dto.ParadaEntradaId,
+                        RutaEntradaId = dto.RutaEntradaId,
+                        HorarioEntradaId = dto.HorarioEntradaId,
+                        ParadaEntradaId = dto.ParadaEntradaId,
 
-                    RutaSalidaId = dto.RutaSalidaId,
-                    HorarioSalidaId = dto.HorarioSalidaId,
-                    ParadaSalidaId = dto.ParadaSalidaId
-                });
+                        RutaSalidaId = dto.RutaSalidaId,
+                        HorarioSalidaId = dto.HorarioSalidaId,
+                        ParadaSalidaId = dto.ParadaSalidaId
+                    });
             }
 
             string descripcion = dto.EsMensual
@@ -329,13 +315,43 @@ namespace SGA.Application.Services
                 "Compra realizada",
                 $"Se compró correctamente el {descripcion}.");
 
-            await _notificacionService.AddAsync(new NotificacionDto
-            {
-                UsuarioId = dto.UsuarioId,
-                TipoEvento = 1,
-                Mensaje = $"Se compró correctamente el {descripcion}.",
-                FechaHora = DateTime.Now
-            });
+            await _notificacionService.AddAsync(
+                new NotificacionDto
+                {
+                    UsuarioId = dto.UsuarioId,
+                    TipoEvento = 1,
+                    Mensaje =
+                        $"Se compró correctamente el {descripcion}.",
+                    FechaHora = DateTime.Now
+                });
+
+            await RegistrarAuditoria(
+                "Compra Ticket",
+                $"Usuario {dto.UsuarioId} compró " +
+                $"{descripcion} por RD${monto:N2}.");
+        }
+
+        private async Task RegistrarAuditoria(
+            string accion,
+            string descripcion)
+        {
+            var usuarioActual =
+                _httpContextAccessor.HttpContext?.User;
+
+            string actor =
+                usuarioActual?.FindFirst(ClaimTypes.Name)?.Value
+                ?? usuarioActual?.FindFirst("matricula")?.Value
+                ?? usuarioActual?.FindFirst(ClaimTypes.NameIdentifier)?.Value
+                ?? usuarioActual?.Identity?.Name
+                ?? "Usuario no identificado";
+
+            await _auditoriaService.AddAsync(
+                new CreateAuditoriaDto
+                {
+                    Actor = actor,
+                    TipoAccion = accion,
+                    Descripcion = descripcion
+                });
         }
     }
 }

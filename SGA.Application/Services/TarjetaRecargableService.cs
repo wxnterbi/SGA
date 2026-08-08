@@ -15,19 +15,22 @@ namespace SGA.Application.Services
         private readonly IUsuarioRepository _usuarioRepository;
         private readonly IPagoRepository _pagoRepository;
         private readonly UsuarioRules _usuarioRules;
+        private readonly IAuditoriaService _auditoriaService;
 
         public TarjetaRecargableService(
             ITarjetaRecargableRepository tarjetaRepository,
             INotificationService notificationService,
             IUsuarioRepository usuarioRepository,
             IPagoRepository pagoRepository,
-            UsuarioRules usuarioRules)
+            UsuarioRules usuarioRules,
+            IAuditoriaService auditoriaService)
         {
             _tarjetaRepository = tarjetaRepository;
             _notificationService = notificationService;
             _usuarioRepository = usuarioRepository;
             _pagoRepository = pagoRepository;
             _usuarioRules = usuarioRules;
+            _auditoriaService = auditoriaService;
         }
 
         public async Task<IEnumerable<TarjetaRecargableDto>> GetAllAsync()
@@ -63,8 +66,8 @@ namespace SGA.Application.Services
 
         public async Task AddAsync(TarjetaRecargableDto dto)
         {
-
-            var usuario = _usuarioRepository.GetById(dto.UsuarioId);
+            var usuario =
+                _usuarioRepository.GetById(dto.UsuarioId);
 
             _usuarioRules.ValidarUsuarioRegistrado(usuario != null);
 
@@ -75,6 +78,10 @@ namespace SGA.Application.Services
             };
 
             await _tarjetaRepository.AddAsync(tarjeta);
+
+            await _auditoriaService.RegistrarAsync(
+                "CREAR",
+                $"Se registró una tarjeta recargable para el usuario {dto.UsuarioId}.");
 
             await _notificationService.SendNotificationAsync(
                 "estudiante@itla.edu.do",
@@ -90,7 +97,6 @@ namespace SGA.Application.Services
             if (tarjeta == null)
                 throw new Exception("Tarjeta no encontrada.");
 
-
             var usuario =
                 _usuarioRepository.GetById(dto.UsuarioId);
 
@@ -100,6 +106,10 @@ namespace SGA.Application.Services
             tarjeta.Saldo = dto.Saldo;
 
             await _tarjetaRepository.UpdateAsync(tarjeta);
+
+            await _auditoriaService.RegistrarAsync(
+                "ACTUALIZAR",
+                $"Se actualizó la tarjeta recargable ID {dto.Id}.");
         }
 
         public async Task DeleteAsync(int id)
@@ -111,11 +121,14 @@ namespace SGA.Application.Services
                 throw new Exception("No se encontró la tarjeta.");
 
             await _tarjetaRepository.DeleteAsync(id);
+
+            await _auditoriaService.RegistrarAsync(
+                "ELIMINAR",
+                $"Se eliminó la tarjeta recargable ID {id}.");
         }
 
         public async Task<decimal> ObtenerSaldoAsync(int usuarioId)
         {
-
             var usuario =
                 _usuarioRepository.GetById(usuarioId);
 
@@ -136,8 +149,6 @@ namespace SGA.Application.Services
             decimal monto,
             string tipoPago)
         {
-    
-
             var usuario =
                 _usuarioRepository.GetById(usuarioId);
 
@@ -174,6 +185,10 @@ namespace SGA.Application.Services
 
             await _pagoRepository.AddAsync(pago);
 
+            await _auditoriaService.RegistrarAsync(
+                "RECARGA",
+                $"Se recargó la tarjeta del usuario {usuarioId} por RD$ {monto:N2}.");
+
             await _notificationService.SendNotificationAsync(
                 "estudiante@itla.edu.do",
                 "Recarga realizada",
@@ -184,7 +199,6 @@ namespace SGA.Application.Services
             int usuarioId,
             decimal monto)
         {
-
             var usuario =
                 _usuarioRepository.GetById(usuarioId);
 
@@ -207,13 +221,15 @@ namespace SGA.Application.Services
             tarjeta.Saldo -= monto;
 
             await _tarjetaRepository.UpdateAsync(tarjeta);
+
+            await _auditoriaService.RegistrarAsync(
+                "DESCONTAR_SALDO",
+                $"Se descontaron RD$ {monto:N2} de la tarjeta del usuario {usuarioId}.");
         }
 
         public async Task<TarjetaRecargableDto?> GetByUsuarioIdAsync(
             int usuarioId)
         {
-
-
             var usuario =
                 _usuarioRepository.GetById(usuarioId);
 

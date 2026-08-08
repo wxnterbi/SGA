@@ -1,6 +1,8 @@
 ﻿using SGA.Application.BusinessRules;
 using SGA.Application.Dtos.Notificacion;
+using SGA.Application.Dtos.Auditoria;
 using SGA.Application.Interfaces;
+using SGA.Application.Helpers;
 using SGA.Domain.Entities.Reservation;
 using SGA.Domain.Enums.Reservation;
 using SGA.Infrastructure.Notifications;
@@ -13,15 +15,18 @@ namespace SGA.Application.Services
         private readonly INotificacionRepository _notificacionRepository;
         private readonly NotificacionRules _notificacionRules;
         private readonly INotificationService _notificationService;
+        private readonly IAuditoriaService _auditoriaService;
 
         public NotificacionService(
             INotificacionRepository notificacionRepository,
             NotificacionRules notificacionRules,
-            INotificationService notificationService)
+            INotificationService notificationService,
+            IAuditoriaService auditoriaService)
         {
             _notificacionRepository = notificacionRepository;
             _notificacionRules = notificacionRules;
             _notificationService = notificationService;
+            _auditoriaService = auditoriaService;
         }
 
         public async Task<IEnumerable<NotificacionDto>> GetAllAsync()
@@ -57,13 +62,14 @@ namespace SGA.Application.Services
 
         public async Task AddAsync(NotificacionDto dto)
         {
-
             var notificacion = new Notificacion
             {
                 UsuarioId = dto.UsuarioId,
                 TipoEvento = (TipoEvento)dto.TipoEvento,
                 Mensaje = dto.Mensaje,
-                FechaHora = dto.FechaHora
+                FechaHora = dto.FechaHora == default
+                    ? DateTime.Now
+                    : dto.FechaHora
             };
 
             await _notificacionRepository.AddAsync(notificacion);
@@ -74,11 +80,13 @@ namespace SGA.Application.Services
                  "Se ha registrado una nueva notificación en el sistema.");
 
             _notificacionRules.ValidarEnvioNotificacion(notificacion.Id > 0);
+
+            await RegistrarAuditoria("Crear Notificación",
+                $"Se creó una notificación para el usuario {dto.UsuarioId}");
         }
 
         public async Task UpdateAsync(NotificacionDto dto)
         {
-
             var notificacion = await _notificacionRepository.GetByIdAsync(dto.Id);
 
             if (notificacion == null)
@@ -92,6 +100,9 @@ namespace SGA.Application.Services
             await _notificacionRepository.UpdateAsync(notificacion);
 
             _notificacionRules.ValidarEnvioNotificacion(notificacion.Id > 0);
+
+            await RegistrarAuditoria("Actualizar Notificación",
+                $"Se actualizó la notificación ID {dto.Id}");
         }
 
         public async Task DeleteAsync(int id)
@@ -102,6 +113,22 @@ namespace SGA.Application.Services
                 throw new Exception("No se encontró la notificación.");
 
             await _notificacionRepository.DeleteAsync(id);
+
+            await RegistrarAuditoria("Eliminar Notificación",
+                $"Se eliminó la notificación ID {id}");
+        }
+
+        private async Task RegistrarAuditoria(string accion, string descripcion)
+        {
+            await _auditoriaService.AddAsync(new CreateAuditoriaDto
+            {
+                Actor = string.IsNullOrEmpty(SessionManager.Usuario)
+                    ? "Sistema"
+                    : SessionManager.Usuario,
+
+                TipoAccion = accion,
+                Descripcion = descripcion
+            });
         }
     }
 }

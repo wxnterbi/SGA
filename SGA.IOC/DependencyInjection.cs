@@ -8,6 +8,7 @@ using SGA.Persistence.Interfaces;
 using SGA.Persistence.Repositories;
 using SGA.Persistence.Repository;
 
+
 namespace SGA.IOC
 {
     public static class DependencyInjection
@@ -45,6 +46,8 @@ namespace SGA.IOC
             services.AddScoped<INotificacionService, NotificacionService>();
             services.AddScoped<IViajeService, ViajeService>();
             services.AddScoped<IAuditoriaService, AuditoriaService>();
+            services.AddScoped<IAuditoriaService, AuditoriaService>();
+            services.AddScoped<IAuditoriaRepository, AuditoriaRepository>();
 
             // Business Rules
             services.AddScoped<UsuarioRules>();

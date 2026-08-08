@@ -13,20 +13,24 @@ namespace SGA.Application.Services
         private readonly IViajeRepository _viajeRepository;
         private readonly ViajeRules _viajeRules;
         private readonly INotificationService _notificationService;
+        private readonly IAuditoriaService _auditoriaService;
 
         public ViajeService(
             IViajeRepository viajeRepository,
             ViajeRules viajeRules,
-            INotificationService notificationService)
+            INotificationService notificationService,
+            IAuditoriaService auditoriaService)
         {
             _viajeRepository = viajeRepository;
             _viajeRules = viajeRules;
             _notificationService = notificationService;
+            _auditoriaService = auditoriaService;
         }
 
         public async Task<ViajeDto?> GetByIdAsync(int id)
         {
-            var viaje = await _viajeRepository.GetByIdAsync(id);
+            var viaje =
+                await _viajeRepository.GetByIdAsync(id);
 
             if (viaje == null)
                 return null;
@@ -36,14 +40,14 @@ namespace SGA.Application.Services
 
         public async Task<IEnumerable<ViajeDto>> GetAllAsync()
         {
-            var viajes = await _viajeRepository.GetAllAsync();
+            var viajes =
+                await _viajeRepository.GetAllAsync();
 
             return viajes.Select(MapToDto);
         }
 
         public async Task AddAsync(ViajeDto dto)
         {
-
             await _viajeRules.ValidarAsignacionViaje(
                 dto.RutaId,
                 dto.HorarioId,
@@ -64,6 +68,10 @@ namespace SGA.Application.Services
 
             await _viajeRepository.AddAsync(viaje);
 
+            await _auditoriaService.RegistrarAsync(
+                "CREAR",
+                $"Se registró el viaje ID {viaje.Id}.");
+
             await _notificationService.SendNotificationAsync(
                 "estudiante@itla.edu.do",
                 "Viaje registrado",
@@ -72,11 +80,11 @@ namespace SGA.Application.Services
 
         public async Task UpdateAsync(ViajeDto dto)
         {
-            var viaje = await _viajeRepository.GetByIdAsync(dto.Id);
+            var viaje =
+                await _viajeRepository.GetByIdAsync(dto.Id);
 
             if (viaje == null)
                 throw new Exception("Viaje no encontrado.");
-
 
             await _viajeRules.ValidarAsignacionViaje(
                 dto.RutaId,
@@ -94,16 +102,25 @@ namespace SGA.Application.Services
             viaje.HoraFinReal = dto.HoraFinReal;
 
             await _viajeRepository.UpdateAsync(viaje);
+
+            await _auditoriaService.RegistrarAsync(
+                "ACTUALIZAR",
+                $"Se actualizó el viaje ID {dto.Id}.");
         }
 
         public async Task DeleteAsync(int id)
         {
-            var viaje = await _viajeRepository.GetByIdAsync(id);
+            var viaje =
+                await _viajeRepository.GetByIdAsync(id);
 
             if (viaje == null)
                 throw new Exception("Viaje no encontrado.");
 
             await _viajeRepository.DeleteAsync(id);
+
+            await _auditoriaService.RegistrarAsync(
+                "ELIMINAR",
+                $"Se eliminó el viaje ID {id}.");
         }
 
         private static ViajeDto MapToDto(Viaje viaje)
