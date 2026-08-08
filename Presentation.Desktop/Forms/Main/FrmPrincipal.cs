@@ -1,16 +1,17 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
+using SGA.Domain.Enums.Configuration;
+using SGA.Application.Dtos.Usuario;
 using SGA.Presentation.Desktop.Forms.Autobus;
 using SGA.Presentation.Desktop.Forms.Conductor;
 using SGA.Presentation.Desktop.Forms.DashBoard;
 using SGA.Presentation.Desktop.Forms.Horario;
-using SGA.Presentation.Desktop.Forms.Parada;
-using SGA.Presentation.Desktop.Forms.Ruta;
-using SGA.Presentation.Desktop.Forms.Viaje;
-using SGA.Presentation.Desktop.Forms.Usuario;
 using SGA.Presentation.Desktop.Forms.Incidencia;
+using SGA.Presentation.Desktop.Forms.Parada;
 using SGA.Presentation.Desktop.Forms.RegistroAcceso;
+using SGA.Presentation.Desktop.Forms.Ruta;
 using SGA.Presentation.Desktop.Forms.TarjetaRecargable;
-
+using SGA.Presentation.Desktop.Forms.Usuario;
+using SGA.Presentation.Desktop.Forms.Viaje;
 using System;
 using System.Drawing;
 using System.Windows.Forms;
@@ -19,20 +20,81 @@ namespace SGA.Presentation.Desktop.Forms.Main
 {
     public partial class FrmPrincipal : Form
     {
-        public FrmPrincipal()
+        private readonly LoginResponseDto _usuario;
+        public FrmPrincipal(LoginResponseDto usuario)
         {
             InitializeComponent();
 
+            _usuario = usuario;
+
             ConfigurarFormulario();
+
+            ConfigurarPermisos();
 
             CargarDashboard();
         }
 
+        private void ConfigurarPermisos()
+        {
+            // Primero ocultamos todos los módulos
+            btnDashboard.Visible = false;
+            btnViajes.Visible = false;
+            btnAutobuses.Visible = false;
+            btnConductores.Visible = false;
+            btnRutas.Visible = false;
+            btnHorarios.Visible = false;
+            btnParadas.Visible = false;
+            btnUsuarios.Visible = false;
+            btnRegistroAcceso.Visible = false;
+            btnRecargarSaldo.Visible = false;
+            btnIncidencias.Visible = false;
+            btnAuditoria.Visible = false;
+
+            switch (_usuario.TipoUsuario)
+            {
+                case TipoUsuario.Conductor:
+
+                    btnViajes.Visible = true;
+                    btnIncidencias.Visible = true;
+                    btnRegistroAcceso.Visible = true;
+
+                    break;
+
+                case TipoUsuario.Auditor:
+
+                    btnAuditoria.Visible = true;
+
+                    break;
+
+                case TipoUsuario.AdministradorTransporte:
+
+                    btnDashboard.Visible = true;
+                    btnViajes.Visible = true;
+                    btnAutobuses.Visible = true;
+                    btnConductores.Visible = true;
+                    btnRutas.Visible = true;
+                    btnHorarios.Visible = true;
+                    btnParadas.Visible = true;
+                    btnUsuarios.Visible = true;
+                    btnRegistroAcceso.Visible = true;
+                    btnRecargarSaldo.Visible = true;
+                    btnIncidencias.Visible = true;
+                    btnAuditoria.Visible = true;
+
+                    break;
+
+                case TipoUsuario.AdministradorAutorizaciones:
+
+                    btnRecargarSaldo.Visible = true;
+
+                    break;
+            }
+        }
 
         private void ConfigurarFormulario()
         {
-            lblUsuario.Text = "Usuario: Admin";
-            lblRol.Text = "Administrador";
+            lblUsuario.Text = $"Usuario: {_usuario.Nombre}";
+            lblRol.Text = _usuario.TipoUsuario.ToString();
 
 
             ConfigurarBoton(btnDashboard, "Dashboard", 180);

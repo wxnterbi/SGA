@@ -104,7 +104,7 @@ namespace SGA.Presentation.Desktop.Forms.Login
 
 
             FrmPrincipal principal =
-                new FrmPrincipal();
+                new FrmPrincipal(usuario);
 
             principal.Show();
 
