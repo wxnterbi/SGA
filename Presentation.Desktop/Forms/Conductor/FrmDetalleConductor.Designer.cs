@@ -6,19 +6,16 @@
 
         private Label lblTitulo;
 
-        private Label lblNombreTexto;
+        private Label lblNombreTitulo;
+        private Label lblCedulaTitulo;
+        private Label lblLicenciaTitulo;
+        private Label lblTelefonoTitulo;
+        private Label lblEstadoTitulo;
+
         private Label lblNombre;
-
-        private Label lblCedulaTexto;
         private Label lblCedula;
-
-        private Label lblLicenciaTexto;
         private Label lblLicencia;
-
-        private Label lblTelefonoTexto;
         private Label lblTelefono;
-
-        private Label lblEstadoTexto;
         private Label lblEstado;
 
         private Button btnCerrar;
@@ -33,161 +30,249 @@
 
         private void InitializeComponent()
         {
+            components =
+                new System.ComponentModel.Container();
+
             lblTitulo = new Label();
 
-            lblNombreTexto = new Label();
+            lblNombreTitulo = new Label();
+            lblCedulaTitulo = new Label();
+            lblLicenciaTitulo = new Label();
+            lblTelefonoTitulo = new Label();
+            lblEstadoTitulo = new Label();
+
             lblNombre = new Label();
-
-            lblCedulaTexto = new Label();
             lblCedula = new Label();
-
-            lblLicenciaTexto = new Label();
             lblLicencia = new Label();
-
-            lblTelefonoTexto = new Label();
             lblTelefono = new Label();
-
-            lblEstadoTexto = new Label();
             lblEstado = new Label();
 
             btnCerrar = new Button();
 
             SuspendLayout();
 
-           
-            // lblTitulo
-           
-            lblTitulo.AutoSize = true;
-            lblTitulo.Font = new Font("Segoe UI", 18F, FontStyle.Bold);
-            lblTitulo.ForeColor = Color.FromArgb(40, 40, 40);
-            lblTitulo.Location = new Point(150, 35);
-            lblTitulo.Name = "lblTitulo";
-            lblTitulo.Size = new Size(395, 41);
-            lblTitulo.TabIndex = 0;
-            lblTitulo.Text = "DETALLE DEL CONDUCTOR";
-
-            
-            // lblNombreTexto
-            
-            lblNombreTexto.AutoSize = true;
-            lblNombreTexto.Font = new Font("Segoe UI", 11F, FontStyle.Bold);
-            lblNombreTexto.Location = new Point(80, 120);
-            lblNombreTexto.Text = "Nombre:";
-
-            
-            // lblNombre
-            
-            lblNombre.Font = new Font("Segoe UI", 11F);
-            lblNombre.Location = new Point(250, 120);
-            lblNombre.Size = new Size(280, 30);
-
-            
-            // lblCedulaTexto
-            
-            lblCedulaTexto.AutoSize = true;
-            lblCedulaTexto.Font = new Font("Segoe UI", 11F, FontStyle.Bold);
-            lblCedulaTexto.Location = new Point(80, 170);
-            lblCedulaTexto.Text = "Cédula:";
-
-            
-            // lblCedula
-           
-            lblCedula.Font = new Font("Segoe UI", 11F);
-            lblCedula.Location = new Point(250, 170);
-            lblCedula.Size = new Size(280, 30);
-
-           
-            // lblLicenciaTexto
-            
-            lblLicenciaTexto.AutoSize = true;
-            lblLicenciaTexto.Font = new Font("Segoe UI", 11F, FontStyle.Bold);
-            lblLicenciaTexto.Location = new Point(80, 220);
-            lblLicenciaTexto.Text = "Licencia:";
-
-            
-            // lblLicencia
-            
-            lblLicencia.Font = new Font("Segoe UI", 11F);
-            lblLicencia.Location = new Point(250, 220);
-            lblLicencia.Size = new Size(280, 30);
-
-            
-            // lblTelefonoTexto
-            
-            lblTelefonoTexto.AutoSize = true;
-            lblTelefonoTexto.Font = new Font("Segoe UI", 11F, FontStyle.Bold);
-            lblTelefonoTexto.Location = new Point(80, 270);
-            lblTelefonoTexto.Text = "Teléfono:";
-
-            
-            // lblTelefono
-            
-            lblTelefono.Font = new Font("Segoe UI", 11F);
-            lblTelefono.Location = new Point(250, 270);
-            lblTelefono.Size = new Size(280, 30);
-
-            
-            // lblEstadoTexto
-            
-            lblEstadoTexto.AutoSize = true;
-            lblEstadoTexto.Font = new Font("Segoe UI", 11F, FontStyle.Bold);
-            lblEstadoTexto.Location = new Point(80, 320);
-            lblEstadoTexto.Text = "Estado:";
-
-            
-            // lblEstado
-            
-            lblEstado.Font = new Font("Segoe UI", 11F);
-            lblEstado.Location = new Point(250, 320);
-            lblEstado.Size = new Size(280, 30);
-
-            
-            // btnCerrar
-            
-            btnCerrar.BackColor = Color.Gray;
-            btnCerrar.Cursor = Cursors.Hand;
-            btnCerrar.FlatStyle = FlatStyle.Flat;
-            btnCerrar.ForeColor = Color.White;
-            btnCerrar.Location = new Point(270, 410);
-            btnCerrar.Name = "btnCerrar";
-            btnCerrar.Size = new Size(140, 45);
-            btnCerrar.TabIndex = 20;
-            btnCerrar.Text = "Cerrar";
-            btnCerrar.UseVisualStyleBackColor = false;
-
-            
+            // 
             // FrmDetalleConductor
-            
-            AutoScaleDimensions = new SizeF(9F, 23F);
-            AutoScaleMode = AutoScaleMode.Font;
-            BackColor = Color.White;
-            ClientSize = new Size(650, 500);
+            // 
+            ClientSize =
+                new Size(600, 420);
 
+            Text =
+                "Detalle del Conductor";
+
+            StartPosition =
+                FormStartPosition.CenterParent;
+
+            FormBorderStyle =
+                FormBorderStyle.FixedDialog;
+
+            MaximizeBox = false;
+
+            MinimizeBox = false;
+
+            BackColor =
+                Color.White;
+
+            Font =
+                new Font("Segoe UI", 10F);
+
+            // 
+            // lblTitulo
+            // 
+            lblTitulo.AutoSize = true;
+
+            lblTitulo.Font =
+                new Font(
+                    "Segoe UI",
+                    18F,
+                    FontStyle.Bold);
+
+            lblTitulo.ForeColor =
+                Color.FromArgb(25, 42, 86);
+
+            lblTitulo.Location =
+                new Point(30, 20);
+
+            lblTitulo.Name =
+                "lblTitulo";
+
+            lblTitulo.Size =
+                new Size(280, 41);
+
+            lblTitulo.TabIndex = 0;
+
+            lblTitulo.Text =
+                "DETALLE DEL CONDUCTOR";
+
+            // 
+            // Títulos
+            // 
+            lblNombreTitulo.AutoSize = true;
+            lblNombreTitulo.Font =
+                new Font(
+                    "Segoe UI",
+                    11F,
+                    FontStyle.Bold);
+
+            lblNombreTitulo.Location =
+                new Point(40, 90);
+
+            lblNombreTitulo.Text =
+                "Nombre:";
+
+            lblCedulaTitulo.AutoSize = true;
+            lblCedulaTitulo.Font =
+                new Font(
+                    "Segoe UI",
+                    11F,
+                    FontStyle.Bold);
+
+            lblCedulaTitulo.Location =
+                new Point(40, 135);
+
+            lblCedulaTitulo.Text =
+                "Cédula:";
+
+            lblLicenciaTitulo.AutoSize = true;
+            lblLicenciaTitulo.Font =
+                new Font(
+                    "Segoe UI",
+                    11F,
+                    FontStyle.Bold);
+
+            lblLicenciaTitulo.Location =
+                new Point(40, 180);
+
+            lblLicenciaTitulo.Text =
+                "Licencia:";
+
+            lblTelefonoTitulo.AutoSize = true;
+            lblTelefonoTitulo.Font =
+                new Font(
+                    "Segoe UI",
+                    11F,
+                    FontStyle.Bold);
+
+            lblTelefonoTitulo.Location =
+                new Point(40, 225);
+
+            lblTelefonoTitulo.Text =
+                "Teléfono:";
+
+            lblEstadoTitulo.AutoSize = true;
+            lblEstadoTitulo.Font =
+                new Font(
+                    "Segoe UI",
+                    11F,
+                    FontStyle.Bold);
+
+            lblEstadoTitulo.Location =
+                new Point(40, 270);
+
+            lblEstadoTitulo.Text =
+                "Estado:";
+
+            // 
+            // Valores
+            // 
+            lblNombre.AutoSize = true;
+            lblNombre.Font =
+                new Font("Segoe UI", 11F);
+
+            lblNombre.Location =
+                new Point(180, 90);
+
+            lblNombre.Name =
+                "lblNombre";
+
+            lblCedula.AutoSize = true;
+            lblCedula.Font =
+                new Font("Segoe UI", 11F);
+
+            lblCedula.Location =
+                new Point(180, 135);
+
+            lblCedula.Name =
+                "lblCedula";
+
+            lblLicencia.AutoSize = true;
+            lblLicencia.Font =
+                new Font("Segoe UI", 11F);
+
+            lblLicencia.Location =
+                new Point(180, 180);
+
+            lblLicencia.Name =
+                "lblLicencia";
+
+            lblTelefono.AutoSize = true;
+            lblTelefono.Font =
+                new Font("Segoe UI", 11F);
+
+            lblTelefono.Location =
+                new Point(180, 225);
+
+            lblTelefono.Name =
+                "lblTelefono";
+
+            lblEstado.AutoSize = true;
+            lblEstado.Font =
+                new Font("Segoe UI", 11F);
+
+            lblEstado.Location =
+                new Point(180, 270);
+
+            lblEstado.Name =
+                "lblEstado";
+
+            // 
+            // btnCerrar
+            // 
+            btnCerrar.Text =
+                "Cerrar";
+
+            btnCerrar.Size =
+                new Size(120, 40);
+
+            btnCerrar.Location =
+                new Point(230, 340);
+
+            btnCerrar.BackColor =
+                Color.FromArgb(25, 42, 86);
+
+            btnCerrar.ForeColor =
+                Color.White;
+
+            btnCerrar.FlatStyle =
+                FlatStyle.Flat;
+
+            btnCerrar.FlatAppearance.BorderSize =
+                0;
+
+            btnCerrar.Cursor =
+                Cursors.Hand;
+
+            btnCerrar.Name =
+                "btnCerrar";
+
+            // 
+            // Controls
+            // 
             Controls.Add(lblTitulo);
 
-            Controls.Add(lblNombreTexto);
+            Controls.Add(lblNombreTitulo);
+            Controls.Add(lblCedulaTitulo);
+            Controls.Add(lblLicenciaTitulo);
+            Controls.Add(lblTelefonoTitulo);
+            Controls.Add(lblEstadoTitulo);
+
             Controls.Add(lblNombre);
-
-            Controls.Add(lblCedulaTexto);
             Controls.Add(lblCedula);
-
-            Controls.Add(lblLicenciaTexto);
             Controls.Add(lblLicencia);
-
-            Controls.Add(lblTelefonoTexto);
             Controls.Add(lblTelefono);
-
-            Controls.Add(lblEstadoTexto);
             Controls.Add(lblEstado);
 
             Controls.Add(btnCerrar);
-
-            Font = new Font("Segoe UI", 10F);
-            Name = "FrmDetalleConductor";
-            StartPosition = FormStartPosition.CenterScreen;
-            Text = "Detalle del Conductor";
-
-            Load += FrmDetalleConductor_Load_1;
 
             ResumeLayout(false);
             PerformLayout();

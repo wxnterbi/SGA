@@ -4,183 +4,256 @@
     {
         private System.ComponentModel.IContainer components = null;
 
-
-        protected override void Dispose(bool disposing)
-        {
-            if (disposing && (components != null))
-            {
-                components.Dispose();
-            }
-
-            base.Dispose(disposing);
-        }
-
-
-
-        #region Windows Form Designer generated code
-
-
-        private void InitializeComponent()
-        {
-            lblTitulo = new Label();
-            lblIdentificador = new Label();
-            txtIdentificador = new TextBox();
-            lblNombre = new Label();
-            txtNombre = new TextBox();
-            lblTipoUsuario = new Label();
-            txtTipoUsuario = new TextBox();
-            lblEstado = new Label();
-            txtEstado = new TextBox();
-            btnEditar = new Button();
-            btnCerrar = new Button();
-            SuspendLayout();
-            // 
-            // lblTitulo
-            // 
-            lblTitulo.AutoSize = true;
-            lblTitulo.Font = new Font("Segoe UI", 16F, FontStyle.Bold);
-            lblTitulo.Location = new Point(120, 20);
-            lblTitulo.Name = "lblTitulo";
-            lblTitulo.Size = new Size(171, 30);
-            lblTitulo.TabIndex = 0;
-            lblTitulo.Text = "Detalle Usuario";
-            // 
-            // lblIdentificador
-            // 
-            lblIdentificador.AutoSize = true;
-            lblIdentificador.Location = new Point(40, 80);
-            lblIdentificador.Name = "lblIdentificador";
-            lblIdentificador.Size = new Size(77, 15);
-            lblIdentificador.TabIndex = 1;
-            lblIdentificador.Text = "Identificador:";
-            // 
-            // txtIdentificador
-            // 
-            txtIdentificador.Location = new Point(40, 100);
-            txtIdentificador.Name = "txtIdentificador";
-            txtIdentificador.ReadOnly = true;
-            txtIdentificador.Size = new Size(250, 23);
-            txtIdentificador.TabIndex = 2;
-            // 
-            // lblNombre
-            // 
-            lblNombre.AutoSize = true;
-            lblNombre.Location = new Point(40, 140);
-            lblNombre.Name = "lblNombre";
-            lblNombre.Size = new Size(54, 15);
-            lblNombre.TabIndex = 3;
-            lblNombre.Text = "Nombre:";
-            // 
-            // txtNombre
-            // 
-            txtNombre.Location = new Point(40, 160);
-            txtNombre.Name = "txtNombre";
-            txtNombre.ReadOnly = true;
-            txtNombre.Size = new Size(250, 23);
-            txtNombre.TabIndex = 4;
-            // 
-            // lblTipoUsuario
-            // 
-            lblTipoUsuario.AutoSize = true;
-            lblTipoUsuario.Location = new Point(40, 200);
-            lblTipoUsuario.Name = "lblTipoUsuario";
-            lblTipoUsuario.Size = new Size(76, 15);
-            lblTipoUsuario.TabIndex = 5;
-            lblTipoUsuario.Text = "Tipo Usuario:";
-            // 
-            // txtTipoUsuario
-            // 
-            txtTipoUsuario.Location = new Point(40, 220);
-            txtTipoUsuario.Name = "txtTipoUsuario";
-            txtTipoUsuario.ReadOnly = true;
-            txtTipoUsuario.Size = new Size(250, 23);
-            txtTipoUsuario.TabIndex = 6;
-            // 
-            // lblEstado
-            // 
-            lblEstado.AutoSize = true;
-            lblEstado.Location = new Point(40, 260);
-            lblEstado.Name = "lblEstado";
-            lblEstado.Size = new Size(45, 15);
-            lblEstado.TabIndex = 7;
-            lblEstado.Text = "Estado:";
-            // 
-            // txtEstado
-            // 
-            txtEstado.Location = new Point(40, 280);
-            txtEstado.Name = "txtEstado";
-            txtEstado.ReadOnly = true;
-            txtEstado.Size = new Size(250, 23);
-            txtEstado.TabIndex = 8;
-            // 
-            // btnEditar
-            // 
-            btnEditar.Location = new Point(40, 350);
-            btnEditar.Name = "btnEditar";
-            btnEditar.Size = new Size(100, 35);
-            btnEditar.TabIndex = 9;
-            btnEditar.Text = "Editar";
-            btnEditar.UseVisualStyleBackColor = true;
-            // 
-            // btnCerrar
-            // 
-            btnCerrar.Location = new Point(180, 350);
-            btnCerrar.Name = "btnCerrar";
-            btnCerrar.Size = new Size(100, 35);
-            btnCerrar.TabIndex = 10;
-            btnCerrar.Text = "Cerrar";
-            btnCerrar.UseVisualStyleBackColor = true;
-            // 
-            // FrmDetalleUsuario
-            // 
-            AutoScaleDimensions = new SizeF(7F, 15F);
-            AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(350, 456);
-            Controls.Add(lblTitulo);
-            Controls.Add(lblIdentificador);
-            Controls.Add(txtIdentificador);
-            Controls.Add(lblNombre);
-            Controls.Add(txtNombre);
-            Controls.Add(lblTipoUsuario);
-            Controls.Add(txtTipoUsuario);
-            Controls.Add(lblEstado);
-            Controls.Add(txtEstado);
-            Controls.Add(btnEditar);
-            Controls.Add(btnCerrar);
-            Name = "FrmDetalleUsuario";
-            StartPosition = FormStartPosition.CenterScreen;
-            Text = "Detalle Usuario";
-            ResumeLayout(false);
-            PerformLayout();
-
-        }
-
-
-        #endregion
-
-
-
         private Label lblTitulo;
 
+        private Label lblIdentificadorTitulo;
+        private Label lblNombreTitulo;
+        private Label lblTipoUsuarioTitulo;
+        private Label lblEstadoTitulo;
 
-        private Label lblIdentificador;
         private TextBox txtIdentificador;
-
-
-        private Label lblNombre;
         private TextBox txtNombre;
-
-
-        private Label lblTipoUsuario;
         private TextBox txtTipoUsuario;
-
-
-        private Label lblEstado;
         private TextBox txtEstado;
-
 
         private Button btnEditar;
         private Button btnCerrar;
 
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing && (components != null))
+                components.Dispose();
+
+            base.Dispose(disposing);
+        }
+
+        private void InitializeComponent()
+        {
+            lblTitulo = new Label();
+
+            lblIdentificadorTitulo = new Label();
+            lblNombreTitulo = new Label();
+            lblTipoUsuarioTitulo = new Label();
+            lblEstadoTitulo = new Label();
+
+            txtIdentificador = new TextBox();
+            txtNombre = new TextBox();
+            txtTipoUsuario = new TextBox();
+            txtEstado = new TextBox();
+
+            btnEditar = new Button();
+            btnCerrar = new Button();
+
+            SuspendLayout();
+
+            // 
+            // FrmDetalleUsuario
+            // 
+            AutoScaleDimensions =
+                new SizeF(9F, 23F);
+
+            AutoScaleMode =
+                AutoScaleMode.Font;
+
+            BackColor =
+                Color.White;
+
+            ClientSize =
+                new Size(600, 430);
+
+            FormBorderStyle =
+                FormBorderStyle.FixedDialog;
+
+            MaximizeBox =
+                false;
+
+            MinimizeBox =
+                false;
+
+            StartPosition =
+                FormStartPosition.CenterParent;
+
+            Text =
+                "Detalle del Usuario";
+
+            Font =
+                new Font("Segoe UI", 10F);
+
+            // 
+            // lblTitulo
+            // 
+            lblTitulo.AutoSize = true;
+
+            lblTitulo.Font =
+                new Font("Segoe UI", 18F, FontStyle.Bold);
+
+            lblTitulo.ForeColor =
+                Color.FromArgb(25, 42, 86);
+
+            lblTitulo.Location =
+                new Point(30, 20);
+
+            lblTitulo.Name =
+                "lblTitulo";
+
+            lblTitulo.Text =
+                "DETALLE DEL USUARIO";
+
+            // 
+            // Labels
+            // 
+            lblIdentificadorTitulo.AutoSize = true;
+            lblIdentificadorTitulo.Font =
+                new Font("Segoe UI", 11F, FontStyle.Bold);
+            lblIdentificadorTitulo.Location =
+                new Point(40, 90);
+            lblIdentificadorTitulo.Text =
+                "Identificador:";
+
+            lblNombreTitulo.AutoSize = true;
+            lblNombreTitulo.Font =
+                new Font("Segoe UI", 11F, FontStyle.Bold);
+            lblNombreTitulo.Location =
+                new Point(40, 145);
+            lblNombreTitulo.Text =
+                "Nombre:";
+
+            lblTipoUsuarioTitulo.AutoSize = true;
+            lblTipoUsuarioTitulo.Font =
+                new Font("Segoe UI", 11F, FontStyle.Bold);
+            lblTipoUsuarioTitulo.Location =
+                new Point(40, 200);
+            lblTipoUsuarioTitulo.Text =
+                "Tipo de usuario:";
+
+            lblEstadoTitulo.AutoSize = true;
+            lblEstadoTitulo.Font =
+                new Font("Segoe UI", 11F, FontStyle.Bold);
+            lblEstadoTitulo.Location =
+                new Point(40, 255);
+            lblEstadoTitulo.Text =
+                "Estado:";
+
+            // 
+            // TextBoxes
+            // 
+            TextBox[] campos =
+            {
+                txtIdentificador,
+                txtNombre,
+                txtTipoUsuario,
+                txtEstado
+            };
+
+            int y = 87;
+
+            foreach (TextBox txt in campos)
+            {
+                txt.Location =
+                    new Point(210, y);
+
+                txt.Size =
+                    new Size(320, 27);
+
+                txt.ReadOnly = true;
+
+                txt.BorderStyle =
+                    BorderStyle.FixedSingle;
+
+                y += 55;
+            }
+
+            txtIdentificador.Name =
+                "txtIdentificador";
+
+            txtNombre.Name =
+                "txtNombre";
+
+            txtTipoUsuario.Name =
+                "txtTipoUsuario";
+
+            txtEstado.Name =
+                "txtEstado";
+
+            // 
+            // btnEditar
+            // 
+            btnEditar.BackColor =
+                Color.FromArgb(0, 120, 215);
+
+            btnEditar.FlatStyle =
+                FlatStyle.Flat;
+
+            btnEditar.FlatAppearance.BorderSize = 0;
+
+            btnEditar.ForeColor =
+                Color.White;
+
+            btnEditar.Location =
+                new Point(150, 340);
+
+            btnEditar.Size =
+                new Size(120, 42);
+
+            btnEditar.Name =
+                "btnEditar";
+
+            btnEditar.Text =
+                "Editar";
+
+            btnEditar.UseVisualStyleBackColor = false;
+
+            // 
+            // btnCerrar
+            // 
+            btnCerrar.BackColor =
+                Color.Gray;
+
+            btnCerrar.FlatStyle =
+                FlatStyle.Flat;
+
+            btnCerrar.FlatAppearance.BorderSize = 0;
+
+            btnCerrar.ForeColor =
+                Color.White;
+
+            btnCerrar.Location =
+                new Point(320, 340);
+
+            btnCerrar.Size =
+                new Size(120, 42);
+
+            btnCerrar.Name =
+                "btnCerrar";
+
+            btnCerrar.Text =
+                "Cerrar";
+
+            btnCerrar.UseVisualStyleBackColor = false;
+
+            // 
+            // Controls
+            // 
+            Controls.Add(lblTitulo);
+
+            Controls.Add(lblIdentificadorTitulo);
+            Controls.Add(lblNombreTitulo);
+            Controls.Add(lblTipoUsuarioTitulo);
+            Controls.Add(lblEstadoTitulo);
+
+            Controls.Add(txtIdentificador);
+            Controls.Add(txtNombre);
+            Controls.Add(txtTipoUsuario);
+            Controls.Add(txtEstado);
+
+            Controls.Add(btnEditar);
+            Controls.Add(btnCerrar);
+
+            Load +=
+                FrmDetalleUsuario_Load;
+
+            ResumeLayout(false);
+            PerformLayout();
+        }
     }
 }

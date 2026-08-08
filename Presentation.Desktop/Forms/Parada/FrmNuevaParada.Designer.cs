@@ -42,7 +42,7 @@
             // 
             lblTitulo.AutoSize = true;
             lblTitulo.Font = new Font("Segoe UI", 16F, FontStyle.Bold);
-            lblTitulo.Location = new Point(120, 25);
+            lblTitulo.Location = new Point(103, 28);
             lblTitulo.Name = "lblTitulo";
             lblTitulo.Size = new Size(225, 37);
             lblTitulo.TabIndex = 0;
@@ -110,13 +110,14 @@
             btnGuardar.TabIndex = 7;
             btnGuardar.Text = "Guardar";
             btnGuardar.UseVisualStyleBackColor = false;
+            btnGuardar.Click += btnGuardar_Click_1;
             // 
             // btnCancelar
             // 
             btnCancelar.BackColor = Color.Firebrick;
             btnCancelar.FlatStyle = FlatStyle.Flat;
             btnCancelar.ForeColor = Color.White;
-            btnCancelar.Location = new Point(220, 340);
+            btnCancelar.Location = new Point(251, 340);
             btnCancelar.Name = "btnCancelar";
             btnCancelar.Size = new Size(120, 38);
             btnCancelar.TabIndex = 8;
@@ -128,7 +129,7 @@
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.White;
-            ClientSize = new Size(430, 420);
+            ClientSize = new Size(463, 420);
             Controls.Add(lblTitulo);
             Controls.Add(lblNombre);
             Controls.Add(txtNombre);

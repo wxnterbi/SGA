@@ -8,9 +8,11 @@ namespace SGA.Presentation.Desktop.Interfaces
 
         Task<IncidenciaDto?> GetByIdAsync(int id);
 
-        Task<bool> CreateAsync(IncidenciaDto incidencia);
+        Task<(bool Success, string Message)> CreateAsync(
+            IncidenciaDto incidencia);
 
-        Task<bool> UpdateAsync(IncidenciaDto incidencia);
+        Task<(bool Success, string Message)> UpdateAsync(
+            IncidenciaDto incidencia);
 
         Task<bool> DeleteAsync(int id);
     }

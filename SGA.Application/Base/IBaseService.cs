@@ -1,14 +1,14 @@
 ﻿namespace SGA.Application.Base
 {
-    public interface IBaseService<T>
+    public interface IBaseService<TDto>
     {
-        Task<IEnumerable<T>> GetAllAsync();
+        Task<IEnumerable<TDto>> GetAllAsync();
 
-        Task<T?> GetByIdAsync(int id);
+        Task<TDto?> GetByIdAsync(int id);
 
-        Task AddAsync(T dto);
+        Task AddAsync(TDto dto);
 
-        Task UpdateAsync(T dto);
+        Task UpdateAsync(TDto dto);
 
         Task DeleteAsync(int id);
     }

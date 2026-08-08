@@ -1,9 +1,10 @@
 
 using FluentValidation;
 using FluentValidation.AspNetCore;
+using Microsoft.EntityFrameworkCore;
+using SGA.Application.BusinessRules;
 using SGA.Application.Validations;
 using SGA.IOC;
-using Microsoft.EntityFrameworkCore;
 using SGA.Persistence.Context;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -32,6 +33,11 @@ builder.Services.AddDbContext<SGABD>(options =>
         builder.Configuration.GetConnectionString("DefaultConnection")));
 
 builder.Services.AddDependencyInjection();
+builder.Services.AddScoped<UsuarioRules>();
+builder.Services.AddScoped<ViajeRules>();
+builder.Services.AddScoped<IncidenciaRules>();
+
+
 
 var app = builder.Build();
 

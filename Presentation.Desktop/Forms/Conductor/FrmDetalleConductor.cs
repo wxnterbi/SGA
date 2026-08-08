@@ -1,5 +1,4 @@
-﻿using SGA.Application.Dtos.Conductor;
-using SGA.Presentation.Desktop.Interfaces;
+﻿using SGA.Presentation.Desktop.Interfaces;
 
 namespace SGA.Presentation.Desktop.Forms.Conductor
 {
@@ -7,10 +6,7 @@ namespace SGA.Presentation.Desktop.Forms.Conductor
     {
         private readonly IConductorApiService _conductorApiService;
 
-
         private int _id;
-
-
 
         public FrmDetalleConductor(
             IConductorApiService conductorApiService)
@@ -20,70 +16,68 @@ namespace SGA.Presentation.Desktop.Forms.Conductor
             _conductorApiService = conductorApiService;
 
             Load += FrmDetalleConductor_Load;
+            btnCerrar.Click += btnCerrar_Click;
         }
-
-
 
         public void CargarConductor(int id)
         {
             _id = id;
         }
 
-
-
         private async void FrmDetalleConductor_Load(
             object sender,
             EventArgs e)
         {
-
             try
             {
-
                 var conductor =
                     await _conductorApiService
                     .GetByIdAsync(_id);
 
-
-
                 if (conductor == null)
                 {
                     MessageBox.Show(
-                        "No se encontró el conductor.");
+                        "No se encontró el conductor.",
+                        "Información",
+                        MessageBoxButtons.OK,
+                        MessageBoxIcon.Information);
 
                     Close();
-
                     return;
                 }
 
-
-
                 lblNombre.Text =
-                    $"Nombre: {conductor.Nombre}";
-
+                    conductor.Nombre;
 
                 lblCedula.Text =
-                    $"Cédula: {conductor.Cedula}";
-
+                    conductor.Cedula;
 
                 lblLicencia.Text =
-                    $"Licencia: {conductor.Licencia}";
-
+                    conductor.Licencia;
 
                 lblTelefono.Text =
-                    $"Teléfono: {conductor.Telefono}";
-
+                    conductor.Telefono;
 
                 lblEstado.Text =
-                    $"Estado: {(conductor.EstadoConductorId == 1 ? "Activo" : "Inactivo")}";
-
+                    conductor.EstadoConductorId == 1
+                    ? "Activo"
+                    : "Inactivo";
             }
             catch (Exception ex)
             {
                 MessageBox.Show(
                     ex.Message,
-                    "Error");
+                    "Error",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Error);
             }
+        }
 
+        private void btnCerrar_Click(
+            object sender,
+            EventArgs e)
+        {
+            Close();
         }
 
         private void FrmDetalleConductor_Load_1(object sender, EventArgs e)

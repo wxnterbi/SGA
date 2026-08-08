@@ -5,9 +5,7 @@ namespace SGA.Presentation.Desktop.Forms.Viaje
 {
     public partial class FrmDetalleViaje : Form
     {
-
         private readonly IViajeApiService _viajeApiService;
-
 
         public FrmDetalleViaje(
             IViajeApiService viajeApiService)
@@ -17,45 +15,65 @@ namespace SGA.Presentation.Desktop.Forms.Viaje
             _viajeApiService = viajeApiService;
         }
 
-
-
         public async void CargarViaje(int id)
         {
-            var viaje =
-                await _viajeApiService
-                .GetByIdAsync(id);
+            try
+            {
+                var viaje =
+                    await _viajeApiService
+                        .GetByIdAsync(id);
 
+                if (viaje == null)
+                {
+                    MessageBox.Show(
+                        "No se encontró el viaje.",
+                        "Información",
+                        MessageBoxButtons.OK,
+                        MessageBoxIcon.Warning);
 
-            if (viaje == null)
+                    Close();
+
+                    return;
+                }
+
+                lblRuta.Text =
+                    viaje.NombreRuta;
+
+                lblHorario.Text =
+                    viaje.HorarioTexto;
+
+                lblAutobus.Text =
+                    viaje.PlacaAutobus;
+
+                lblConductor.Text =
+                    viaje.NombreConductor;
+
+                lblEstado.Text =
+                    viaje.Estado.ToString();
+            }
+            catch (Exception ex)
             {
                 MessageBox.Show(
-                    "No se encontró el viaje.");
+                    ex.Message,
+                    "Error",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Error);
 
                 Close();
-
-                return;
             }
-
-
-            lblRuta.Text =
-                $"Ruta: {viaje.NombreRuta}";
-
-            lblHorario.Text =
-                $"Horario: {viaje.HorarioTexto}";
-
-            lblAutobus.Text =
-                $"Autobús: {viaje.PlacaAutobus}";
-
-            lblConductor.Text =
-                $"Conductor: {viaje.NombreConductor}";
-
-            lblEstado.Text =
-                $"Estado: {viaje.Estado}";
         }
 
-        private void FrmDetalleViaje_Load(object sender, EventArgs e)
+        private void btnCerrar_Click(
+            object sender,
+            EventArgs e)
+        {
+            Close();
+        }
+
+        private void FrmDetalleViaje_Load(
+            object sender,
+            EventArgs e)
         {
         }
-
     }
 }

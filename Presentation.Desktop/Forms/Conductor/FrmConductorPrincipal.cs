@@ -10,7 +10,6 @@ namespace SGA.Presentation.Desktop.Forms.Conductor
 
         private List<ConductorDto> _conductores = new();
 
-
         public FrmConductorPrincipal(
             IConductorApiService conductorApiService)
         {
@@ -18,25 +17,15 @@ namespace SGA.Presentation.Desktop.Forms.Conductor
 
             _conductorApiService = conductorApiService;
 
-
             Load += FrmConductorPrincipal_Load;
 
-
             btnBuscar.Click += btnBuscar_Click;
-
             btnLimpiar.Click += btnLimpiar_Click;
-
             btnNuevo.Click += btnNuevo_Click;
-
             btnEliminar.Click += btnEliminar_Click;
-
             btnActualizar.Click += btnActualizar_Click;
-
             btnDetalles.Click += btnDetalles_Click;
-
         }
-
-
 
         private async void FrmConductorPrincipal_Load(
             object sender,
@@ -46,8 +35,6 @@ namespace SGA.Presentation.Desktop.Forms.Conductor
 
             await CargarConductores();
         }
-
-
 
         private void CargarEstados()
         {
@@ -60,15 +47,12 @@ namespace SGA.Presentation.Desktop.Forms.Conductor
             cmbEstado.SelectedIndex = 0;
         }
 
-
-
         private async Task CargarConductores()
         {
             try
             {
                 _conductores =
                     await _conductorApiService.GetAllAsync();
-
 
                 MostrarConductores(_conductores);
             }
@@ -82,14 +66,10 @@ namespace SGA.Presentation.Desktop.Forms.Conductor
             }
         }
 
-
-
         private void MostrarConductores(
             IEnumerable<ConductorDto> lista)
         {
-
             dgvConductores.DataSource = null;
-
 
             dgvConductores.DataSource =
                 lista.Select(c => new
@@ -100,136 +80,96 @@ namespace SGA.Presentation.Desktop.Forms.Conductor
                     c.Licencia,
                     c.Telefono,
                     Estado =
-                    c.EstadoConductorId == 1
-                    ? "Activo"
-                    : "Inactivo"
-
+                        c.EstadoConductorId == 1
+                            ? "Activo"
+                            : "Inactivo"
                 }).ToList();
-
-
 
             dgvConductores.AutoSizeColumnsMode =
                 DataGridViewAutoSizeColumnsMode.Fill;
 
-
             dgvConductores.ClearSelection();
         }
-
-
-
-
 
         private void btnBuscar_Click(
             object sender,
             EventArgs e)
         {
-
             IEnumerable<ConductorDto> resultado =
                 _conductores;
-
-
 
             if (!string.IsNullOrWhiteSpace(
                 txtBuscarNombre.Text))
             {
-
                 resultado =
                     resultado.Where(c =>
-                    c.Nombre.Contains(
-                    txtBuscarNombre.Text,
-                    StringComparison.OrdinalIgnoreCase));
+                        !string.IsNullOrWhiteSpace(c.Nombre) &&
+                        c.Nombre.Contains(
+                            txtBuscarNombre.Text.Trim(),
+                            StringComparison.OrdinalIgnoreCase));
             }
-
-
-
 
             if (cmbEstado.SelectedItem != null &&
-               cmbEstado.SelectedItem.ToString()
-               != "Todos")
+                cmbEstado.SelectedItem.ToString() != "Todos")
             {
-
                 int estado =
-                    cmbEstado.SelectedItem.ToString()
-                    == "Activo"
-                    ? 1
-                    : 2;
-
+                    cmbEstado.SelectedItem.ToString() == "Activo"
+                        ? 1
+                        : 2;
 
                 resultado =
                     resultado.Where(c =>
-                    c.EstadoConductorId == estado);
-
+                        c.EstadoConductorId == estado);
             }
 
-
             MostrarConductores(resultado);
-
         }
-
-
-
 
         private async void btnLimpiar_Click(
             object sender,
             EventArgs e)
         {
-
             txtBuscarNombre.Clear();
 
             cmbEstado.SelectedIndex = 0;
 
-
             await CargarConductores();
-
         }
-
-
-
-
 
         private void btnNuevo_Click(
             object sender,
             EventArgs e)
         {
-
             using var formulario =
                 Program.ServiceProvider
-                .GetRequiredService<FrmNuevoConductor>();
+                    .GetRequiredService<FrmNuevoConductor>();
 
-
-            if (formulario.ShowDialog()
-                == DialogResult.OK)
+            if (formulario.ShowDialog() == DialogResult.OK)
             {
                 _ = CargarConductores();
             }
-
         }
-
-
-
-
 
         private async void btnEliminar_Click(
             object sender,
             EventArgs e)
         {
-
             if (dgvConductores.CurrentRow == null)
             {
                 MessageBox.Show(
                     "Seleccione un conductor.",
-                    "Aviso");
+                    "Aviso",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Warning);
 
                 return;
             }
 
-
-
             int id =
                 Convert.ToInt32(
-                dgvConductores.CurrentRow.Cells["Id"].Value);
-
-
+                    dgvConductores.CurrentRow
+                        .Cells["Id"]
+                        .Value);
 
             var confirmar =
                 MessageBox.Show(
@@ -238,56 +178,76 @@ namespace SGA.Presentation.Desktop.Forms.Conductor
                     MessageBoxButtons.YesNo,
                     MessageBoxIcon.Question);
 
+            if (confirmar != DialogResult.Yes)
+                return;
 
-
-            if (confirmar == DialogResult.Yes)
+            try
             {
-
                 bool eliminado =
                     await _conductorApiService
-                    .DeleteAsync(id);
-
-
+                        .DeleteAsync(id);
 
                 if (eliminado)
                 {
+                    MessageBox.Show(
+                        "Conductor eliminado correctamente.",
+                        "Éxito",
+                        MessageBoxButtons.OK,
+                        MessageBoxIcon.Information);
+
                     await CargarConductores();
                 }
-
+                else
+                {
+                    MessageBox.Show(
+                        "No se pudo eliminar el conductor.",
+                        "Error",
+                        MessageBoxButtons.OK,
+                        MessageBoxIcon.Error);
+                }
             }
-
+            catch (Exception ex)
+            {
+                MessageBox.Show(
+                    ex.Message,
+                    "Error",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Error);
+            }
         }
 
-
-
-        private async void btnActualizar_Click(object sender, EventArgs e)
+        private async void btnActualizar_Click(
+            object sender,
+            EventArgs e)
         {
             if (dgvConductores.CurrentRow == null)
             {
-                MessageBox.Show("Seleccione un conductor.");
+                MessageBox.Show(
+                    "Seleccione un conductor.",
+                    "Aviso",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Warning);
+
                 return;
             }
 
-
-            int id = Convert.ToInt32(
-                dgvConductores.CurrentRow.Cells["Id"].Value);
-
-
+            int id =
+                Convert.ToInt32(
+                    dgvConductores.CurrentRow
+                        .Cells["Id"]
+                        .Value);
 
             using var formulario =
                 Program.ServiceProvider
-                .GetRequiredService<FrmNuevoConductor>();
-
+                    .GetRequiredService<FrmNuevoConductor>();
 
             formulario.CargarConductor(id);
-
 
             if (formulario.ShowDialog() == DialogResult.OK)
             {
                 await CargarConductores();
             }
         }
-
 
         private void btnDetalles_Click(
             object sender,
@@ -304,28 +264,23 @@ namespace SGA.Presentation.Desktop.Forms.Conductor
                 return;
             }
 
-
             int id =
                 Convert.ToInt32(
                     dgvConductores
-                    .CurrentRow
-                    .Cells["Id"]
-                    .Value);
-
-
+                        .CurrentRow
+                        .Cells["Id"]
+                        .Value);
 
             using var formulario =
                 Program.ServiceProvider
-                .GetRequiredService<FrmDetalleConductor>();
-
+                    .GetRequiredService<FrmDetalleConductor>();
 
             formulario.CargarConductor(id);
-
 
             formulario.ShowDialog();
         }
 
-        private void FrmConductorPrincipal_Load_1(object sender, EventArgs e)
+        private void dgvConductores_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
 
         }

@@ -2,11 +2,17 @@
 {
     public class IncidenciaRules
     {
-        public void ValidarRegistroIncidencia(bool registrada)
+        public void ValidarRegistroIncidencia(
+            int viajeId,
+            int conductorId)
         {
-            if (!registrada)
+            if (viajeId <= 0)
                 throw new InvalidOperationException(
-                    "La incidencia debe quedar registrada para fines de seguimiento y control.");
+                    "La incidencia debe estar asociada a un viaje.");
+
+            if (conductorId <= 0)
+                throw new InvalidOperationException(
+                    "La incidencia debe estar asociada a un conductor.");
         }
     }
 }

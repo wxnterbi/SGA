@@ -6,21 +6,17 @@
 
         private Label lblTitulo;
 
-        private Label lblIdTexto;
+        private Label lblIdTitulo;
+        private Label lblNombreTitulo;
+        private Label lblOrigenTitulo;
+        private Label lblDestinoTitulo;
+
         private Label lblId;
-
-        private Label lblNombreTexto;
         private Label lblNombre;
-
-        private Label lblOrigenTexto;
         private Label lblOrigen;
-
-        private Label lblDestinoTexto;
         private Label lblDestino;
 
         private Button btnCerrar;
-
-
 
         protected override void Dispose(bool disposing)
         {
@@ -30,131 +26,290 @@
             base.Dispose(disposing);
         }
 
-
-
-
         private void InitializeComponent()
         {
+            components =
+                new System.ComponentModel.Container();
+
             lblTitulo = new Label();
-            lblIdTexto = new Label();
+
+            lblIdTitulo = new Label();
+            lblNombreTitulo = new Label();
+            lblOrigenTitulo = new Label();
+            lblDestinoTitulo = new Label();
+
             lblId = new Label();
-            lblNombreTexto = new Label();
             lblNombre = new Label();
-            lblOrigenTexto = new Label();
             lblOrigen = new Label();
-            lblDestinoTexto = new Label();
             lblDestino = new Label();
+
             btnCerrar = new Button();
+
             SuspendLayout();
+
+            // 
+            // FrmDetalleRuta
+            // 
+            ClientSize =
+                new Size(600, 380);
+
+            Text =
+                "Detalle de la Ruta";
+
+            StartPosition =
+                FormStartPosition.CenterParent;
+
+            FormBorderStyle =
+                FormBorderStyle.FixedDialog;
+
+            MaximizeBox =
+                false;
+
+            MinimizeBox =
+                false;
+
+            BackColor =
+                Color.White;
+
             // 
             // lblTitulo
             // 
             lblTitulo.AutoSize = true;
-            lblTitulo.Font = new Font("Segoe UI", 16F, FontStyle.Bold);
-            lblTitulo.Location = new Point(110, 25);
-            lblTitulo.Name = "lblTitulo";
-            lblTitulo.Size = new Size(245, 37);
+
+            lblTitulo.Font =
+                new Font(
+                    "Segoe UI",
+                    18F,
+                    FontStyle.Bold);
+
+            lblTitulo.ForeColor =
+                Color.FromArgb(25, 42, 86);
+
+            lblTitulo.Location =
+                new Point(30, 20);
+
+            lblTitulo.Name =
+                "lblTitulo";
+
+            lblTitulo.Size =
+                new Size(280, 41);
+
             lblTitulo.TabIndex = 0;
-            lblTitulo.Text = "DETALLE DE RUTA";
+
+            lblTitulo.Text =
+                "DETALLE DE RUTA";
+
             // 
-            // lblIdTexto
+            // lblIdTitulo
             // 
-            lblIdTexto.AutoSize = true;
-            lblIdTexto.Location = new Point(50, 90);
-            lblIdTexto.Name = "lblIdTexto";
-            lblIdTexto.Size = new Size(27, 20);
-            lblIdTexto.TabIndex = 1;
-            lblIdTexto.Text = "ID:";
+            lblIdTitulo.AutoSize = true;
+
+            lblIdTitulo.Font =
+                new Font(
+                    "Segoe UI",
+                    11F,
+                    FontStyle.Bold);
+
+            lblIdTitulo.Location =
+                new Point(40, 90);
+
+            lblIdTitulo.Name =
+                "lblIdTitulo";
+
+            lblIdTitulo.Text =
+                "ID:";
+
+            // 
+            // lblNombreTitulo
+            // 
+            lblNombreTitulo.AutoSize = true;
+
+            lblNombreTitulo.Font =
+                new Font(
+                    "Segoe UI",
+                    11F,
+                    FontStyle.Bold);
+
+            lblNombreTitulo.Location =
+                new Point(40, 135);
+
+            lblNombreTitulo.Name =
+                "lblNombreTitulo";
+
+            lblNombreTitulo.Text =
+                "Nombre:";
+
+            // 
+            // lblOrigenTitulo
+            // 
+            lblOrigenTitulo.AutoSize = true;
+
+            lblOrigenTitulo.Font =
+                new Font(
+                    "Segoe UI",
+                    11F,
+                    FontStyle.Bold);
+
+            lblOrigenTitulo.Location =
+                new Point(40, 180);
+
+            lblOrigenTitulo.Name =
+                "lblOrigenTitulo";
+
+            lblOrigenTitulo.Text =
+                "Origen:";
+
+            // 
+            // lblDestinoTitulo
+            // 
+            lblDestinoTitulo.AutoSize = true;
+
+            lblDestinoTitulo.Font =
+                new Font(
+                    "Segoe UI",
+                    11F,
+                    FontStyle.Bold);
+
+            lblDestinoTitulo.Location =
+                new Point(40, 225);
+
+            lblDestinoTitulo.Name =
+                "lblDestinoTitulo";
+
+            lblDestinoTitulo.Text =
+                "Destino:";
+
             // 
             // lblId
             // 
-            lblId.Location = new Point(180, 90);
-            lblId.Name = "lblId";
-            lblId.Size = new Size(200, 23);
-            lblId.TabIndex = 2;
-            // 
-            // lblNombreTexto
-            // 
-            lblNombreTexto.AutoSize = true;
-            lblNombreTexto.Location = new Point(50, 140);
-            lblNombreTexto.Name = "lblNombreTexto";
-            lblNombreTexto.Size = new Size(67, 20);
-            lblNombreTexto.TabIndex = 3;
-            lblNombreTexto.Text = "Nombre:";
+            lblId.AutoSize = true;
+
+            lblId.Font =
+                new Font(
+                    "Segoe UI",
+                    11F);
+
+            lblId.Location =
+                new Point(180, 90);
+
+            lblId.Name =
+                "lblId";
+
+            lblId.Text =
+                "-";
+
             // 
             // lblNombre
             // 
-            lblNombre.Location = new Point(180, 140);
-            lblNombre.Name = "lblNombre";
-            lblNombre.Size = new Size(250, 23);
-            lblNombre.TabIndex = 4;
-            // 
-            // lblOrigenTexto
-            // 
-            lblOrigenTexto.AutoSize = true;
-            lblOrigenTexto.Location = new Point(50, 190);
-            lblOrigenTexto.Name = "lblOrigenTexto";
-            lblOrigenTexto.Size = new Size(57, 20);
-            lblOrigenTexto.TabIndex = 5;
-            lblOrigenTexto.Text = "Origen:";
+            lblNombre.AutoSize = true;
+
+            lblNombre.Font =
+                new Font(
+                    "Segoe UI",
+                    11F);
+
+            lblNombre.Location =
+                new Point(180, 135);
+
+            lblNombre.Name =
+                "lblNombre";
+
+            lblNombre.Text =
+                "-";
+
             // 
             // lblOrigen
             // 
-            lblOrigen.Location = new Point(180, 190);
-            lblOrigen.Name = "lblOrigen";
-            lblOrigen.Size = new Size(250, 23);
-            lblOrigen.TabIndex = 6;
-            // 
-            // lblDestinoTexto
-            // 
-            lblDestinoTexto.AutoSize = true;
-            lblDestinoTexto.Location = new Point(50, 240);
-            lblDestinoTexto.Name = "lblDestinoTexto";
-            lblDestinoTexto.Size = new Size(63, 20);
-            lblDestinoTexto.TabIndex = 7;
-            lblDestinoTexto.Text = "Destino:";
+            lblOrigen.AutoSize = true;
+
+            lblOrigen.Font =
+                new Font(
+                    "Segoe UI",
+                    11F);
+
+            lblOrigen.Location =
+                new Point(180, 180);
+
+            lblOrigen.Name =
+                "lblOrigen";
+
+            lblOrigen.Text =
+                "-";
+
             // 
             // lblDestino
             // 
-            lblDestino.Location = new Point(180, 240);
-            lblDestino.Name = "lblDestino";
-            lblDestino.Size = new Size(250, 23);
-            lblDestino.TabIndex = 8;
-            lblDestino.Click += lblDestino_Click;
+            lblDestino.AutoSize = true;
+
+            lblDestino.Font =
+                new Font(
+                    "Segoe UI",
+                    11F);
+
+            lblDestino.Location =
+                new Point(180, 225);
+
+            lblDestino.Name =
+                "lblDestino";
+
+            lblDestino.Text =
+                "-";
+
             // 
             // btnCerrar
             // 
-            btnCerrar.BackColor = Color.Gray;
-            btnCerrar.FlatStyle = FlatStyle.Flat;
-            btnCerrar.ForeColor = Color.White;
-            btnCerrar.Location = new Point(170, 320);
-            btnCerrar.Name = "btnCerrar";
-            btnCerrar.Size = new Size(110, 40);
+            btnCerrar.BackColor =
+                Color.FromArgb(25, 42, 86);
+
+            btnCerrar.Cursor =
+                Cursors.Hand;
+
+            btnCerrar.FlatStyle =
+                FlatStyle.Flat;
+
+            btnCerrar.FlatAppearance.BorderSize =
+                0;
+
+            btnCerrar.ForeColor =
+                Color.White;
+
+            btnCerrar.Location =
+                new Point(230, 295);
+
+            btnCerrar.Name =
+                "btnCerrar";
+
+            btnCerrar.Size =
+                new Size(120, 40);
+
             btnCerrar.TabIndex = 9;
-            btnCerrar.Text = "Cerrar";
-            btnCerrar.UseVisualStyleBackColor = false;
-            btnCerrar.Click += btnCerrar_Click;
+
+            btnCerrar.Text =
+                "Cerrar";
+
+            btnCerrar.UseVisualStyleBackColor =
+                false;
+
+            btnCerrar.Click +=
+                btnCerrar_Click;
+
             // 
-            // FrmDetalleRuta
+            // Controls
             // 
-            AutoScaleDimensions = new SizeF(8F, 20F);
-            AutoScaleMode = AutoScaleMode.Font;
-            BackColor = Color.White;
-            ClientSize = new Size(450, 400);
             Controls.Add(lblTitulo);
-            Controls.Add(lblIdTexto);
+
+            Controls.Add(lblIdTitulo);
+            Controls.Add(lblNombreTitulo);
+            Controls.Add(lblOrigenTitulo);
+            Controls.Add(lblDestinoTitulo);
+
             Controls.Add(lblId);
-            Controls.Add(lblNombreTexto);
             Controls.Add(lblNombre);
-            Controls.Add(lblOrigenTexto);
             Controls.Add(lblOrigen);
-            Controls.Add(lblDestinoTexto);
             Controls.Add(lblDestino);
+
             Controls.Add(btnCerrar);
-            Name = "FrmDetalleRuta";
-            StartPosition = FormStartPosition.CenterScreen;
-            Text = "Detalle Ruta";
-            Load += FrmDetalleRuta_Load_1;
+
             ResumeLayout(false);
             PerformLayout();
         }

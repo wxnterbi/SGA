@@ -19,6 +19,11 @@ namespace SGA.Presentation.Desktop.Forms.Horario
         {
             InitializeComponent();
 
+
+            _horarioApiService = horarioApiService;
+
+
+
             ButtonStyleHelper.AplicarEstilo(
                 btnNuevoHorario,
                 Color.FromArgb(40, 167, 69));
@@ -38,18 +43,22 @@ namespace SGA.Presentation.Desktop.Forms.Horario
                 btnActualizar,
                 Color.Gray);
 
-            _horarioApiService = horarioApiService;
 
+  
 
             Load += FrmHorarioPrincipal_Load;
 
             btnNuevoHorario.Click += btnNuevoHorario_Click;
+
             btnDetalles.Click += btnDetalles_Click;
+
             btnEliminar.Click += btnEliminar_Click;
+
             btnActualizar.Click += btnActualizar_Click;
 
             dgvHorarios.CellClick += dgvHorarios_CellClick;
         }
+
 
 
 
@@ -70,46 +79,86 @@ namespace SGA.Presentation.Desktop.Forms.Horario
                     await _horarioApiService.GetAllAsync();
 
 
+                if (_horarios == null)
+                {
+                    _horarios = new List<HorarioDto>();
+                }
+
+
                 dgvHorarios.DataSource = null;
 
 
                 dgvHorarios.DataSource =
-                    _horarios.Select(h => new
+                    _horarios
+                    .Select(h => new
                     {
                         h.Id,
-                        Dias = h.DiasOperacion,
-                        Hora = h.HoraSalida.ToString(@"hh\:mm"),
-                        Ruta = h.NombreRuta
 
-                    }).ToList();
+                        Dias = h.DiasOperacion,
+
+                        Hora = h.HoraSalida
+                            .ToString(@"hh\:mm"),
+
+                        Ruta = h.NombreRuta
+                    })
+                    .ToList();
 
 
                 ConfigurarGrid();
 
+
                 _horarioSeleccionadoId = 0;
+
+
+                dgvHorarios.ClearSelection();
             }
             catch (Exception ex)
             {
-                MessageBox.Show(
-                    ex.Message,
-                    "Error",
-                    MessageBoxButtons.OK,
-                    MessageBoxIcon.Error);
+                MostrarError(
+                    ex,
+                    "No fue posible cargar los horarios.");
             }
         }
 
 
+ 
 
         private void ConfigurarGrid()
         {
+            if (dgvHorarios.Columns.Count == 0)
+                return;
+
+
             dgvHorarios.AutoSizeColumnsMode =
                 DataGridViewAutoSizeColumnsMode.Fill;
 
 
-            dgvHorarios.Columns["Id"].HeaderText = "ID";
-            dgvHorarios.Columns["Dias"].HeaderText = "Días de operación";
-            dgvHorarios.Columns["Hora"].HeaderText = "Hora salida";
-            dgvHorarios.Columns["Ruta"].HeaderText = "Ruta";
+            if (dgvHorarios.Columns.Contains("Id"))
+            {
+                dgvHorarios.Columns["Id"].HeaderText =
+                    "ID";
+            }
+
+
+            if (dgvHorarios.Columns.Contains("Dias"))
+            {
+                dgvHorarios.Columns["Dias"].HeaderText =
+                    "Días de operación";
+            }
+
+
+            if (dgvHorarios.Columns.Contains("Hora"))
+            {
+                dgvHorarios.Columns["Hora"].HeaderText =
+                    "Hora salida";
+            }
+
+
+            if (dgvHorarios.Columns.Contains("Ruta"))
+            {
+                dgvHorarios.Columns["Ruta"].HeaderText =
+                    "Ruta";
+            }
 
 
             dgvHorarios.ClearSelection();
@@ -121,12 +170,40 @@ namespace SGA.Presentation.Desktop.Forms.Horario
             object sender,
             DataGridViewCellEventArgs e)
         {
-            if (e.RowIndex >= 0)
+            if (e.RowIndex < 0)
+                return;
+
+
+            try
             {
-                _horarioSeleccionadoId =
-                    Convert.ToInt32(
-                        dgvHorarios.Rows[e.RowIndex]
-                        .Cells["Id"].Value);
+                var valor =
+                    dgvHorarios
+                    .Rows[e.RowIndex]
+                    .Cells["Id"]
+                    .Value;
+
+
+                if (valor == null)
+                {
+                    _horarioSeleccionadoId = 0;
+                    return;
+                }
+
+
+                if (int.TryParse(
+                    valor.ToString(),
+                    out int id))
+                {
+                    _horarioSeleccionadoId = id;
+                }
+                else
+                {
+                    _horarioSeleccionadoId = 0;
+                }
+            }
+            catch
+            {
+                _horarioSeleccionadoId = 0;
             }
         }
 
@@ -136,14 +213,24 @@ namespace SGA.Presentation.Desktop.Forms.Horario
             object sender,
             EventArgs e)
         {
-            using var formulario =
-                Program.ServiceProvider
-                .GetRequiredService<FrmNuevoHorario>();
-
-
-            if (formulario.ShowDialog() == DialogResult.OK)
+            try
             {
-                _ = CargarHorarios();
+                using var formulario =
+                    Program.ServiceProvider
+                    .GetRequiredService<FrmNuevoHorario>();
+
+
+                if (formulario.ShowDialog() ==
+                    DialogResult.OK)
+                {
+                    _ = CargarHorarios();
+                }
+            }
+            catch (Exception ex)
+            {
+                MostrarError(
+                    ex,
+                    "No fue posible abrir el formulario de nuevo horario.");
             }
         }
 
@@ -153,58 +240,154 @@ namespace SGA.Presentation.Desktop.Forms.Horario
             object sender,
             EventArgs e)
         {
-            if (_horarioSeleccionadoId == 0)
+            try
             {
-                MessageBox.Show(
-                    "Seleccione un horario.");
-
-                return;
-            }
+                if (!ValidarHorarioSeleccionado())
+                    return;
 
 
-            var horario =
-                await _horarioApiService
-                .GetByIdAsync(_horarioSeleccionadoId);
+                var horario =
+                    await _horarioApiService
+                    .GetByIdAsync(
+                        _horarioSeleccionadoId);
 
 
-            if (horario != null)
-            {
+                if (horario == null)
+                {
+                    MessageBox.Show(
+                        "No se encontró el horario seleccionado.",
+                        "Horario no encontrado",
+                        MessageBoxButtons.OK,
+                        MessageBoxIcon.Warning);
+
+                    return;
+                }
+
+
                 using var formulario =
                     new FrmDetalleHorario(horario);
 
+
                 formulario.ShowDialog();
+            }
+            catch (Exception ex)
+            {
+                MostrarError(
+                    ex,
+                    "No fue posible obtener los detalles del horario.");
             }
         }
 
 
+  
 
         private async void btnEliminar_Click(
             object sender,
             EventArgs e)
         {
-            if (_horarioSeleccionadoId == 0)
+            try
             {
-                MessageBox.Show(
-                    "Seleccione un horario.");
+          
 
-                return;
+                if (!ValidarHorarioSeleccionado())
+                    return;
+
+
+
+                var horario =
+                    await _horarioApiService
+                    .GetByIdAsync(
+                        _horarioSeleccionadoId);
+
+
+                if (horario == null)
+                {
+                    MessageBox.Show(
+                        "El horario seleccionado ya no existe.",
+                        "Horario no encontrado",
+                        MessageBoxButtons.OK,
+                        MessageBoxIcon.Warning);
+
+                    await CargarHorarios();
+
+                    return;
+                }
+
+
+
+                var confirmar =
+                    MessageBox.Show(
+                        "¿Está seguro de que desea eliminar este horario?\n\n" +
+                        $"Días: {horario.DiasOperacion}\n" +
+                        $"Hora: {horario.HoraSalida:hh\\:mm}\n" +
+                        $"Ruta: {horario.NombreRuta}",
+                        "Confirmar eliminación",
+                        MessageBoxButtons.YesNo,
+                        MessageBoxIcon.Question);
+
+
+                if (confirmar != DialogResult.Yes)
+                    return;
+
+
+
+                bool resultado =
+                    await _horarioApiService
+                    .DeleteAsync(
+                        _horarioSeleccionadoId);
+
+
+
+                if (resultado)
+                {
+                    MessageBox.Show(
+                        "El horario fue eliminado correctamente.",
+                        "Eliminación exitosa",
+                        MessageBoxButtons.OK,
+                        MessageBoxIcon.Information);
+
+
+                    _horarioSeleccionadoId = 0;
+
+
+                    await CargarHorarios();
+                }
+                else
+                {
+                    MessageBox.Show(
+                        "No se pudo eliminar el horario, este horario está asignado a un ticket mensual.",
+                        "No se pudo eliminar",
+                        MessageBoxButtons.OK,
+                        MessageBoxIcon.Warning);
+                }
             }
-
-
-            var confirmar =
-                MessageBox.Show(
-                    "¿Desea eliminar este horario?",
-                    "Confirmar",
-                    MessageBoxButtons.YesNo);
-
-
-            if (confirmar == DialogResult.Yes)
+            catch (Exception ex)
             {
-                await _horarioApiService
-                    .DeleteAsync(_horarioSeleccionadoId);
 
 
-                await CargarHorarios();
+
+                if (EsErrorDeReferencia(ex))
+                {
+                    MessageBox.Show(
+                        "No se puede eliminar este horario.\n\n" +
+                        "El horario está siendo utilizado por otro registro " +
+                        "en el sistema.\n\n" +
+                        "Primero debe eliminar o modificar los registros " +
+                        "que dependen de este horario y luego intentar " +
+                        "eliminarlo nuevamente.",
+                        "Horario en uso",
+                        MessageBoxButtons.OK,
+                        MessageBoxIcon.Warning);
+
+                    return;
+                }
+
+
+        
+
+                MostrarError(
+                    ex,
+                    "No fue posible eliminar el horario");
             }
         }
 
@@ -214,65 +397,185 @@ namespace SGA.Presentation.Desktop.Forms.Horario
             object sender,
             EventArgs e)
         {
-            if (_horarioSeleccionadoId == 0)
+            try
             {
-                MessageBox.Show(
-                    "Seleccione un horario.");
-
-                return;
-            }
+                if (!ValidarHorarioSeleccionado())
+                    return;
 
 
-            var horario =
-                await _horarioApiService
-                .GetByIdAsync(
-                    _horarioSeleccionadoId);
+                var horario =
+                    await _horarioApiService
+                    .GetByIdAsync(
+                        _horarioSeleccionadoId);
 
 
+                if (horario == null)
+                {
+                    MessageBox.Show(
+                        "No se encontró el horario seleccionado.",
+                        "Horario no encontrado",
+                        MessageBoxButtons.OK,
+                        MessageBoxIcon.Warning);
 
-            if (horario == null)
-            {
-                MessageBox.Show(
-                    "No se encontró el horario.");
+                    await CargarHorarios();
 
-                return;
-            }
+                    return;
+                }
 
 
-
-            using var formulario =
-                new FrmNuevoHorario(
-                    _horarioApiService,
+                var rutaApiService =
                     Program.ServiceProvider
-                    .GetRequiredService<IRutaApiService>(),
-                    horario);
+                    .GetRequiredService<IRutaApiService>();
 
 
+                using var formulario =
+                    new FrmNuevoHorario(
+                        _horarioApiService,
+                        rutaApiService,
+                        horario);
 
-            if (formulario.ShowDialog() == DialogResult.OK)
+
+                if (formulario.ShowDialog() ==
+                    DialogResult.OK)
+                {
+                    await CargarHorarios();
+                }
+            }
+            catch (Exception ex)
             {
-                await CargarHorarios();
+                MostrarError(
+                    ex,
+                    "No fue posible actualizar el horario.");
             }
         }
 
-        private void dgvHorarios_CellContentClick(object sender, DataGridViewCellEventArgs e)
+
+     
+
+        private bool ValidarHorarioSeleccionado()
+        {
+            if (_horarioSeleccionadoId <= 0)
+            {
+                MessageBox.Show(
+                    "Seleccione un horario de la lista antes de continuar.",
+                    "Selección requerida",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Warning);
+
+                return false;
+            }
+
+
+            return true;
+        }
+
+
+
+        private bool EsErrorDeReferencia(
+            Exception ex)
+        {
+            Exception? actual = ex;
+
+
+            while (actual != null)
+            {
+                string mensaje =
+                    actual.Message.ToLowerInvariant();
+
+
+                if (mensaje.Contains("foreign key") ||
+                    mensaje.Contains("foreignkey") ||
+                    mensaje.Contains("constraint") ||
+                    mensaje.Contains("referenced") ||
+                    mensaje.Contains("reference") ||
+                    mensaje.Contains("conflicted") ||
+                    mensaje.Contains("conflict") ||
+                    mensaje.Contains("delete statement") ||
+                    mensaje.Contains("fk_") ||
+                    mensaje.Contains("clave foránea") ||
+                    mensaje.Contains("clave foranea") ||
+                    mensaje.Contains("referencia"))
+                {
+                    return true;
+                }
+
+
+                actual = actual.InnerException;
+            }
+
+
+            return false;
+        }
+
+
+
+
+        private void MostrarError(
+            Exception ex,
+            string mensajePrincipal)
+        {
+            string detalle =
+                ObtenerMensajeError(ex);
+
+
+            MessageBox.Show(
+                $"{mensajePrincipal}\n\n{detalle}",
+                "Error",
+                MessageBoxButtons.OK,
+                MessageBoxIcon.Error);
+        }
+
+
+
+
+        private string ObtenerMensajeError(
+            Exception ex)
+        {
+            Exception? actual = ex;
+
+
+            while (actual?.InnerException != null)
+            {
+                actual = actual.InnerException;
+            }
+
+
+            return actual?.Message
+                   ?? ex.Message;
+        }
+
+
+
+
+        private void dgvHorarios_CellContentClick(
+            object sender,
+            DataGridViewCellEventArgs e)
         {
 
         }
 
-        private void FrmHorarioPrincipal_Load_1(object sender, EventArgs e)
+
+        private void FrmHorarioPrincipal_Load_1(
+            object sender,
+            EventArgs e)
         {
 
         }
 
-        private void FrmHorarioPrincipal_Load_2(object sender, EventArgs e)
-        {
 
+        private void FrmHorarioPrincipal_Load_2(
+            object sender,
+            EventArgs e)
+        {
+        
         }
 
-        private void dgvHorarios_CellContentClick_1(object sender, DataGridViewCellEventArgs e)
-        {
 
+        private void dgvHorarios_CellContentClick_1(
+            object sender,
+            DataGridViewCellEventArgs e)
+        {
+     
         }
     }
 }

@@ -5,10 +5,6 @@ using SGA.Domain.Entities.Reservation;
 using SGA.Domain.Enums.Reservation;
 using SGA.Infrastructure.Notifications;
 using SGA.Persistence.Interfaces;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace SGA.Application.Services
 {
@@ -42,11 +38,12 @@ namespace SGA.Application.Services
         {
             var viajes = await _viajeRepository.GetAllAsync();
 
-            return viajes.Select(viaje => MapToDto(viaje));
+            return viajes.Select(MapToDto);
         }
 
         public async Task AddAsync(ViajeDto dto)
         {
+
             await _viajeRules.ValidarAsignacionViaje(
                 dto.RutaId,
                 dto.HorarioId,
@@ -59,6 +56,7 @@ namespace SGA.Application.Services
                 HorarioId = dto.HorarioId,
                 AutobusId = dto.AutobusId,
                 ConductorId = dto.ConductorId,
+
                 Estado = dto.Estado == 0
                     ? EstadoViaje.Programado
                     : dto.Estado
@@ -76,22 +74,35 @@ namespace SGA.Application.Services
         {
             var viaje = await _viajeRepository.GetByIdAsync(dto.Id);
 
-            if (viaje != null)
-            {
-                viaje.RutaId = dto.RutaId;
-                viaje.HorarioId = dto.HorarioId;
-                viaje.AutobusId = dto.AutobusId;
-                viaje.ConductorId = dto.ConductorId;
-                viaje.Estado = dto.Estado;
-                viaje.HoraInicioReal = dto.HoraInicioReal;
-                viaje.HoraFinReal = dto.HoraFinReal;
+            if (viaje == null)
+                throw new Exception("Viaje no encontrado.");
 
-                await _viajeRepository.UpdateAsync(viaje);
-            }
+
+            await _viajeRules.ValidarAsignacionViaje(
+                dto.RutaId,
+                dto.HorarioId,
+                dto.AutobusId,
+                dto.ConductorId,
+                dto.Id);
+
+            viaje.RutaId = dto.RutaId;
+            viaje.HorarioId = dto.HorarioId;
+            viaje.AutobusId = dto.AutobusId;
+            viaje.ConductorId = dto.ConductorId;
+            viaje.Estado = dto.Estado;
+            viaje.HoraInicioReal = dto.HoraInicioReal;
+            viaje.HoraFinReal = dto.HoraFinReal;
+
+            await _viajeRepository.UpdateAsync(viaje);
         }
 
         public async Task DeleteAsync(int id)
         {
+            var viaje = await _viajeRepository.GetByIdAsync(id);
+
+            if (viaje == null)
+                throw new Exception("Viaje no encontrado.");
+
             await _viajeRepository.DeleteAsync(id);
         }
 
@@ -109,7 +120,8 @@ namespace SGA.Application.Services
                 HoraFinReal = viaje.HoraFinReal,
 
                 HorarioTexto = viaje.Horario != null
-                    ? DateTime.Today.Add(viaje.Horario.HoraSalida)
+                    ? DateTime.Today
+                        .Add(viaje.Horario.HoraSalida)
                         .ToString("hh:mm tt")
                     : "N/A",
 

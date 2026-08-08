@@ -14,13 +14,19 @@ namespace SGA.Application.Services
     {
         private readonly ITicketMensualRepository _ticketRepository;
         private readonly INotificationService _notificationService;
+        private readonly IUsuarioRepository _usuarioRepository;
+        private readonly UsuarioRules _usuarioRules;
 
         public TicketMensualService(
             ITicketMensualRepository ticketRepository,
-            INotificationService notificationService)
+            INotificationService notificationService,
+            IUsuarioRepository usuarioRepository,
+            UsuarioRules usuarioRules)
         {
             _ticketRepository = ticketRepository;
             _notificationService = notificationService;
+            _usuarioRepository = usuarioRepository;
+            _usuarioRules = usuarioRules;
         }
 
         public async Task<IEnumerable<TicketMensualDto>> GetAllAsync()
@@ -88,14 +94,15 @@ namespace SGA.Application.Services
 
         public async Task AddAsync(TicketMensualDto dto)
         {
+            var usuario = _usuarioRepository.GetById(dto.UsuarioId);
+
+            _usuarioRules.ValidarUsuarioRegistrado(usuario != null);
 
             var ticket = new TicketMensual
             {
                 UsuarioId = dto.UsuarioId,
                 PagoId = dto.PagoId,
-
                 Precio = dto.Precio,
-
                 FechaInicio = dto.FechaInicio,
                 FechaFin = dto.FechaFin,
                 Estado = (EstadoTicket)dto.Estado,
@@ -154,18 +161,22 @@ namespace SGA.Application.Services
 
             await _ticketRepository.DeleteAsync(id);
         }
-        public async Task CrearDesdeCompraAsync(int usuarioId, int pagoId, ComprarTicketDto dto)
+        public async Task CrearDesdeCompraAsync(
+            int usuarioId,
+            int pagoId,
+            ComprarTicketDto dto)
         {
+            var usuario = _usuarioRepository.GetById(usuarioId);
+
+            _usuarioRules.ValidarUsuarioRegistrado(usuario != null);
+
             var ticket = new TicketMensual
             {
                 UsuarioId = usuarioId,
                 PagoId = pagoId,
-
                 Precio = 850,
-
                 FechaInicio = DateTime.Today,
                 FechaFin = DateTime.Today.AddMonths(1),
-
                 Estado = EstadoTicket.Activo,
 
                 RutaEntradaId = dto.RutaEntradaId,

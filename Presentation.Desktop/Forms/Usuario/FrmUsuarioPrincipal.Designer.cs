@@ -4,376 +4,441 @@
     {
         private System.ComponentModel.IContainer components = null;
 
+        private Label lblTitulo;
+
+        private ComboBox cmbEstado;
+        private TextBox txtBuscarNombre;
+
+        private Button btnBuscar;
+        private Button btnLimpiar;
+        private Button btnNuevoUsuario;
+
+        private DataGridView dgvUsuarios;
+
+        private Button btnEditar;
+        private Button btnDetalles;
+        private Button btnEliminar;
+
         protected override void Dispose(bool disposing)
         {
             if (disposing && (components != null))
-            {
                 components.Dispose();
-            }
 
             base.Dispose(disposing);
         }
 
-
-        #region Windows Form Designer generated code
-
-
         private void InitializeComponent()
         {
+            DataGridViewCellStyle dataGridViewCellStyle1 =
+                new DataGridViewCellStyle();
+
+            DataGridViewCellStyle dataGridViewCellStyle2 =
+                new DataGridViewCellStyle();
+
             lblTitulo = new Label();
 
-            lblBuscarNombre = new Label();
-            txtBuscarNombre = new TextBox();
-
-            lblEstado = new Label();
             cmbEstado = new ComboBox();
+            txtBuscarNombre = new TextBox();
 
             btnBuscar = new Button();
             btnLimpiar = new Button();
+            btnNuevoUsuario = new Button();
 
             dgvUsuarios = new DataGridView();
 
-            btnNuevoUsuario = new Button();
             btnEditar = new Button();
             btnDetalles = new Button();
             btnEliminar = new Button();
 
-
-            ((System.ComponentModel.ISupportInitialize)dgvUsuarios)
-                .BeginInit();
-
+            ((System.ComponentModel.ISupportInitialize)dgvUsuarios).BeginInit();
 
             SuspendLayout();
-            //
+
+            // 
             // lblTitulo
-            //
+            // 
             lblTitulo.AutoSize = true;
-            lblTitulo.Font = new Font(
-                "Segoe UI",
-                16F,
-                FontStyle.Bold);
+            lblTitulo.Font =
+                new Font("Segoe UI", 18F, FontStyle.Bold);
 
-            lblTitulo.Location = new Point(350, 20);
-            lblTitulo.Name = "lblTitulo";
-            lblTitulo.Size = new Size(120, 30);
+            lblTitulo.ForeColor =
+                Color.FromArgb(40, 40, 40);
+
+            lblTitulo.Location =
+                new Point(25, 20);
+
+            lblTitulo.Name =
+                "lblTitulo";
+
+            lblTitulo.Size =
+                new Size(310, 41);
+
             lblTitulo.TabIndex = 0;
-            lblTitulo.Text = "Usuarios";
 
+            lblTitulo.Text =
+                "GESTIÓN DE USUARIOS";
 
-            //
-            // lblBuscarNombre
-            //
-            lblBuscarNombre.AutoSize = true;
-            lblBuscarNombre.Location = new Point(40, 80);
-            lblBuscarNombre.Name = "lblBuscarNombre";
-            lblBuscarNombre.Size = new Size(100, 15);
-            lblBuscarNombre.TabIndex = 1;
-            lblBuscarNombre.Text = "Buscar Nombre";
-
-
-            //
-            // txtBuscarNombre
-            //
-            txtBuscarNombre.Location =
-                new Point(40, 100);
-
-            txtBuscarNombre.Name =
-                "txtBuscarNombre";
-
-            txtBuscarNombre.Size =
-                new Size(220, 23);
-
-            txtBuscarNombre.TabIndex = 2;
-
-
-
-            //
-            // lblEstado
-            //
-            lblEstado.AutoSize = true;
-
-            lblEstado.Location =
-                new Point(300, 80);
-
-            lblEstado.Name =
-                "lblEstado";
-
-            lblEstado.Size =
-                new Size(45, 15);
-
-            lblEstado.TabIndex = 3;
-
-            lblEstado.Text =
-                "Estado";
-
-
-
-            //
+            // 
             // cmbEstado
-            //
+            // 
             cmbEstado.DropDownStyle =
                 ComboBoxStyle.DropDownList;
 
-            cmbEstado.FormattingEnabled =
-                true;
-
             cmbEstado.Location =
-                new Point(300, 100);
+                new Point(30, 85);
 
             cmbEstado.Name =
                 "cmbEstado";
 
             cmbEstado.Size =
-                new Size(180, 23);
+                new Size(160, 31);
 
-            cmbEstado.TabIndex = 4;
+            cmbEstado.TabIndex = 1;
 
+            // 
+            // txtBuscarNombre
+            // 
+            txtBuscarNombre.Location =
+                new Point(210, 85);
 
+            txtBuscarNombre.Name =
+                "txtBuscarNombre";
 
-            //
+            txtBuscarNombre.PlaceholderText =
+                "Buscar nombre...";
+
+            txtBuscarNombre.Size =
+                new Size(300, 30);
+
+            txtBuscarNombre.TabIndex = 2;
+
+            // 
             // btnBuscar
-            //
+            // 
+            btnBuscar.BackColor =
+                Color.FromArgb(0, 120, 215);
+
+            btnBuscar.FlatStyle =
+                FlatStyle.Flat;
+
+            btnBuscar.FlatAppearance.BorderSize = 0;
+
+            btnBuscar.ForeColor =
+                Color.White;
+
             btnBuscar.Location =
-                new Point(520, 95);
+                new Point(530, 82);
 
             btnBuscar.Name =
                 "btnBuscar";
 
             btnBuscar.Size =
-                new Size(100, 35);
+                new Size(95, 38);
 
-            btnBuscar.TabIndex = 5;
+            btnBuscar.TabIndex = 3;
 
             btnBuscar.Text =
                 "Buscar";
 
-            btnBuscar.UseVisualStyleBackColor =
-                true;
+            btnBuscar.UseVisualStyleBackColor = false;
 
-
-
-            //
+            // 
             // btnLimpiar
-            //
+            // 
+            btnLimpiar.BackColor =
+                Color.Gray;
+
+            btnLimpiar.FlatStyle =
+                FlatStyle.Flat;
+
+            btnLimpiar.FlatAppearance.BorderSize = 0;
+
+            btnLimpiar.ForeColor =
+                Color.White;
+
             btnLimpiar.Location =
-                new Point(640, 95);
+                new Point(640, 82);
 
             btnLimpiar.Name =
                 "btnLimpiar";
 
             btnLimpiar.Size =
-                new Size(100, 35);
+                new Size(95, 38);
 
-            btnLimpiar.TabIndex = 6;
+            btnLimpiar.TabIndex = 4;
 
             btnLimpiar.Text =
                 "Limpiar";
 
-            btnLimpiar.UseVisualStyleBackColor =
-                true;
+            btnLimpiar.UseVisualStyleBackColor = false;
 
-            //
-            // dgvUsuarios
-            //
-            dgvUsuarios.AllowUserToAddRows = false;
-            dgvUsuarios.AllowUserToDeleteRows = false;
-            dgvUsuarios.AutoSizeColumnsMode =
-                DataGridViewAutoSizeColumnsMode.Fill;
-
-            dgvUsuarios.ColumnHeadersHeightSizeMode =
-                DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-
-            dgvUsuarios.Location =
-                new Point(40, 160);
-
-            dgvUsuarios.Name =
-                "dgvUsuarios";
-
-            dgvUsuarios.ReadOnly = true;
-
-            dgvUsuarios.SelectionMode =
-                DataGridViewSelectionMode.FullRowSelect;
-
-            dgvUsuarios.MultiSelect = false;
-
-            dgvUsuarios.Size =
-                new Size(700, 280);
-
-            dgvUsuarios.TabIndex = 7;
-
-
-
-            //
+            // 
             // btnNuevoUsuario
-            //
+            // 
+            btnNuevoUsuario.BackColor =
+                Color.FromArgb(40, 167, 69);
+
+            btnNuevoUsuario.FlatStyle =
+                FlatStyle.Flat;
+
+            btnNuevoUsuario.FlatAppearance.BorderSize = 0;
+
+            btnNuevoUsuario.ForeColor =
+                Color.White;
+
             btnNuevoUsuario.Location =
-                new Point(40, 470);
+                new Point(960, 80);
 
             btnNuevoUsuario.Name =
                 "btnNuevoUsuario";
 
             btnNuevoUsuario.Size =
-                new Size(120, 40);
+                new Size(170, 42);
 
-            btnNuevoUsuario.TabIndex = 8;
+            btnNuevoUsuario.TabIndex = 5;
 
             btnNuevoUsuario.Text =
-                "Nuevo";
+                "+ Nuevo Usuario";
 
-            btnNuevoUsuario.UseVisualStyleBackColor =
+            btnNuevoUsuario.UseVisualStyleBackColor = false;
+
+            // 
+            // dgvUsuarios
+            // 
+            dgvUsuarios.AllowUserToAddRows = false;
+
+            dgvUsuarios.AllowUserToDeleteRows = false;
+
+            dgvUsuarios.AllowUserToResizeRows = false;
+
+            dgvUsuarios.AutoSizeColumnsMode =
+                DataGridViewAutoSizeColumnsMode.Fill;
+
+            dgvUsuarios.BackgroundColor =
+                Color.White;
+
+            dgvUsuarios.BorderStyle =
+                BorderStyle.None;
+
+            dataGridViewCellStyle1.Alignment =
+                DataGridViewContentAlignment.MiddleLeft;
+
+            dataGridViewCellStyle1.BackColor =
+                Color.FromArgb(33, 150, 243);
+
+            dataGridViewCellStyle1.Font =
+                new Font("Segoe UI", 10F, FontStyle.Bold);
+
+            dataGridViewCellStyle1.ForeColor =
+                Color.White;
+
+            dataGridViewCellStyle1.SelectionBackColor =
+                SystemColors.Highlight;
+
+            dataGridViewCellStyle1.SelectionForeColor =
+                SystemColors.HighlightText;
+
+            dataGridViewCellStyle1.WrapMode =
+                DataGridViewTriState.True;
+
+            dgvUsuarios.ColumnHeadersDefaultCellStyle =
+                dataGridViewCellStyle1;
+
+            dgvUsuarios.ColumnHeadersHeight =
+                40;
+
+            dataGridViewCellStyle2.Alignment =
+                DataGridViewContentAlignment.MiddleLeft;
+
+            dataGridViewCellStyle2.BackColor =
+                SystemColors.Window;
+
+            dataGridViewCellStyle2.Font =
+                new Font("Segoe UI", 10F);
+
+            dataGridViewCellStyle2.ForeColor =
+                SystemColors.ControlText;
+
+            dataGridViewCellStyle2.SelectionBackColor =
+                Color.FromArgb(210, 230, 255);
+
+            dataGridViewCellStyle2.SelectionForeColor =
+                Color.Black;
+
+            dataGridViewCellStyle2.WrapMode =
+                DataGridViewTriState.False;
+
+            dgvUsuarios.DefaultCellStyle =
+                dataGridViewCellStyle2;
+
+            dgvUsuarios.EnableHeadersVisualStyles =
+                false;
+
+            dgvUsuarios.Location =
+                new Point(30, 145);
+
+            dgvUsuarios.MultiSelect =
+                false;
+
+            dgvUsuarios.Name =
+                "dgvUsuarios";
+
+            dgvUsuarios.ReadOnly =
                 true;
 
+            dgvUsuarios.RowHeadersVisible =
+                false;
 
+            dgvUsuarios.SelectionMode =
+                DataGridViewSelectionMode.FullRowSelect;
 
-            //
+            dgvUsuarios.Size =
+                new Size(1100, 470);
+
+            dgvUsuarios.TabIndex = 6;
+
+            dgvUsuarios.CellClick +=
+                dgvUsuarios_CellClick;
+
+            // 
             // btnEditar
-            //
+            // 
+            btnEditar.BackColor =
+                Color.FromArgb(0, 120, 215);
+
+            btnEditar.FlatStyle =
+                FlatStyle.Flat;
+
+            btnEditar.FlatAppearance.BorderSize = 0;
+
+            btnEditar.ForeColor =
+                Color.White;
+
             btnEditar.Location =
-                new Point(180, 470);
+                new Point(30, 640);
 
             btnEditar.Name =
                 "btnEditar";
 
             btnEditar.Size =
-                new Size(120, 40);
+                new Size(120, 42);
 
-            btnEditar.TabIndex = 9;
+            btnEditar.TabIndex = 7;
 
             btnEditar.Text =
                 "Editar";
 
-            btnEditar.UseVisualStyleBackColor =
-                true;
+            btnEditar.UseVisualStyleBackColor = false;
 
-
-
-            //
-            // btnDetalles
-            //
-            btnDetalles.Location =
-                new Point(320, 470);
-
-            btnDetalles.Name =
-                "btnDetalles";
-
-            btnDetalles.Size =
-                new Size(120, 40);
-
-            btnDetalles.TabIndex = 10;
-
-            btnDetalles.Text =
-                "Detalles";
-
-            btnDetalles.UseVisualStyleBackColor =
-                true;
-
-
-
-            //
+            // 
             // btnEliminar
-            //
+            // 
+            btnEliminar.BackColor =
+                Color.Firebrick;
+
+            btnEliminar.FlatStyle =
+                FlatStyle.Flat;
+
+            btnEliminar.FlatAppearance.BorderSize = 0;
+
+            btnEliminar.ForeColor =
+                Color.White;
+
             btnEliminar.Location =
-                new Point(460, 470);
+                new Point(170, 640);
 
             btnEliminar.Name =
                 "btnEliminar";
 
             btnEliminar.Size =
-                new Size(120, 40);
+                new Size(120, 42);
 
-            btnEliminar.TabIndex = 11;
+            btnEliminar.TabIndex = 8;
 
             btnEliminar.Text =
                 "Eliminar";
 
-            btnEliminar.UseVisualStyleBackColor =
-                true;
-            //
+            btnEliminar.UseVisualStyleBackColor = false;
+
+            // 
+            // btnDetalles
+            // 
+            btnDetalles.BackColor =
+                Color.FromArgb(0, 120, 215);
+
+            btnDetalles.FlatStyle =
+                FlatStyle.Flat;
+
+            btnDetalles.FlatAppearance.BorderSize = 0;
+
+            btnDetalles.ForeColor =
+                Color.White;
+
+            btnDetalles.Location =
+                new Point(810, 640);
+
+            btnDetalles.Name =
+                "btnDetalles";
+
+            btnDetalles.Size =
+                new Size(120, 42);
+
+            btnDetalles.TabIndex = 9;
+
+            btnDetalles.Text =
+                "Detalles";
+
+            btnDetalles.UseVisualStyleBackColor = false;
+
+            // 
             // FrmUsuarioPrincipal
-            //
+            // 
             AutoScaleDimensions =
-                new SizeF(7F, 15F);
+                new SizeF(9F, 23F);
 
             AutoScaleMode =
                 AutoScaleMode.Font;
 
-            ClientSize =
-                new Size(800, 560);
+            BackColor =
+                Color.White;
 
+            ClientSize =
+                new Size(1180, 720);
 
             Controls.Add(lblTitulo);
 
-
-            Controls.Add(lblBuscarNombre);
-            Controls.Add(txtBuscarNombre);
-
-
-            Controls.Add(lblEstado);
             Controls.Add(cmbEstado);
-
+            Controls.Add(txtBuscarNombre);
 
             Controls.Add(btnBuscar);
             Controls.Add(btnLimpiar);
-
+            Controls.Add(btnNuevoUsuario);
 
             Controls.Add(dgvUsuarios);
 
-
-            Controls.Add(btnNuevoUsuario);
             Controls.Add(btnEditar);
             Controls.Add(btnDetalles);
             Controls.Add(btnEliminar);
 
+            Font =
+                new Font("Segoe UI", 10F);
 
             Name =
                 "FrmUsuarioPrincipal";
 
-
             StartPosition =
                 FormStartPosition.CenterScreen;
-
 
             Text =
                 "Gestión de Usuarios";
 
+            Load +=
+                FrmUsuarioPrincipal_Load_1;
 
-            ((System.ComponentModel.ISupportInitialize)dgvUsuarios)
-                .EndInit();
-
+            ((System.ComponentModel.ISupportInitialize)dgvUsuarios).EndInit();
 
             ResumeLayout(false);
-
             PerformLayout();
-
         }
-
-
-        #endregion
-
-
-
-        private Label lblTitulo;
-
-
-        private Label lblBuscarNombre;
-        private TextBox txtBuscarNombre;
-
-
-        private Label lblEstado;
-        private ComboBox cmbEstado;
-
-
-        private Button btnBuscar;
-        private Button btnLimpiar;
-
-
-        private DataGridView dgvUsuarios;
-
-
-        private Button btnNuevoUsuario;
-        private Button btnEditar;
-        private Button btnDetalles;
-        private Button btnEliminar;
-
     }
 }

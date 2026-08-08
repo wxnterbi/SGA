@@ -50,9 +50,7 @@
 
             SuspendLayout();
 
-            //===========================
-            // FORMULARIO
-            //===========================
+
 
             ClientSize = new Size(600, 420);
 
@@ -68,18 +66,13 @@
 
             BackColor = Color.White;
 
-            //===========================
-            // TITULO
-            //===========================
 
             lblTitulo.AutoSize = true;
             lblTitulo.Font = new Font("Segoe UI", 18F, FontStyle.Bold);
             lblTitulo.ForeColor = Color.FromArgb(25, 42, 86);
             lblTitulo.Location = new Point(30, 20);
 
-            //===========================
-            // TITULOS
-            //===========================
+ 
 
             Label[] titulos =
             {
@@ -101,9 +94,6 @@
                 y += 45;
             }
 
-            //===========================
-            // VALORES
-            //===========================
 
             Label[] valores =
             {
@@ -125,9 +115,6 @@
                 y += 45;
             }
 
-            //===========================
-            // BOTON
-            //===========================
 
             btnCerrar.Text = "Cerrar";
 
@@ -143,9 +130,6 @@
 
             btnCerrar.FlatAppearance.BorderSize = 0;
 
-            //===========================
-            // CONTROLES
-            //===========================
 
             Controls.Add(lblTitulo);
 
@@ -167,5 +151,7 @@
 
             PerformLayout();
         }
+
     }
+
 }

@@ -6,138 +6,338 @@
 
         private Label lblTitulo;
 
+        private DataGridView dgvIncidencias;
+
         private Button btnNuevaIncidencia;
         private Button btnDetalles;
-        private Button btnEliminar;
         private Button btnActualizar;
-
-        private DataGridView dgvIncidencias;
+        private Button btnEliminar;
 
         protected override void Dispose(bool disposing)
         {
             if (disposing && (components != null))
-            {
                 components.Dispose();
-            }
 
             base.Dispose(disposing);
         }
 
         private void InitializeComponent()
         {
-            DataGridViewCellStyle dataGridViewCellStyle1 = new DataGridViewCellStyle();
-            DataGridViewCellStyle dataGridViewCellStyle2 = new DataGridViewCellStyle();
+            DataGridViewCellStyle headerStyle = new DataGridViewCellStyle();
+            DataGridViewCellStyle cellStyle = new DataGridViewCellStyle();
+
             lblTitulo = new Label();
+
+            dgvIncidencias = new DataGridView();
+
             btnNuevaIncidencia = new Button();
             btnDetalles = new Button();
-            btnEliminar = new Button();
             btnActualizar = new Button();
-            dgvIncidencias = new DataGridView();
+            btnEliminar = new Button();
+
             ((System.ComponentModel.ISupportInitialize)dgvIncidencias).BeginInit();
             SuspendLayout();
+
+            // 
             // lblTitulo
+            // 
             lblTitulo.AutoSize = true;
-            lblTitulo.Font = new Font("Segoe UI", 18F, FontStyle.Bold);
-            lblTitulo.ForeColor = Color.FromArgb(40, 40, 40);
-            lblTitulo.Location = new Point(30, 25);
-            lblTitulo.Name = "lblTitulo";
-            lblTitulo.Size = new Size(396, 41);
+            lblTitulo.Font = new Font(
+                "Segoe UI",
+                18F,
+                FontStyle.Bold);
+
+            lblTitulo.ForeColor =
+                Color.FromArgb(40, 40, 40);
+
+            lblTitulo.Location =
+                new Point(25, 20);
+
+            lblTitulo.Name =
+                "lblTitulo";
+
+            lblTitulo.Size =
+                new Size(330, 41);
+
             lblTitulo.TabIndex = 0;
-            lblTitulo.Text = "GESTIÓN DE INCIDENCIAS";
-            // btnNuevaIncidencia
-            btnNuevaIncidencia.BackColor = Color.FromArgb(40, 167, 69);
-            btnNuevaIncidencia.Cursor = Cursors.Hand;
-            btnNuevaIncidencia.FlatStyle = FlatStyle.Flat;
-            btnNuevaIncidencia.Font = new Font("Segoe UI", 10F, FontStyle.Bold);
-            btnNuevaIncidencia.ForeColor = Color.White;
-            btnNuevaIncidencia.Location = new Point(950, 70);
-            btnNuevaIncidencia.Name = "btnNuevaIncidencia";
-            btnNuevaIncidencia.Size = new Size(180, 42);
-            btnNuevaIncidencia.TabIndex = 1;
-            btnNuevaIncidencia.Text = "+ Nueva Incidencia";
-            btnNuevaIncidencia.UseVisualStyleBackColor = false;
+
+            lblTitulo.Text =
+                "GESTIÓN DE INCIDENCIAS";
+
+            // 
             // dgvIncidencias
+            // 
             dgvIncidencias.AllowUserToAddRows = false;
             dgvIncidencias.AllowUserToDeleteRows = false;
             dgvIncidencias.AllowUserToResizeRows = false;
-            dgvIncidencias.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
-            dgvIncidencias.BackgroundColor = Color.White;
-            dgvIncidencias.BorderStyle = BorderStyle.None;
-            dataGridViewCellStyle1.Alignment = DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle1.BackColor = Color.FromArgb(33, 150, 243);
-            dataGridViewCellStyle1.Font = new Font("Segoe UI", 10F, FontStyle.Bold);
-            dataGridViewCellStyle1.ForeColor = Color.White;
-            dgvIncidencias.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
-            dgvIncidencias.ColumnHeadersHeight = 40;
-            dataGridViewCellStyle2.Alignment = DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle2.BackColor = SystemColors.Window;
-            dataGridViewCellStyle2.Font = new Font("Segoe UI", 10F);
-            dataGridViewCellStyle2.ForeColor = SystemColors.ControlText;
-            dataGridViewCellStyle2.SelectionBackColor = Color.FromArgb(210, 230, 255);
-            dataGridViewCellStyle2.SelectionForeColor = Color.Black;
-            dataGridViewCellStyle2.WrapMode = DataGridViewTriState.False;
-            dgvIncidencias.DefaultCellStyle = dataGridViewCellStyle2;
-            dgvIncidencias.EnableHeadersVisualStyles = false;
-            dgvIncidencias.Location = new Point(30, 140);
-            dgvIncidencias.MultiSelect = false;
-            dgvIncidencias.Name = "dgvIncidencias";
-            dgvIncidencias.ReadOnly = true;
-            dgvIncidencias.RowHeadersVisible = false;
-            dgvIncidencias.RowHeadersWidth = 51;
-            dgvIncidencias.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
-            dgvIncidencias.Size = new Size(1100, 450);
-            dgvIncidencias.TabIndex = 2;
-            dgvIncidencias.CellContentClick += dgvIncidencias_CellContentClick;
+
+            dgvIncidencias.AutoSizeColumnsMode =
+                DataGridViewAutoSizeColumnsMode.Fill;
+
+            dgvIncidencias.BackgroundColor =
+                Color.White;
+
+            dgvIncidencias.BorderStyle =
+                BorderStyle.None;
+
+            headerStyle.Alignment =
+                DataGridViewContentAlignment.MiddleLeft;
+
+            headerStyle.BackColor =
+                Color.FromArgb(33, 150, 243);
+
+            headerStyle.Font =
+                new Font(
+                    "Segoe UI",
+                    10F,
+                    FontStyle.Bold);
+
+            headerStyle.ForeColor =
+                Color.White;
+
+            headerStyle.SelectionBackColor =
+                Color.FromArgb(33, 150, 243);
+
+            headerStyle.SelectionForeColor =
+                Color.White;
+
+            headerStyle.WrapMode =
+                DataGridViewTriState.True;
+
+            dgvIncidencias.ColumnHeadersDefaultCellStyle =
+                headerStyle;
+
+            dgvIncidencias.ColumnHeadersHeight =
+                40;
+
+            cellStyle.Alignment =
+                DataGridViewContentAlignment.MiddleLeft;
+
+            cellStyle.BackColor =
+                SystemColors.Window;
+
+            cellStyle.Font =
+                new Font("Segoe UI", 10F);
+
+            cellStyle.ForeColor =
+                SystemColors.ControlText;
+
+            cellStyle.SelectionBackColor =
+                Color.FromArgb(210, 230, 255);
+
+            cellStyle.SelectionForeColor =
+                Color.Black;
+
+            cellStyle.WrapMode =
+                DataGridViewTriState.False;
+
+            dgvIncidencias.DefaultCellStyle =
+                cellStyle;
+
+            dgvIncidencias.EnableHeadersVisualStyles =
+                false;
+
+            dgvIncidencias.Location =
+                new Point(30, 85);
+
+            dgvIncidencias.MultiSelect =
+                false;
+
+            dgvIncidencias.Name =
+                "dgvIncidencias";
+
+            dgvIncidencias.ReadOnly =
+                true;
+
+            dgvIncidencias.RowHeadersVisible =
+                false;
+
+            dgvIncidencias.SelectionMode =
+                DataGridViewSelectionMode.FullRowSelect;
+
+            dgvIncidencias.Size =
+                new Size(1100, 520);
+
+            dgvIncidencias.TabIndex =
+                1;
+
+            dgvIncidencias.CellContentClick +=
+                dgvIncidencias_CellContentClick;
+
+            // 
+            // btnNuevaIncidencia
+            // 
+            btnNuevaIncidencia.BackColor =
+                Color.FromArgb(40, 167, 69);
+
+            btnNuevaIncidencia.FlatStyle =
+                FlatStyle.Flat;
+
+            btnNuevaIncidencia.FlatAppearance.BorderSize =
+                0;
+
+            btnNuevaIncidencia.ForeColor =
+                Color.White;
+
+            btnNuevaIncidencia.Location =
+                new Point(960, 20);
+
+            btnNuevaIncidencia.Name =
+                "btnNuevaIncidencia";
+
+            btnNuevaIncidencia.Size =
+                new Size(170, 42);
+
+            btnNuevaIncidencia.TabIndex =
+                2;
+
+            btnNuevaIncidencia.Text =
+                "+ Nueva Incidencia";
+
+            btnNuevaIncidencia.UseVisualStyleBackColor =
+                false;
+
+            // 
             // btnDetalles
-            btnDetalles.BackColor = Color.FromArgb(33, 150, 243);
-            btnDetalles.Cursor = Cursors.Hand;
-            btnDetalles.FlatStyle = FlatStyle.Flat;
-            btnDetalles.ForeColor = Color.White;
-            btnDetalles.Location = new Point(30, 630);
-            btnDetalles.Name = "btnDetalles";
-            btnDetalles.Size = new Size(130, 42);
-            btnDetalles.TabIndex = 3;
-            btnDetalles.Text = "Detalles";
-            btnDetalles.UseVisualStyleBackColor = false;
-            // btnEliminar
-            btnEliminar.BackColor = Color.Firebrick;
-            btnEliminar.Cursor = Cursors.Hand;
-            btnEliminar.FlatStyle = FlatStyle.Flat;
-            btnEliminar.ForeColor = Color.White;
-            btnEliminar.Location = new Point(180, 630);
-            btnEliminar.Name = "btnEliminar";
-            btnEliminar.Size = new Size(130, 42);
-            btnEliminar.TabIndex = 4;
-            btnEliminar.Text = "Eliminar";
-            btnEliminar.UseVisualStyleBackColor = false;
+            // 
+            btnDetalles.BackColor =
+                Color.FromArgb(33, 150, 243);
+
+            btnDetalles.FlatStyle =
+                FlatStyle.Flat;
+
+            btnDetalles.FlatAppearance.BorderSize =
+                0;
+
+            btnDetalles.ForeColor =
+                Color.White;
+
+            btnDetalles.Location =
+                new Point(650, 630);
+
+            btnDetalles.Name =
+                "btnDetalles";
+
+            btnDetalles.Size =
+                new Size(120, 42);
+
+            btnDetalles.TabIndex =
+                3;
+
+            btnDetalles.Text =
+                "Detalles";
+
+            btnDetalles.UseVisualStyleBackColor =
+                false;
+
+            // 
             // btnActualizar
-            btnActualizar.BackColor = Color.Gray;
-            btnActualizar.Cursor = Cursors.Hand;
-            btnActualizar.FlatStyle = FlatStyle.Flat;
-            btnActualizar.ForeColor = Color.White;
-            btnActualizar.Location = new Point(980, 630);
-            btnActualizar.Name = "btnActualizar";
-            btnActualizar.Size = new Size(150, 42);
-            btnActualizar.TabIndex = 5;
-            btnActualizar.Text = "Actualizar";
-            btnActualizar.UseVisualStyleBackColor = false;
+            // 
+            btnActualizar.BackColor =
+                Color.Gray;
+
+            btnActualizar.FlatStyle =
+                FlatStyle.Flat;
+
+            btnActualizar.FlatAppearance.BorderSize =
+                0;
+
+            btnActualizar.ForeColor =
+                Color.White;
+
+            btnActualizar.Location =
+                new Point(790, 630);
+
+            btnActualizar.Name =
+                "btnActualizar";
+
+            btnActualizar.Size =
+                new Size(120, 42);
+
+            btnActualizar.TabIndex =
+                4;
+
+            btnActualizar.Text =
+                "Actualizar";
+
+            btnActualizar.UseVisualStyleBackColor =
+                false;
+
+            // 
+            // btnEliminar
+            // 
+            btnEliminar.BackColor =
+                Color.Firebrick;
+
+            btnEliminar.FlatStyle =
+                FlatStyle.Flat;
+
+            btnEliminar.FlatAppearance.BorderSize =
+                0;
+
+            btnEliminar.ForeColor =
+                Color.White;
+
+            btnEliminar.Location =
+                new Point(930, 630);
+
+            btnEliminar.Name =
+                "btnEliminar";
+
+            btnEliminar.Size =
+                new Size(120, 42);
+
+            btnEliminar.TabIndex =
+                5;
+
+            btnEliminar.Text =
+                "Eliminar";
+
+            btnEliminar.UseVisualStyleBackColor =
+                false;
+
+            // 
             // FrmIncidenciaPrincipal
-            AutoScaleDimensions = new SizeF(9F, 23F);
-            AutoScaleMode = AutoScaleMode.Font;
-            BackColor = Color.White;
-            ClientSize = new Size(1180, 720);
+            // 
+            AutoScaleDimensions =
+                new SizeF(9F, 23F);
+
+            AutoScaleMode =
+                AutoScaleMode.Font;
+
+            BackColor =
+                Color.White;
+
+            ClientSize =
+                new Size(1180, 720);
+
             Controls.Add(lblTitulo);
+
             Controls.Add(btnNuevaIncidencia);
+
             Controls.Add(dgvIncidencias);
+
             Controls.Add(btnDetalles);
-            Controls.Add(btnEliminar);
             Controls.Add(btnActualizar);
-            Font = new Font("Segoe UI", 10F);
-            Name = "FrmIncidenciaPrincipal";
-            StartPosition = FormStartPosition.CenterScreen;
-            Text = "Gestión de Incidencias";
-            Load += FrmIncidenciaPrincipal_Load_1;
+            Controls.Add(btnEliminar);
+
+            Font =
+                new Font("Segoe UI", 10F);
+
+            Name =
+                "FrmIncidenciaPrincipal";
+
+            StartPosition =
+                FormStartPosition.CenterScreen;
+
+            Text =
+                "Gestión de Incidencias";
+
+            Load +=
+                FrmIncidenciaPrincipal_Load;
+
             ((System.ComponentModel.ISupportInitialize)dgvIncidencias).EndInit();
+
             ResumeLayout(false);
             PerformLayout();
         }

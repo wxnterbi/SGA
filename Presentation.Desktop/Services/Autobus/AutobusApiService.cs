@@ -76,7 +76,7 @@ namespace SGA.Presentation.Desktop.Services.Autobus
             }
             catch
             {
-                // Si no es un JSON válido, dejamos el mensaje por defecto.
+            
             }
 
             return new ApiResponse

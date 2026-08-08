@@ -1,4 +1,5 @@
-﻿using SGA.Application.Dtos.Incidencia;
+﻿using SGA.Application.BusinessRules;
+using SGA.Application.Dtos.Incidencia;
 using SGA.Application.Interfaces;
 using SGA.Domain.Entities.Reservation;
 using SGA.Domain.Enums.Reservation;
@@ -11,18 +12,27 @@ namespace SGA.Application.Services
     {
         private readonly IIncidenciaRepository _incidenciaRepository;
         private readonly INotificationService _notificationService;
+        private readonly IncidenciaRules _incidenciaRules;
 
         public IncidenciaService(
             IIncidenciaRepository incidenciaRepository,
-            INotificationService notificationService)
+            INotificationService notificationService,
+            IncidenciaRules incidenciaRules)
         {
-            _incidenciaRepository = incidenciaRepository ?? throw new ArgumentNullException(nameof(incidenciaRepository));
-            _notificationService = notificationService;
+            _incidenciaRepository = incidenciaRepository
+                ?? throw new ArgumentNullException(nameof(incidenciaRepository));
+
+            _notificationService = notificationService
+                ?? throw new ArgumentNullException(nameof(notificationService));
+
+            _incidenciaRules = incidenciaRules
+                ?? throw new ArgumentNullException(nameof(incidenciaRules));
         }
 
         public async Task<IEnumerable<IncidenciaDto>> GetAllAsync()
         {
-            var incidencias = await _incidenciaRepository.GetAllAsync();
+            var incidencias =
+                await _incidenciaRepository.GetAllAsync();
 
             return incidencias.Select(i => new IncidenciaDto
             {
@@ -37,61 +47,81 @@ namespace SGA.Application.Services
 
         public async Task<IncidenciaDto?> GetByIdAsync(int id)
         {
-            var i = await _incidenciaRepository.GetByIdAsync(id);
-            if (i == null) return null;
+            var incidencia =
+                await _incidenciaRepository.GetByIdAsync(id);
+
+            if (incidencia == null)
+                return null;
 
             return new IncidenciaDto
             {
-                Id = i.Id,
-                ViajeId = i.ViajeId,
-                ConductorId = i.ConductorId,
-                Tipo = (int)i.Tipo,
-                Descripcion = i.Descripcion,
-                FechaHora = i.FechaHora
+                Id = incidencia.Id,
+                ViajeId = incidencia.ViajeId,
+                ConductorId = incidencia.ConductorId,
+                Tipo = (int)incidencia.Tipo,
+                Descripcion = incidencia.Descripcion,
+                FechaHora = incidencia.FechaHora
             };
         }
 
-        public async Task AddAsync(IncidenciaDto dto)
-        {
-            var incidencia = new Incidencia
-            {
-                ViajeId = dto.ViajeId,
-                ConductorId = dto.ConductorId,
-                Tipo = (TipoIncidencia)dto.Tipo,
-                Descripcion = dto.Descripcion,
-                FechaHora = dto.FechaHora == default ? DateTime.Now : dto.FechaHora
-            };
+public async Task AddAsync(IncidenciaDto dto)
+{
+    _incidenciaRules.ValidarRegistroIncidencia(
+        dto.ViajeId,
+        dto.ConductorId);
 
-            await _incidenciaRepository.AddAsync(incidencia);
+    var incidencia = new Incidencia
+    {
+        ViajeId = dto.ViajeId,
+        ConductorId = dto.ConductorId,
+        Tipo = (TipoIncidencia)dto.Tipo,
+        Descripcion = dto.Descripcion,
+        FechaHora = dto.FechaHora == default
+            ? DateTime.Now
+            : dto.FechaHora
+    };
 
-            await _notificationService.SendNotificationAsync(
-                "transporte@itla.edu.do",
-                "Nueva Incidencia Reportada",
-                "Incidencia registrada correctamente.");
-        }
+    await _incidenciaRepository.AddAsync(incidencia);
+
+    await _notificationService.SendNotificationAsync(
+        "transporte@itla.edu.do",
+        "Nueva Incidencia Reportada",
+        "Incidencia registrada correctamente.");
+}
 
         public async Task UpdateAsync(IncidenciaDto dto)
         {
-            var incidencia = await _incidenciaRepository.GetByIdAsync(dto.Id);
-            if (incidencia != null)
-            {
-                incidencia.ViajeId = dto.ViajeId;
-                incidencia.ConductorId = dto.ConductorId;
-                incidencia.Tipo = (TipoIncidencia)dto.Tipo;
-                incidencia.Descripcion = dto.Descripcion;
-                incidencia.FechaHora = dto.FechaHora;
+            var incidencia =
+                await _incidenciaRepository.GetByIdAsync(dto.Id);
 
-                await _incidenciaRepository.UpdateAsync(incidencia);
-            }
+            if (incidencia == null)
+                throw new Exception("Incidencia no encontrada.");
+
+            _incidenciaRules.ValidarRegistroIncidencia(
+                dto.ViajeId,
+                dto.ConductorId);
+
+            incidencia.ViajeId = dto.ViajeId;
+            incidencia.ConductorId = dto.ConductorId;
+            incidencia.Tipo = (TipoIncidencia)dto.Tipo;
+            incidencia.Descripcion = dto.Descripcion;
+            incidencia.FechaHora = dto.FechaHora;
+
+            await _incidenciaRepository.UpdateAsync(incidencia);
         }
 
         public async Task DeleteAsync(int id)
         {
-            var incidencia = await _incidenciaRepository.GetByIdAsync(id);
-            if (incidencia != null)
+            var incidencia =
+                await _incidenciaRepository.GetByIdAsync(id);
+
+            if (incidencia == null)
             {
-                await _incidenciaRepository.DeleteAsync(incidencia);
+                throw new InvalidOperationException(
+                    "No se encontró la incidencia.");
             }
+
+            await _incidenciaRepository.DeleteAsync(incidencia);
         }
     }
 }

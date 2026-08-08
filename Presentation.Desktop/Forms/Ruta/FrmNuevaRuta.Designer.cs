@@ -144,7 +144,6 @@
             Name = "FrmNuevaRuta";
             StartPosition = FormStartPosition.CenterScreen;
             Text = "Nueva Ruta";
-            Load += FrmNuevaRuta_Load_1;
             ResumeLayout(false);
             PerformLayout();
         }

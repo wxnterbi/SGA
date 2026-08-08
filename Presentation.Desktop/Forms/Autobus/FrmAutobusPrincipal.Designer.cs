@@ -5,12 +5,15 @@
         private System.ComponentModel.IContainer components = null;
 
         private Label lblTitulo;
-        private DataGridView dgvAutobuses;
 
         private Button btnNuevoAutobus;
+
+        private DataGridView dgvAutobuses;
+
+        private Button btnEliminar;
+        private Button btnActualizar;
         private Button btnDetalle;
         private Button btnEditar;
-        private Button btnEliminar;
 
         protected override void Dispose(bool disposing)
         {
@@ -22,196 +25,379 @@
 
         private void InitializeComponent()
         {
-            DataGridViewCellStyle encabezado = new DataGridViewCellStyle();
-            DataGridViewCellStyle filas = new DataGridViewCellStyle();
+            DataGridViewCellStyle dataGridViewCellStyle1 =
+                new DataGridViewCellStyle();
+
+            DataGridViewCellStyle dataGridViewCellStyle2 =
+                new DataGridViewCellStyle();
 
             lblTitulo = new Label();
-            dgvAutobuses = new DataGridView();
 
             btnNuevoAutobus = new Button();
+
+            dgvAutobuses = new DataGridView();
+
+            btnEliminar = new Button();
+            btnActualizar = new Button();
             btnDetalle = new Button();
             btnEditar = new Button();
-            btnEliminar = new Button();
 
             ((System.ComponentModel.ISupportInitialize)dgvAutobuses).BeginInit();
 
             SuspendLayout();
 
-            //
-            // Formulario
-            //
-
-            AutoScaleDimensions = new SizeF(9F, 23F);
-            AutoScaleMode = AutoScaleMode.Font;
-            BackColor = Color.White;
-            ClientSize = new Size(1180, 720);
-            Font = new Font("Segoe UI", 10F);
-            StartPosition = FormStartPosition.CenterScreen;
-            Text = "Gestión de Autobuses";
-
-            //
-            // Titulo
-            //
-
+            // 
+            // lblTitulo
+            // 
             lblTitulo.AutoSize = true;
-            lblTitulo.Font = new Font("Segoe UI", 18F, FontStyle.Bold);
-            lblTitulo.ForeColor = Color.FromArgb(40, 40, 40);
-            lblTitulo.Location = new Point(30, 25);
-            lblTitulo.Text = "GESTIÓN DE AUTOBUSES";
 
-            //
-            // DataGrid
-            //
+            lblTitulo.Font =
+                new Font(
+                    "Segoe UI",
+                    18F,
+                    FontStyle.Bold);
 
-            dgvAutobuses.AllowUserToAddRows = false;
-            dgvAutobuses.AllowUserToDeleteRows = false;
-            dgvAutobuses.AllowUserToResizeRows = false;
+            lblTitulo.ForeColor =
+                Color.FromArgb(40, 40, 40);
+
+            lblTitulo.Location =
+                new Point(25, 20);
+
+            lblTitulo.Name =
+                "lblTitulo";
+
+            lblTitulo.Size =
+                new Size(340, 41);
+
+            lblTitulo.TabIndex =
+                0;
+
+            lblTitulo.Text =
+                "GESTIÓN DE AUTOBUSES";
+
+            // 
+            // btnNuevoAutobus
+            // 
+            btnNuevoAutobus.BackColor =
+                Color.FromArgb(40, 167, 69);
+
+            btnNuevoAutobus.FlatStyle =
+                FlatStyle.Flat;
+
+            btnNuevoAutobus.FlatAppearance.BorderSize = 0;
+
+            btnNuevoAutobus.ForeColor =
+                Color.White;
+
+            btnNuevoAutobus.Location =
+                new Point(940, 80);
+
+            btnNuevoAutobus.Name =
+                "btnNuevoAutobus";
+
+            btnNuevoAutobus.Size =
+                new Size(190, 42);
+
+            btnNuevoAutobus.TabIndex =
+                1;
+
+            btnNuevoAutobus.Text =
+                "+ Nuevo Autobús";
+
+            btnNuevoAutobus.UseVisualStyleBackColor =
+                false;
+
+            // 
+            // dgvAutobuses
+            // 
+            dgvAutobuses.AllowUserToAddRows =
+                false;
+
+            dgvAutobuses.AllowUserToDeleteRows =
+                false;
+
+            dgvAutobuses.AllowUserToResizeRows =
+                false;
 
             dgvAutobuses.AutoSizeColumnsMode =
                 DataGridViewAutoSizeColumnsMode.Fill;
 
-            dgvAutobuses.BackgroundColor = Color.White;
-            dgvAutobuses.BorderStyle = BorderStyle.None;
+            dgvAutobuses.BackgroundColor =
+                Color.White;
 
-            encabezado.Alignment =
+            dgvAutobuses.BorderStyle =
+                BorderStyle.None;
+
+            dataGridViewCellStyle1.Alignment =
                 DataGridViewContentAlignment.MiddleLeft;
 
-            encabezado.BackColor =
+            dataGridViewCellStyle1.BackColor =
                 Color.FromArgb(33, 150, 243);
 
-            encabezado.ForeColor = Color.White;
+            dataGridViewCellStyle1.Font =
+                new Font(
+                    "Segoe UI",
+                    10F,
+                    FontStyle.Bold);
 
-            encabezado.Font =
-                new Font("Segoe UI", 10, FontStyle.Bold);
+            dataGridViewCellStyle1.ForeColor =
+                Color.White;
 
-            encabezado.WrapMode =
+            dataGridViewCellStyle1.SelectionBackColor =
+                SystemColors.Highlight;
+
+            dataGridViewCellStyle1.SelectionForeColor =
+                SystemColors.HighlightText;
+
+            dataGridViewCellStyle1.WrapMode =
                 DataGridViewTriState.True;
 
             dgvAutobuses.ColumnHeadersDefaultCellStyle =
-                encabezado;
+                dataGridViewCellStyle1;
 
-            dgvAutobuses.ColumnHeadersHeight = 42;
+            dgvAutobuses.ColumnHeadersHeight =
+                40;
 
-            filas.SelectionBackColor =
+            dataGridViewCellStyle2.Alignment =
+                DataGridViewContentAlignment.MiddleLeft;
+
+            dataGridViewCellStyle2.BackColor =
+                SystemColors.Window;
+
+            dataGridViewCellStyle2.Font =
+                new Font(
+                    "Segoe UI",
+                    10F);
+
+            dataGridViewCellStyle2.ForeColor =
+                SystemColors.ControlText;
+
+            dataGridViewCellStyle2.SelectionBackColor =
                 Color.FromArgb(210, 230, 255);
 
-            filas.SelectionForeColor = Color.Black;
+            dataGridViewCellStyle2.SelectionForeColor =
+                Color.Black;
 
-            dgvAutobuses.DefaultCellStyle = filas;
+            dataGridViewCellStyle2.WrapMode =
+                DataGridViewTriState.False;
 
-            dgvAutobuses.EnableHeadersVisualStyles = false;
+            dgvAutobuses.DefaultCellStyle =
+                dataGridViewCellStyle2;
 
-            dgvAutobuses.Location = new Point(30, 90);
+            dgvAutobuses.EnableHeadersVisualStyles =
+                false;
 
-            dgvAutobuses.MultiSelect = false;
+            dgvAutobuses.Location =
+                new Point(30, 145);
 
-            dgvAutobuses.Name = "dgvAutobuses";
+            dgvAutobuses.MultiSelect =
+                false;
 
-            dgvAutobuses.ReadOnly = true;
+            dgvAutobuses.Name =
+                "dgvAutobuses";
 
-            dgvAutobuses.RowHeadersVisible = false;
+            dgvAutobuses.ReadOnly =
+                true;
+
+            dgvAutobuses.RowHeadersVisible =
+                false;
+
+            dgvAutobuses.RowHeadersWidth =
+                51;
 
             dgvAutobuses.SelectionMode =
                 DataGridViewSelectionMode.FullRowSelect;
 
-            dgvAutobuses.Size = new Size(1120, 500);
+            dgvAutobuses.Size =
+                new Size(1100, 470);
 
-            //
-            // Nuevo
-            //
+            dgvAutobuses.TabIndex =
+                2;
 
-            btnNuevoAutobus.BackColor =
-                Color.FromArgb(40, 167, 69);
+            dgvAutobuses.CellContentClick +=
+                dgvAutobuses_CellContentClick;
 
-            btnNuevoAutobus.FlatStyle = FlatStyle.Flat;
-
-            btnNuevoAutobus.ForeColor = Color.White;
-
-            btnNuevoAutobus.Location =
-                new Point(30, 620);
-
-            btnNuevoAutobus.Size =
-                new Size(160, 45);
-
-            btnNuevoAutobus.Text = "Nuevo";
-
-            //
-            // Detalle
-            //
-
-            btnDetalle.BackColor =
-                Color.FromArgb(23, 162, 184);
-
-            btnDetalle.FlatStyle = FlatStyle.Flat;
-
-            btnDetalle.ForeColor = Color.White;
-
-            btnDetalle.Location =
-                new Point(210, 620);
-
-            btnDetalle.Size =
-                new Size(160, 45);
-
-            btnDetalle.Text = "Detalle";
-
-            //
-            // Editar
-            //
-
-            btnEditar.BackColor =
-                Color.FromArgb(255, 193, 7);
-
-            btnEditar.FlatStyle = FlatStyle.Flat;
-
-            btnEditar.ForeColor = Color.Black;
-
-            btnEditar.Location =
-                new Point(390, 620);
-
-            btnEditar.Size =
-                new Size(160, 45);
-
-            btnEditar.Text = "Editar";
-
-            //
-            // Eliminar
-            //
-
+            // 
+            // btnEliminar
+            // 
             btnEliminar.BackColor =
-                Color.FromArgb(220, 53, 69);
+                Color.Firebrick;
 
-            btnEliminar.FlatStyle = FlatStyle.Flat;
+            btnEliminar.FlatStyle =
+                FlatStyle.Flat;
 
-            btnEliminar.ForeColor = Color.White;
+            btnEliminar.FlatAppearance.BorderSize = 0;
+
+            btnEliminar.ForeColor =
+                Color.White;
 
             btnEliminar.Location =
-                new Point(570, 620);
+                new Point(30, 640);
+
+            btnEliminar.Name =
+                "btnEliminar";
 
             btnEliminar.Size =
-                new Size(160, 45);
+                new Size(120, 42);
 
-            btnEliminar.Text = "Eliminar";
+            btnEliminar.TabIndex =
+                3;
 
-            //
-            // Controles
-            //
+            btnEliminar.Text =
+                "Eliminar";
 
-            Controls.Add(lblTitulo);
+            btnEliminar.UseVisualStyleBackColor =
+                false;
 
-            Controls.Add(dgvAutobuses);
+            // 
+            // btnActualizar
+            // 
+            btnActualizar.BackColor =
+                Color.Gray;
 
-            Controls.Add(btnNuevoAutobus);
+            btnActualizar.FlatStyle =
+                FlatStyle.Flat;
 
-            Controls.Add(btnDetalle);
+            btnActualizar.FlatAppearance.BorderSize = 0;
 
-            Controls.Add(btnEditar);
+            btnActualizar.ForeColor =
+                Color.White;
 
-            Controls.Add(btnEliminar);
+            btnActualizar.Location =
+                new Point(980, 640);
+
+            btnActualizar.Name =
+                "btnActualizar";
+
+            btnActualizar.Size =
+                new Size(150, 42);
+
+            btnActualizar.TabIndex =
+                4;
+
+            btnActualizar.Text =
+                "Actualizar";
+
+            btnActualizar.UseVisualStyleBackColor =
+                false;
+
+            // 
+            // btnDetalle
+            // 
+            btnDetalle.BackColor =
+                Color.FromArgb(0, 120, 215);
+
+            btnDetalle.FlatStyle =
+                FlatStyle.Flat;
+
+            btnDetalle.FlatAppearance.BorderSize = 0;
+
+            btnDetalle.ForeColor =
+                Color.White;
+
+            btnDetalle.Location =
+                new Point(810, 640);
+
+            btnDetalle.Name =
+                "btnDetalle";
+
+            btnDetalle.Size =
+                new Size(120, 42);
+
+            btnDetalle.TabIndex =
+                5;
+
+            btnDetalle.Text =
+                "Detalles";
+
+            btnDetalle.UseVisualStyleBackColor =
+                false;
+
+            // 
+            // btnEditar
+            // 
+            btnEditar.BackColor =
+                Color.Goldenrod;
+
+            btnEditar.FlatStyle =
+                FlatStyle.Flat;
+
+            btnEditar.FlatAppearance.BorderSize = 0;
+
+            btnEditar.ForeColor =
+                Color.White;
+
+            btnEditar.Location =
+                new Point(650, 640);
+
+            btnEditar.Name =
+                "btnEditar";
+
+            btnEditar.Size =
+                new Size(120, 42);
+
+            btnEditar.TabIndex =
+                6;
+
+            btnEditar.Text =
+                "Editar";
+
+            btnEditar.UseVisualStyleBackColor =
+                false;
+
+            // 
+            // FrmAutobusPrincipal
+            // 
+            AutoScaleDimensions =
+                new SizeF(9F, 23F);
+
+            AutoScaleMode =
+                AutoScaleMode.Font;
+
+            BackColor =
+                Color.White;
+
+            ClientSize =
+                new Size(1180, 720);
+
+            Controls.Add(
+                lblTitulo);
+
+            Controls.Add(
+                btnNuevoAutobus);
+
+            Controls.Add(
+                dgvAutobuses);
+
+            Controls.Add(
+                btnEliminar);
+
+            Controls.Add(
+                btnActualizar);
+
+            Controls.Add(
+                btnDetalle);
+
+            Controls.Add(
+                btnEditar);
+
+            Font =
+                new Font(
+                    "Segoe UI",
+                    10F);
+
+            Name =
+                "FrmAutobusPrincipal";
+
+            StartPosition =
+                FormStartPosition.CenterScreen;
+
+            Text =
+                "Gestión de Autobuses";
 
             ((System.ComponentModel.ISupportInitialize)dgvAutobuses).EndInit();
 
             ResumeLayout(false);
-
             PerformLayout();
         }
     }

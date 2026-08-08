@@ -117,6 +117,9 @@ namespace SGA.Presentation.Desktop.Forms.Usuario
             Close();
         }
 
+        private void FrmDetalleUsuario_Load(object sender, EventArgs e)
+        {
 
+        }
     }
 }

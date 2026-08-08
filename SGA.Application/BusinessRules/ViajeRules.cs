@@ -15,7 +15,8 @@ namespace SGA.Application.BusinessRules
             int rutaId,
             int horarioId,
             int autobusId,
-            int conductorId)
+            int conductorId,
+            int viajeIdExcluir = 0)
         {
             if (rutaId <= 0)
                 throw new InvalidOperationException(
@@ -33,23 +34,21 @@ namespace SGA.Application.BusinessRules
                 throw new InvalidOperationException(
                     "El viaje debe estar asociado a un conductor.");
 
-
             bool autobusOcupado =
                 await _viajeRepository.ExisteAutobusEnHorarioAsync(
                     autobusId,
-                    horarioId);
-
+                    horarioId,
+                    viajeIdExcluir);
 
             if (autobusOcupado)
                 throw new InvalidOperationException(
                     "El autobús seleccionado ya se encuentra asignado a otro viaje en esa misma hora.");
 
-
             bool conductorOcupado =
                 await _viajeRepository.ExisteConductorEnHorarioAsync(
                     conductorId,
-                    horarioId);
-
+                    horarioId,
+                    viajeIdExcluir);
 
             if (conductorOcupado)
                 throw new InvalidOperationException(

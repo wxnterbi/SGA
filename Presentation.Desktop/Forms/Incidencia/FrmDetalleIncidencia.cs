@@ -71,5 +71,10 @@ namespace SGA.Presentation.Desktop.Forms.Incidencia
         {
 
         }
+
+        private void lblViaje_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 }

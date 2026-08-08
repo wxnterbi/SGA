@@ -6,16 +6,14 @@
 
         private Label lblTitulo;
 
-        private Label lblIdTexto;
+        private Label lblIdTitulo;
+        private Label lblNombreTitulo;
+        private Label lblUbicacionTitulo;
+        private Label lblOrdenTitulo;
+
         private Label lblId;
-
-        private Label lblNombreTexto;
         private Label lblNombre;
-
-        private Label lblUbicacionTexto;
         private Label lblUbicacion;
-
-        private Label lblOrdenTexto;
         private Label lblOrden;
 
         private Button btnCerrar;
@@ -30,125 +28,249 @@
 
         private void InitializeComponent()
         {
+            components =
+                new System.ComponentModel.Container();
+
             lblTitulo = new Label();
-            lblIdTexto = new Label();
+
+            lblIdTitulo = new Label();
+            lblNombreTitulo = new Label();
+            lblUbicacionTitulo = new Label();
+            lblOrdenTitulo = new Label();
+
             lblId = new Label();
-            lblNombreTexto = new Label();
             lblNombre = new Label();
-            lblUbicacionTexto = new Label();
             lblUbicacion = new Label();
-            lblOrdenTexto = new Label();
             lblOrden = new Label();
+
             btnCerrar = new Button();
+
             SuspendLayout();
+
+            // 
+            // FrmDetalleParada
+            // 
+            ClientSize =
+                new Size(600, 380);
+
+            Text =
+                "Detalle de la Parada";
+
+            StartPosition =
+                FormStartPosition.CenterParent;
+
+            FormBorderStyle =
+                FormBorderStyle.FixedDialog;
+
+            MaximizeBox =
+                false;
+
+            MinimizeBox =
+                false;
+
+            BackColor =
+                Color.White;
+
+            Font =
+                new Font("Segoe UI", 10F);
+
             // 
             // lblTitulo
             // 
             lblTitulo.AutoSize = true;
-            lblTitulo.Font = new Font("Segoe UI", 16F, FontStyle.Bold);
-            lblTitulo.Location = new Point(105, 25);
-            lblTitulo.Name = "lblTitulo";
-            lblTitulo.Size = new Size(244, 37);
-            lblTitulo.TabIndex = 0;
-            lblTitulo.Text = "Detalle de Parada";
+
+            lblTitulo.Font =
+                new Font("Segoe UI", 18F, FontStyle.Bold);
+
+            lblTitulo.ForeColor =
+                Color.FromArgb(25, 42, 86);
+
+            lblTitulo.Location =
+                new Point(30, 20);
+
+            lblTitulo.Name =
+                "lblTitulo";
+
+            lblTitulo.Text =
+                "DETALLE DE LA PARADA";
+
             // 
-            // lblIdTexto
+            // lblIdTitulo
             // 
-            lblIdTexto.AutoSize = true;
-            lblIdTexto.Location = new Point(40, 95);
-            lblIdTexto.Name = "lblIdTexto";
-            lblIdTexto.Size = new Size(27, 20);
-            lblIdTexto.TabIndex = 1;
-            lblIdTexto.Text = "ID:";
+            lblIdTitulo.AutoSize = true;
+
+            lblIdTitulo.Font =
+                new Font("Segoe UI", 11F, FontStyle.Bold);
+
+            lblIdTitulo.Location =
+                new Point(40, 90);
+
+            lblIdTitulo.Name =
+                "lblIdTitulo";
+
+            lblIdTitulo.Text =
+                "ID:";
+
+            // 
+            // lblNombreTitulo
+            // 
+            lblNombreTitulo.AutoSize = true;
+
+            lblNombreTitulo.Font =
+                new Font("Segoe UI", 11F, FontStyle.Bold);
+
+            lblNombreTitulo.Location =
+                new Point(40, 135);
+
+            lblNombreTitulo.Name =
+                "lblNombreTitulo";
+
+            lblNombreTitulo.Text =
+                "Nombre:";
+
+            // 
+            // lblUbicacionTitulo
+            // 
+            lblUbicacionTitulo.AutoSize = true;
+
+            lblUbicacionTitulo.Font =
+                new Font("Segoe UI", 11F, FontStyle.Bold);
+
+            lblUbicacionTitulo.Location =
+                new Point(40, 180);
+
+            lblUbicacionTitulo.Name =
+                "lblUbicacionTitulo";
+
+            lblUbicacionTitulo.Text =
+                "Ubicación:";
+
+            // 
+            // lblOrdenTitulo
+            // 
+            lblOrdenTitulo.AutoSize = true;
+
+            lblOrdenTitulo.Font =
+                new Font("Segoe UI", 11F, FontStyle.Bold);
+
+            lblOrdenTitulo.Location =
+                new Point(40, 225);
+
+            lblOrdenTitulo.Name =
+                "lblOrdenTitulo";
+
+            lblOrdenTitulo.Text =
+                "Orden:";
+
             // 
             // lblId
             // 
-            lblId.Location = new Point(170, 95);
-            lblId.Name = "lblId";
-            lblId.Size = new Size(220, 23);
-            lblId.TabIndex = 2;
-            // 
-            // lblNombreTexto
-            // 
-            lblNombreTexto.AutoSize = true;
-            lblNombreTexto.Location = new Point(40, 145);
-            lblNombreTexto.Name = "lblNombreTexto";
-            lblNombreTexto.Size = new Size(67, 20);
-            lblNombreTexto.TabIndex = 3;
-            lblNombreTexto.Text = "Nombre:";
+            lblId.AutoSize = true;
+
+            lblId.Font =
+                new Font("Segoe UI", 11F);
+
+            lblId.Location =
+                new Point(180, 90);
+
+            lblId.Name =
+                "lblId";
+
             // 
             // lblNombre
             // 
-            lblNombre.Location = new Point(170, 145);
-            lblNombre.Name = "lblNombre";
-            lblNombre.Size = new Size(220, 23);
-            lblNombre.TabIndex = 4;
-            // 
-            // lblUbicacionTexto
-            // 
-            lblUbicacionTexto.AutoSize = true;
-            lblUbicacionTexto.Location = new Point(40, 195);
-            lblUbicacionTexto.Name = "lblUbicacionTexto";
-            lblUbicacionTexto.Size = new Size(78, 20);
-            lblUbicacionTexto.TabIndex = 5;
-            lblUbicacionTexto.Text = "Ubicación:";
+            lblNombre.AutoSize = true;
+
+            lblNombre.Font =
+                new Font("Segoe UI", 11F);
+
+            lblNombre.Location =
+                new Point(180, 135);
+
+            lblNombre.Name =
+                "lblNombre";
+
+            lblNombre.MaximumSize =
+                new Size(350, 0);
+
             // 
             // lblUbicacion
             // 
-            lblUbicacion.Location = new Point(170, 195);
-            lblUbicacion.Name = "lblUbicacion";
-            lblUbicacion.Size = new Size(220, 23);
-            lblUbicacion.TabIndex = 6;
-            // 
-            // lblOrdenTexto
-            // 
-            lblOrdenTexto.AutoSize = true;
-            lblOrdenTexto.Location = new Point(40, 245);
-            lblOrdenTexto.Name = "lblOrdenTexto";
-            lblOrdenTexto.Size = new Size(53, 20);
-            lblOrdenTexto.TabIndex = 7;
-            lblOrdenTexto.Text = "Orden:";
+            lblUbicacion.AutoSize = true;
+
+            lblUbicacion.Font =
+                new Font("Segoe UI", 11F);
+
+            lblUbicacion.Location =
+                new Point(180, 180);
+
+            lblUbicacion.Name =
+                "lblUbicacion";
+
+            lblUbicacion.MaximumSize =
+                new Size(350, 0);
+
             // 
             // lblOrden
             // 
-            lblOrden.Location = new Point(170, 245);
-            lblOrden.Name = "lblOrden";
-            lblOrden.Size = new Size(220, 23);
-            lblOrden.TabIndex = 8;
-            lblOrden.Click += lblOrden_Click;
+            lblOrden.AutoSize = true;
+
+            lblOrden.Font =
+                new Font("Segoe UI", 11F);
+
+            lblOrden.Location =
+                new Point(180, 225);
+
+            lblOrden.Name =
+                "lblOrden";
+
             // 
             // btnCerrar
             // 
-            btnCerrar.BackColor = Color.FromArgb(33, 150, 243);
-            btnCerrar.FlatStyle = FlatStyle.Flat;
-            btnCerrar.ForeColor = Color.White;
-            btnCerrar.Location = new Point(170, 320);
-            btnCerrar.Name = "btnCerrar";
-            btnCerrar.Size = new Size(110, 38);
-            btnCerrar.TabIndex = 9;
-            btnCerrar.Text = "Cerrar";
-            btnCerrar.UseVisualStyleBackColor = false;
+            btnCerrar.Text =
+                "Cerrar";
+
+            btnCerrar.Size =
+                new Size(120, 40);
+
+            btnCerrar.Location =
+                new Point(230, 300);
+
+            btnCerrar.BackColor =
+                Color.FromArgb(0, 120, 215);
+
+            btnCerrar.ForeColor =
+                Color.White;
+
+            btnCerrar.FlatStyle =
+                FlatStyle.Flat;
+
+            btnCerrar.FlatAppearance.BorderSize =
+                0;
+
+            btnCerrar.Cursor =
+                Cursors.Hand;
+
+            btnCerrar.Name =
+                "btnCerrar";
+
             // 
-            // FrmDetalleParada
+            // Controls
             // 
-            AutoScaleDimensions = new SizeF(8F, 20F);
-            AutoScaleMode = AutoScaleMode.Font;
-            BackColor = Color.White;
-            ClientSize = new Size(450, 400);
             Controls.Add(lblTitulo);
-            Controls.Add(lblIdTexto);
+
+            Controls.Add(lblIdTitulo);
+            Controls.Add(lblNombreTitulo);
+            Controls.Add(lblUbicacionTitulo);
+            Controls.Add(lblOrdenTitulo);
+
             Controls.Add(lblId);
-            Controls.Add(lblNombreTexto);
             Controls.Add(lblNombre);
-            Controls.Add(lblUbicacionTexto);
             Controls.Add(lblUbicacion);
-            Controls.Add(lblOrdenTexto);
             Controls.Add(lblOrden);
+
             Controls.Add(btnCerrar);
-            Name = "FrmDetalleParada";
-            StartPosition = FormStartPosition.CenterScreen;
-            Text = "Detalle de Parada";
-            Load += FrmDetalleParada_Load_1;
+
             ResumeLayout(false);
             PerformLayout();
         }

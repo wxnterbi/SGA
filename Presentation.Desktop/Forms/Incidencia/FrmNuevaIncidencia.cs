@@ -134,12 +134,11 @@ namespace SGA.Presentation.Desktop.Forms.Incidencia
 
 
         private async void btnGuardar_Click(
-            object sender,
-            EventArgs e)
+    object sender,
+    EventArgs e)
         {
             try
             {
-
                 if (cmbViaje.SelectedValue == null)
                 {
                     MessageBox.Show(
@@ -150,7 +149,6 @@ namespace SGA.Presentation.Desktop.Forms.Incidencia
 
                     return;
                 }
-
 
                 if (cmbConductor.SelectedValue == null)
                 {
@@ -163,7 +161,6 @@ namespace SGA.Presentation.Desktop.Forms.Incidencia
                     return;
                 }
 
-
                 if (cmbTipo.SelectedItem == null)
                 {
                     MessageBox.Show(
@@ -174,21 +171,6 @@ namespace SGA.Presentation.Desktop.Forms.Incidencia
 
                     return;
                 }
-
-
-                if (string.IsNullOrWhiteSpace(txtDescripcion.Text))
-                {
-                    MessageBox.Show(
-                        "Debe escribir una descripción.",
-                        "Validación",
-                        MessageBoxButtons.OK,
-                        MessageBoxIcon.Warning);
-
-                    txtDescripcion.Focus();
-
-                    return;
-                }
-
 
                 var incidencia = new IncidenciaDto
                 {
@@ -211,8 +193,7 @@ namespace SGA.Presentation.Desktop.Forms.Incidencia
                         dtpFecha.Value
                 };
 
-
-                bool resultado;
+                (bool Success, string Message) resultado;
 
                 if (_incidenciaEditar == null)
                 {
@@ -220,8 +201,6 @@ namespace SGA.Presentation.Desktop.Forms.Incidencia
                         await _incidenciaApiService
                             .CreateAsync(incidencia);
                 }
-
-
                 else
                 {
                     incidencia.Id =
@@ -232,36 +211,25 @@ namespace SGA.Presentation.Desktop.Forms.Incidencia
                             .UpdateAsync(incidencia);
                 }
 
-
-
-
-                if (resultado)
+                if (resultado.Success)
                 {
-                    string mensaje =
-                        _incidenciaEditar == null
-                            ? "Incidencia registrada correctamente."
-                            : "Incidencia actualizada correctamente.";
-
-
                     MessageBox.Show(
-                        mensaje,
+                        resultado.Message,
                         "Éxito",
                         MessageBoxButtons.OK,
                         MessageBoxIcon.Information);
 
-
-                    DialogResult =
-                        DialogResult.OK;
+                    DialogResult = DialogResult.OK;
 
                     Close();
                 }
                 else
                 {
                     MessageBox.Show(
-                        "No fue posible guardar la incidencia.",
-                        "Error",
+                        resultado.Message,
+                        "Validación",
                         MessageBoxButtons.OK,
-                        MessageBoxIcon.Error);
+                        MessageBoxIcon.Warning);
                 }
             }
             catch (Exception ex)
@@ -273,7 +241,6 @@ namespace SGA.Presentation.Desktop.Forms.Incidencia
                     MessageBoxIcon.Error);
             }
         }
-
 
         private void btnCancelar_Click(
             object sender,
